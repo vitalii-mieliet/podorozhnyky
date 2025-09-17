@@ -28,111 +28,115 @@ body {
   }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  line-height: 120%;
-}
-
 /* H1 */
 h1 {
   font-family: var(--second-family);
   font-weight: 700;
-  font-size: 28px;
+  font-size: 32px; /* mobile */
+  line-height: 110%;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  margin: 0;
 }
+
 @media (min-width: var(--bp-tablet)) {
   h1 {
-    font-size: 32px;
-  }
+    font-size: 48px;
+  } /* tablet */
 }
+
 @media (min-width: var(--bp-desktop)) {
   h1 {
-    font-size: 40px;
-  }
+    font-size: 56px;
+  } /* desktop */
 }
 
 /* H2 */
 h2 {
   font-family: var(--second-family);
   font-weight: 700;
-  font-size: 24px;
+  font-size: 28px; /* mobile */
+  line-height: 120%;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
+  margin: 0;
 }
+
 @media (min-width: var(--bp-tablet)) {
   h2 {
-    font-size: 28px;
-  }
+    font-size: 44px;
+  } /* tablet */
 }
+
 @media (min-width: var(--bp-desktop)) {
   h2 {
-    font-size: 32px;
-  }
+    font-size: 52px;
+  } /* desktop */
 }
 
 /* H3 */
 h3 {
   font-family: var(--second-family);
   font-weight: 700;
-  font-size: 20px;
-}
-@media (min-width: var(--bp-tablet)) {
-  h3 {
-    font-size: 24px;
-  }
-}
-@media (min-width: var(--bp-desktop)) {
-  h3 {
-    font-size: 28px;
-  }
+  font-size: 20px; /* mobile */
+  line-height: 130%;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
+  margin: 0;
 }
 
-/* H4 */
-h4 {
-  font-family: var(--second-family);
-  font-weight: 700;
-  font-size: 18px;
+@media (min-width: var(--bp-tablet)) {
+  h3 {
+    font-size: 20px;
+  } /* tablet */
 }
+
+@media (min-width: var(--bp-desktop)) {
+  h3 {
+    font-size: 32px;
+  } /* desktop */
+}
+
+//* H4 */
+h4 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 18px; /* mobile */
+  line-height: 150%;
+  color: var(--color-scheme-1-text);
+  margin: 0;
+}
+
 @media (min-width: var(--bp-tablet)) {
   h4 {
-    font-size: 20px;
-  }
+    font-size: 18px;
+  } /* tablet */
 }
+
 @media (min-width: var(--bp-desktop)) {
   h4 {
-    font-size: 24px;
-  }
+    font-size: 26px;
+  } /* desktop */
 }
 
 /* H5 */
 h5 {
   font-family: var(--font-family);
   font-weight: 600;
-  font-size: 18px;
+  font-size: 18px; /* mobile */
   line-height: 150%;
   color: var(--color-scheme-2-text);
+  margin: 0;
 }
+
+@media (min-width: var(--bp-tablet)) {
+  h5 {
+    font-size: 18px;
+  } /* tablet */
+}
+
 @media (min-width: var(--bp-desktop)) {
   h5 {
     font-size: 26px;
-  }
-}
-
-/* H6 */
-h6 {
-  font-family: var(--second-family);
-  font-weight: 700;
-  font-size: 14px;
-}
-@media (min-width: var(--bp-tablet)) {
-  h6 {
-    font-size: 16px;
-  }
-}
-@media (min-width: var(--bp-desktop)) {
-  h6 {
-    font-size: 18px;
-  }
+  } /* desktop */
 }
