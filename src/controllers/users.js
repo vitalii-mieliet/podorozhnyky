@@ -6,7 +6,7 @@ export const getUserInfoController = async (req, res, next) => {
 
     res.json({
       status: 200,
-      message: 'Find information about user!',
+      message: 'User information found',
       data,
     });
   } catch (error) {
