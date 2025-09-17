@@ -1,5 +1,8 @@
 import { Router } from 'express';
+import { logoutUserController } from '../controllers/auth.js';
 
-const router = Router();
+const authRouter = Router();
 
-export default router;
+authRouter.post('/api/auth', logoutUserController);
+
+export default authRouter;
