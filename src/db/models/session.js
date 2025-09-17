@@ -1,4 +1,5 @@
 import { model, Schema } from 'mongoose';
+import { handleSaveError, setUpdateSetting } from './hooks.js';
 
 const sessionSchema = new Schema(
   {
@@ -10,5 +11,11 @@ const sessionSchema = new Schema(
   },
   { timestamps: true, versionKey: false },
 );
+
+sessionSchema.post('save', handleSaveError);
+
+sessionSchema.pre('findOneAndUpdate', setUpdateSetting);
+
+sessionSchema.post('findOneAndUpdate', handleSaveError);
 
 export const SessionsCollection = model('sessions', sessionSchema);
