@@ -1,6 +1,7 @@
 import { required } from 'joi';
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
+import { type } from 'node:os';
 
 const storiesSchema = new Schema(
   {
@@ -29,6 +30,11 @@ const storiesSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user',
       required: true,
+    },
+    photo: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
     },
     date: {
       type: String,
