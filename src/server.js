@@ -1,12 +1,11 @@
-import express, { application } from 'express';
-import pino from 'pino-http';
-import cors from 'cors';
-import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
-import { getEnvVar } from './utils/getEnvVar.js';
-import { errorHandler } from './middlewares/errorHandler.js';
+import express from 'express';
+import cors from 'cors';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-import onBoardRouter from './routers/onboarding.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { getEnvVar } from './utils/getEnvVar.js';
+import { logger } from './middlewares/logger.js';
+import router from './routers/index.js';
 
 const PORT = Number(getEnvVar('PORT', 3000));
 
@@ -21,26 +20,12 @@ export const startServer = () => {
   );
 
   app.use(cors());
-
   app.use(cookieParser());
-
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
+  // app.use(logger);
 
   app.use('/api', router);
 
-  app.use('', notFoundHandler);
-
-  app.use((req, res, next) => {
-    console.log(`Time: ${new Date().toLocaleString()}`);
-    next();
-  });
-
+  app.use(notFoundHandler);
   app.use(errorHandler);
 
   app.listen(PORT, () => {

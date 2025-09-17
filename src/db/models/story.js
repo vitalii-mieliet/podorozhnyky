@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
-import { handleSaveError, setUpdateSetting } from './hooks.js';
+import { handleSaveError, setUpdateSetting } from '../hooks.js';
 
 const storiesSchema = new Schema(
   {

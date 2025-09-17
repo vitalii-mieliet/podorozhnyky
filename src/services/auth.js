@@ -16,7 +16,7 @@ const createSession = () => ({
 });
 
 export const findSession = (query) => SessionsCollection.findOne(query);
-export const findUser = (query) => SessionsCollection.findOne(query);
+export const findUser = (query) => UserCollection.findOne(query);
 
 export const registerUser = async (data) => {
   const { email, password } = data;
@@ -80,6 +80,6 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   });
 };
 
-export const logoutUser = (sessionId) => {
-  SessionsCollection.findOneAndDelete({ _id: sessionId });
+export const logoutUser = async (sessionId) => {
+  await SessionsCollection.deleteOne({ _id: sessionId });
 };

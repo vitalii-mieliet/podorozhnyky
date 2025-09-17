@@ -1,46 +1,32 @@
 import createHttpError from 'http-errors';
-import { SessionsCollection } from '../db/models/session.js';
-import { UserCollection } from '../db/models/user.js';
+import { findSession, findUser } from '../services/auth.js';
 
 export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization');
-
   if (!authHeader) {
-    next(createHttpError(401, 'Please provide Authorization header'));
-    return;
+    throw createHttpError(401, 'Please provide Authorization header');
   }
 
-  const bearer = authHeader.split(' ')[0];
-  const token = authHeader.split(' ')[1];
-
-  if (bearer !== 'Bearer' || !token) {
-    next(createHttpError(401, 'Auth header should be of type Bearer'));
-    return;
+  const [bearer, accessToken] = authHeader.split(' ');
+  if (bearer !== 'Bearer') {
+    throw createHttpError(401, 'Auth header should be of type Bearer');
   }
-  // перевірка по токену
-  const session = await SessionsCollection.findOne({ accessToken: token });
+
+  const session = await findSession({ accessToken });
   if (!session) {
-    next(createHttpError(401, 'Session not found'));
-    return;
+    throw createHttpError(401, 'Session not found');
   }
-  // перевірка по даті
-  const isAccessTokenExpired =
-    new Date() > new Date(session.accessTokenValidUntil);
 
-  if (isAccessTokenExpired) {
-    next(createHttpError(401, 'Access token expired'));
+  if (session.accessTokenValidUntil < new Date()) {
+    throw createHttpError(401, 'Access token expired');
   }
-  // перевірка по користувачу
-  const user = await UserCollection.findById(session.userId);
 
+  const user = await findUser({ _id: session.userId });
   if (!user) {
-    next(createHttpError(401));
-    return;
+    throw createHttpError(401);
   }
 
   req.user = user;
 
   next();
 };
-
-// додати authenticate в роутах auth stories users
