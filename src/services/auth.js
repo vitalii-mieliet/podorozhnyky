@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'node:crypto';
 import {
