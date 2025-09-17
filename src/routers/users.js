@@ -1,5 +1,10 @@
 import { Router } from 'express';
+import { getUserInfoController } from '../controllers/users.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
-const router = Router();
+const userRouter = Router();
 
-export default router;
+userRouter.get('/', authenticate, ctrlWrapper(getUserInfoController));
+
+export default userRouter;
