@@ -1,0 +1,138 @@
+@import './fonts.css';
+@import './reset.css';
+@import './variables.css';
+
+@import './fonts.css';
+@import './reset.css';
+@import './variables.css';
+
+html {
+  font-size: 16px;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100%;
+
+  background: var(--color-scheme-2-background);
+  color: var(--color-scheme-2-text);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+@media (min-width: var(--bp-desktop)) {
+  body {
+    font-size: 18px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  line-height: 120%;
+}
+
+/* H1 */
+h1 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 28px;
+}
+@media (min-width: var(--bp-tablet)) {
+  h1 {
+    font-size: 32px;
+  }
+}
+@media (min-width: var(--bp-desktop)) {
+  h1 {
+    font-size: 40px;
+  }
+}
+
+/* H2 */
+h2 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 24px;
+}
+@media (min-width: var(--bp-tablet)) {
+  h2 {
+    font-size: 28px;
+  }
+}
+@media (min-width: var(--bp-desktop)) {
+  h2 {
+    font-size: 32px;
+  }
+}
+
+/* H3 */
+h3 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 20px;
+}
+@media (min-width: var(--bp-tablet)) {
+  h3 {
+    font-size: 24px;
+  }
+}
+@media (min-width: var(--bp-desktop)) {
+  h3 {
+    font-size: 28px;
+  }
+}
+
+/* H4 */
+h4 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 18px;
+}
+@media (min-width: var(--bp-tablet)) {
+  h4 {
+    font-size: 20px;
+  }
+}
+@media (min-width: var(--bp-desktop)) {
+  h4 {
+    font-size: 24px;
+  }
+}
+
+/* H5 */
+h5 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 150%;
+  color: var(--color-scheme-2-text);
+}
+@media (min-width: var(--bp-desktop)) {
+  h5 {
+    font-size: 26px;
+  }
+}
+
+/* H6 */
+h6 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 14px;
+}
+@media (min-width: var(--bp-tablet)) {
+  h6 {
+    font-size: 16px;
+  }
+}
+@media (min-width: var(--bp-desktop)) {
+  h6 {
+    font-size: 18px;
+  }
+}
