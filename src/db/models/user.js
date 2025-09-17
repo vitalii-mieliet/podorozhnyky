@@ -6,7 +6,7 @@ const userSchema = new Schema(
     email: { type: String, email: true, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String, default: '' },
-    bio: { type: String },
+    bio: { type: String, required: false },
     onboardingCompleted: { type: Boolean, default: false },
     savedStories: [{ type: Schema.Types.ObjectId, ref: 'stories' }],
     settings: {
