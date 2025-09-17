@@ -1,6 +1,6 @@
-import { required } from 'joi';
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
+import { handleSaveError, setUpdateSetting } from './hooks.js';
 
 const storiesSchema = new Schema(
   {
@@ -40,5 +40,11 @@ const storiesSchema = new Schema(
   },
   { timestamps: true, versionKey: false },
 );
+
+storiesSchema.post('save', handleSaveError);
+
+storiesSchema.pre('findOneAndUpdate', setUpdateSetting);
+
+storiesSchema.post('findOneAndUpdate', handleSaveError);
 
 export const StoriesCollection = model('stories', storiesSchema);
