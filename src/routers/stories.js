@@ -1,5 +1,9 @@
 import { Router } from 'express';
+import { getStoriesController } from '../controllers/stories.js';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
-const router = Router();
+const storyRouter = Router();
 
-export default router;
+storyRouter.get('/', ctrlWrapper(getStoriesController));
+
+export default storyRouter;
