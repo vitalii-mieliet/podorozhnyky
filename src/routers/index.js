@@ -6,8 +6,8 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.use('/api/stories', storyRouter);
-router.use('/api/users', userRouter);
-router.use('/api/auth', authRouter);
+router.use('/stories', storyRouter);
+router.use('/users', userRouter);
+router.use('/auth', authRouter);
 
 export default router;
