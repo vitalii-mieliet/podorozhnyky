@@ -5,8 +5,8 @@ const register = async (req, res, next) => {
     const newUser = await authService.register(req.body);
 
     res.status(201).json({
-      status: 'success',
-      code: 201,
+      status: 201,
+      message: 'Successfully registered a user!',
       data: {
         user: newUser,
       },
