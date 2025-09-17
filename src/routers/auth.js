@@ -3,6 +3,6 @@ import { logoutUserController } from '../controllers/auth.js';
 
 const authRouter = Router();
 
-authRouter.post('/api/auth', logoutUserController);
+authRouter.post('/logout', logoutUserController);
 
 export default authRouter;
