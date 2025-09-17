@@ -56,3 +56,7 @@ export const loginUser = async ({ email, password }) => {
     ...session,
   });
 };
+
+export const logoutUser = (sessionId) => {
+  SessionsCollection.findOneAndDelete({ _id: sessionId });
+};
