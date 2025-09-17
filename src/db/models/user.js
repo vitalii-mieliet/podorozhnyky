@@ -1,9 +1,11 @@
 import { model, Schema } from 'mongoose';
+import { emailRegexp } from '../../constants/auth.js';
+import { handleSaveError, setUpdateSetting } from './hooks.js';
 
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, email: true, required: true, unique: true },
+    email: { type: String, match: emailRegexp, required: true, unique: true },
     password: { type: String, required: true },
     avatar: { type: String, default: '' },
     bio: { type: String },
@@ -26,5 +28,11 @@ userSchema.methods.toJSON = function () {
   delete obj.password;
   return obj;
 };
+
+userSchema.post('save', handleSaveError);
+
+userSchema.pre('findOneAndUpdate', setUpdateSetting);
+
+userSchema.post('findOneAndUpdate', handleSaveError);
 
 export const UserCollection = model('user', userSchema);
