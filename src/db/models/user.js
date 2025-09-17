@@ -7,7 +7,11 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, match: emailRegexp, required: true, unique: true },
     password: { type: String, required: true },
-    avatar: { type: String, default: '' },
+    avatar: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
+    },
     bio: { type: String, required: false },
     onboardingCompleted: { type: Boolean, default: false },
     savedStories: [{ type: Schema.Types.ObjectId, ref: 'stories' }],

@@ -30,6 +30,11 @@ const storiesSchema = new Schema(
       ref: 'user',
       required: true,
     },
+    photo: {
+      type: String,
+      default:
+        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
+    },
     date: {
       type: String,
       default: () => {
