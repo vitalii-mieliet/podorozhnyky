@@ -2,6 +2,7 @@ import express, { application } from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import router from './routers/index.js';
+import authRouter from './routers/auth.js';
 import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -32,6 +33,7 @@ export const startServer = () => {
   );
 
   app.use(router);
+  app.use('/api/auth', authRouter);
 
   app.use('', notFoundHandler);
 
