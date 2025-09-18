@@ -123,9 +123,22 @@ export const sendResetToken = async (email) => {
   );
 
   const template = handlebars.compile(resetTemplateSource);
+
+  const logoCid = 'plantains-app-logo'; // NEW
+  const supportEmail = getEnvVar(SMTP.SMTP_FROM); // NEW – можна використати ту ж адресу, що й from
+  const year = new Date().getFullYear(); // NEW
+  // NEW: шлях до PNG-лого для вкладення (поклади файл сюди)
+  // Напр., створити: src/templates/assets/logo.png
+  const logoPath = path.join(TEMPLATES_DIR, 'assets', 'plant_logo.png'); // NEW
+
   const html = template({
     name: user.name,
     resetLink: `${appDomain}/reset-password?token=${resetToken}`,
+    // NEW: передаємо додаткові змінні у шаблон
+    logoCid, // NEW
+    supportEmail, // NEW
+    year, // NEW
+    appName: 'Подорожники', // NEW (якщо захочеш відмалювати в шаблоні)
   });
 
   await sendEmail({
@@ -133,6 +146,14 @@ export const sendResetToken = async (email) => {
     to: email,
     subject: 'Reset your password',
     html,
+    // NEW: додаємо логотип як CID-вкладення
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: logoPath,
+        cid: logoCid, // має збігатися з {{logoCid}} у шаблоні
+      },
+    ],
   });
 };
 
