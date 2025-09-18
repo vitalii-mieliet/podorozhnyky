@@ -1,4 +1,5 @@
 import createHttpError from 'http-errors';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'node:crypto';
 import {
@@ -7,6 +8,8 @@ import {
 } from '../constants/auth.js';
 import { SessionsCollection } from '../db/models/session.js';
 import { UserCollection } from '../db/models/user.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { sendEmail } from '../utils/sendEmail.js';
 
 const createSession = () => ({
   accessToken: randomBytes(30).toString('base64'),
@@ -17,6 +20,8 @@ const createSession = () => ({
 
 export const findSession = (query) => SessionsCollection.findOne(query);
 export const findUser = (query) => UserCollection.findOne(query);
+
+const jwtSecret = getEnvVar('JWT_SECRET');
 
 export const registerUser = async (data) => {
   const { email, password } = data;
@@ -90,5 +95,21 @@ export const sendResetToken = async (email) => {
     throw createHttpError(404, 'User not found');
   }
 
-  //доповнимо її трохи пізніше
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    jwtSecret,
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  await sendEmail({
+    from: getEnvVar(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+  });
 };
