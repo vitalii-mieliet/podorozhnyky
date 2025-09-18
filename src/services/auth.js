@@ -14,7 +14,7 @@ import { SessionsCollection } from '../db/models/session.js';
 import { UserCollection } from '../db/models/user.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendEmail.js';
-import { TEMPLATES_DIR } from '../constants/index.js';
+import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 
 const createSession = () => ({
   accessToken: randomBytes(30).toString('base64'),
