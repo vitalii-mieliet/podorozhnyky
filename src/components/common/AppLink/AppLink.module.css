@@ -1,0 +1,124 @@
+:root {
+  --bp-mobile: 375px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1440px;
+}
+
+/* ========== Base ========== */
+.link {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
+  color: var(--color-neutral-darkest);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 0 8px;
+  width: 50px;
+  height: 27px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* ========== States ========== */
+.link:hover,
+.link:focus-visible {
+  border: 1px solid var(--color-scheme-1-text);
+  outline: none;
+}
+
+.link:active {
+  border: 1px solid var(--color-scheme-1-text);
+}
+
+.link:disabled,
+.link[aria-disabled='true'] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ========== Variants ========== */
+.contained {
+  background-color: var(--color-royal-blue);
+  color: var(--color-white);
+}
+
+.contained:hover,
+.contained:focus-visible {
+  background-color: var(--color-royal-blue-dark);
+}
+
+.outlined {
+  border: 1px solid var(--color-royal-blue);
+  background-color: transparent;
+  color: var(--color-royal-blue);
+}
+
+.outlined:hover,
+.outlined:focus-visible {
+  border-color: var(--color-royal-blue-dark);
+  color: var(--color-royal-blue-dark);
+}
+
+/* ========== Colors ========== */
+
+.secondary {
+  color: var(--color-neutral-darkest);
+  border-color: var(--color-neutral-darkest);
+}
+
+.secondary.contained {
+  background-color: var(--color-neutral-lightest);
+  color: var(--color-neutral-darkest);
+}
+
+.secondary.outlined {
+  border-color: var(--color-neutral-darkest);
+}
+
+/* ========== Sizes ========== */
+.sm {
+  width: 40px;
+  height: 24px;
+  font-size: 14px;
+}
+
+.md {
+  width: 50px;
+  height: 27px;
+  font-size: 18px;
+}
+
+.lg {
+  width: 64px;
+  height: 32px;
+  font-size: 20px;
+}
+
+@media (min-width: var(--bp-tablet)) {
+  .sm {
+    font-size: 15px;
+  }
+
+  .md {
+    font-size: 18px;
+  }
+
+  .lg {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: var(--bp-desktop)) {
+  .link {
+    border: 1px solid var(--color-scheme-2-border);
+    padding: 4px 10px;
+    width: 58px;
+    height: 35px;
+  }
+}
