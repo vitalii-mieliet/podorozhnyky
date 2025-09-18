@@ -1,0 +1,40 @@
+.textareaWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--opacity-neutral-darkest-15);
+  transition: border-color 0.2s ease-in-out;
+  height: 180px;
+  resize: none;
+  overflow-y: hidden;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-royal-blue);
+}
+
+.textarea::placeholder {
+  color: var(--opacity-neutral-darkest-60);
+}
+
+.textareaError {
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.textareaError:focus {
+  border-color: var(--color-red);
+}
+
+.errorMessage {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--color-red);
+}
