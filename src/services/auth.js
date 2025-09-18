@@ -1,12 +1,20 @@
 import createHttpError from 'http-errors';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { randomBytes } from 'node:crypto';
+import path from 'node:path';
+import { readFile } from 'node:fs/promises';
+import handlebars from 'handlebars';
+
 import {
   accessTokenLifeTime,
   refreshTokenLifeTime,
 } from '../constants/auth.js';
 import { SessionsCollection } from '../db/models/session.js';
 import { UserCollection } from '../db/models/user.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { sendEmail } from '../utils/sendEmail.js';
+import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 
 const createSession = () => ({
   accessToken: randomBytes(30).toString('base64'),
@@ -17,6 +25,9 @@ const createSession = () => ({
 
 export const findSession = (query) => SessionsCollection.findOne(query);
 export const findUser = (query) => UserCollection.findOne(query);
+
+const jwtSecret = getEnvVar('JWT_SECRET');
+const appDomain = getEnvVar('APP_DOMAIN');
 
 export const registerUser = async (data) => {
   const { email, password } = data;
@@ -82,4 +93,92 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
 
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
+};
+
+export const sendResetToken = async (email) => {
+  const user = await UserCollection.findOne({ email });
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const resetToken = jwt.sign(
+    {
+      sub: user._id,
+      email,
+    },
+    jwtSecret,
+    {
+      expiresIn: '15m',
+    },
+  );
+
+  const resetPasswordTemplatePath = path.join(
+    TEMPLATES_DIR,
+    'reset-password-email.html',
+  );
+
+  const resetTemplateSource = await readFile(
+    resetPasswordTemplatePath,
+    'utf-8',
+  );
+
+  const template = handlebars.compile(resetTemplateSource);
+
+  const logoCid = 'plantains-app-logo'; // NEW
+  const supportEmail = getEnvVar(SMTP.SMTP_FROM); // NEW – можна використати ту ж адресу, що й from
+  const year = new Date().getFullYear(); // NEW
+  // NEW: шлях до PNG-лого для вкладення (поклади файл сюди)
+  // Напр., створити: src/templates/assets/logo.png
+  const logoPath = path.join(TEMPLATES_DIR, 'assets', 'plant_logo.png'); // NEW
+
+  const html = template({
+    name: user.name,
+    resetLink: `${appDomain}/reset-password?token=${resetToken}`,
+    // NEW: передаємо додаткові змінні у шаблон
+    logoCid, // NEW
+    supportEmail, // NEW
+    year, // NEW
+    appName: 'Подорожники', // NEW (якщо захочеш відмалювати в шаблоні)
+  });
+
+  await sendEmail({
+    from: getEnvVar(SMTP.SMTP_FROM),
+    to: email,
+    subject: 'Reset your password',
+    html,
+    // NEW: додаємо логотип як CID-вкладення
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: logoPath,
+        cid: logoCid, // має збігатися з {{logoCid}} у шаблоні
+      },
+    ],
+  });
+};
+
+export const resetPassword = async (payload) => {
+  let entries;
+  try {
+    entries = jwt.verify(payload.token, jwtSecret);
+  } catch (error) {
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
+  }
+
+  const user = UserCollection.findOne({
+    email: entries.email,
+    _id: entries.sub,
+  });
+
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+
+  await UserCollection.updateOne(
+    { _id: user._id },
+    { password: encryptedPassword },
+  );
 };
