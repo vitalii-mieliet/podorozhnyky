@@ -1,12 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  stories: {}
-  travelers: {}
-};
+const initialState = {};
 
 const filterSlice = createSlice({
-  name: filter,
+  name: 'filter',
   initialState,
   reducers: {},
 });

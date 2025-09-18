@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {};
 
 const travelersSlice = createSlice({
-  name: travelers,
+  name: 'travelers',
   initialState,
   reducers: {},
 });
