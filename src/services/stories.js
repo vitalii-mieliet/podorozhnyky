@@ -31,6 +31,10 @@ export const getStories = async (
   return { data: stories, ...paginationData };
 };
 
+export const getStory = async (id) => {
+  return StoriesCollection.findById(id);
+};
+
 export const getAuthors = async (
   page = 1,
   perPage = 10,
@@ -50,4 +54,8 @@ export const getAuthors = async (
   const paginationData = calculatePaginationData(authorsCount, perPage, page);
 
   return { data: authors, ...paginationData };
+};
+
+export const getAuthor = async (id) => {
+  return UserCollection.findById(id, 'name avatar');
 };
