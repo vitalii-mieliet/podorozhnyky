@@ -11,6 +11,7 @@ import {
   getStory,
   getAuthors,
   getAuthor,
+  getStoriesByAuthorId,
 } from '../services/stories.js';
 
 export const getStoriesController = async (req, res, next) => {
@@ -43,7 +44,7 @@ export const getStoryById = async (req, res, next) => {
 
     res.json({
       status: 200,
-      message: `Successfully found story by id ${id}`,
+      message: 'Successfully found story!',
       data,
     });
   } catch (error) {
@@ -79,7 +80,24 @@ export const getAuthorByIdController = async (req, res, next) => {
 
     res.json({
       status: 200,
-      message: `Successfully found author by id ${id}`,
+      message: 'Successfully found author!',
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getStoriesByAuthorIdConntroller = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { page, perPage } = parsePaginationParams(req.query);
+
+    const data = await getStoriesByAuthorId(id, page, perPage);
+
+    res.json({
+      status: 200,
+      message: 'Successfully found stories!',
       data,
     });
   } catch (error) {

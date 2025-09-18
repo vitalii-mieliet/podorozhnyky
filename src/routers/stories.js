@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   getAuthorByIdController,
   getStoriesAuthorsController,
+  getStoriesByAuthorIdConntroller,
   getStoriesController,
   getStoryById,
 } from '../controllers/stories.js';
@@ -12,7 +13,13 @@ const storyRouter = Router();
 
 storyRouter.get('/', ctrlWrapper(getStoriesController));
 
-storyRouter.get('/:id', isValidId, ctrlWrapper(getStoryById));
+storyRouter.get('/story/:id', isValidId, ctrlWrapper(getStoryById));
+
+storyRouter.get(
+  '/byauthor/:id',
+  isValidId,
+  ctrlWrapper(getStoriesByAuthorIdConntroller),
+);
 
 storyRouter.get('/authors', ctrlWrapper(getStoriesAuthorsController));
 
