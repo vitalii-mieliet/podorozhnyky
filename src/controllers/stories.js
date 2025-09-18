@@ -1,8 +1,11 @@
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
-import { STORY_SORT_FIELDS } from '../constants/validation.js';
+import {
+  AUTHORS_SORT_FILEDS,
+  STORY_SORT_FIELDS,
+} from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
-import { getStories } from '../services/stories.js';
+import { getAuthors, getStories } from '../services/stories.js';
 
 export const getStoriesController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -15,6 +18,22 @@ export const getStoriesController = async (req, res, next) => {
     res.json({
       status: 200,
       message: 'Successfully found stories!',
+      data,
+    });
+  } catch (error) {
+    next(err);
+  }
+};
+
+export const getStoriesAuthorsController = async (req, res, next) => {
+  const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query, AUTHORS_SORT_FILEDS);
+  try {
+    const data = await getAuthors(page, perPage, sortBy, sortOrder);
+
+    res.json({
+      status: 200,
+      message: 'Successfully found authors!',
       data,
     });
   } catch (error) {

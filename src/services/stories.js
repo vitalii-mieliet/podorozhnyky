@@ -1,5 +1,6 @@
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { StoriesCollection } from '../db/models/story.js';
+import { UserCollection } from '../db/models/user.js';
 
 export const getStories = async (
   page = 1,
@@ -28,4 +29,25 @@ export const getStories = async (
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
   return { data: stories, ...paginationData };
+};
+
+export const getAuthors = async (
+  page = 1,
+  perPage = 10,
+  sortBy = 'name',
+  sortOrder = 'asc',
+) => {
+  const skip = (page - 1) * perPage;
+
+  const authorsQuery = await UserCollection.find({}, 'name avatar')
+    .skip(skip)
+    .limit(perPage)
+    .sort({ [sortBy]: sortOrder });
+
+  const authorsCount = await UserCollection.countDocuments();
+  const authors = await authorsQuery;
+
+  const paginationData = calculatePaginationData(authorsCount, perPage, page);
+
+  return { data: authors, ...paginationData };
 };
