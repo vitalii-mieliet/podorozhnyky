@@ -7,39 +7,32 @@ import {
   getStoriesController,
   getStoryById,
 } from '../controllers/stories.js';
-import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { upload } from '../middlewares/multer.js';
-import { authenticate } from '../middlewares/authenticate.js';
-import { validateBody } from '../middlewares/validateBody.js';
 import { createStorySchema } from '../validation/stories.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 import { isValidId } from '../middlewares/isValidId.js';
 
 const storyRouter = Router();
 
-storyRouter.get('/', ctrlWrapper(getStoriesController));
+storyRouter.get('/', getStoriesController);
+
+storyRouter.get('/story/:id', isValidId, getStoryById);
 
 storyRouter.post(
   '/',
   authenticate,
   upload.single('photo'),
   validateBody(createStorySchema),
-  ctrlWrapper(addStoryController),
+  addStoryController,
 );
 
-storyRouter.get('/story/:id', isValidId, ctrlWrapper(getStoryById));
+storyRouter.get('/story/:id', isValidId, getStoryById);
 
-storyRouter.get(
-  '/byauthor/:id',
-  isValidId,
-  ctrlWrapper(getStoriesByAuthorIdConntroller),
-);
+storyRouter.get('/byauthor/:id', isValidId, getStoriesByAuthorIdConntroller);
 
-storyRouter.get('/authors', ctrlWrapper(getStoriesAuthorsController));
+storyRouter.get('/authors', getStoriesAuthorsController);
 
-storyRouter.get(
-  '/authors/:id',
-  isValidId,
-  ctrlWrapper(getAuthorByIdController),
-);
+storyRouter.get('/authors/:id', isValidId, getAuthorByIdController);
 
 export default storyRouter;
