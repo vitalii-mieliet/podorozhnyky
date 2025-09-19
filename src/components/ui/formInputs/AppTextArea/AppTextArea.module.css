@@ -9,7 +9,8 @@
   font-size: 16px;
   border-radius: 8px;
   border: 1px solid var(--opacity-neutral-darkest-15);
-  transition: border-color 0.2s ease-in-out;
+  background-color: var(--opacity-white-60);
+  transition: border-color var(--transition-base);
   height: 180px;
   resize: none;
   overflow-y: hidden;

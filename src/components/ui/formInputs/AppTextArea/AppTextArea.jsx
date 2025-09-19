@@ -7,6 +7,7 @@ const AppTextArea = ({
   error,
   errorMessage,
   className,
+  onChange,
   ...props
 }) => {
   const textareaClasses = clsx(
@@ -21,6 +22,7 @@ const AppTextArea = ({
         className={textareaClasses}
         placeholder={placeholder}
         value={value}
+        onChange={onChange}
         {...props}
       />
       {error && errorMessage && (

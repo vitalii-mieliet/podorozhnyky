@@ -8,6 +8,7 @@ const AppTextInput = ({
   errorMessage,
   className,
   type = 'text',
+  onChange,
   ...props
 }) => {
   const inputClasses = clsx(
@@ -25,6 +26,7 @@ const AppTextInput = ({
         className={inputClasses}
         placeholder={placeholder}
         value={value}
+        onChange={onChange}
         {...props}
       />
       {error && errorMessage && (

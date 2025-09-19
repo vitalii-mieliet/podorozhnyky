@@ -10,11 +10,12 @@
   border-radius: 8px;
   border: 1px solid var(--opacity-neutral-darkest-15);
   color: var(--color-neutral-dark);
+  background-color: var(--opacity-white-60);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: border-color 0.2s ease-in-out;
+  transition: border-color var(--transition-base);
 
   &:hover,
   &.selectOpen {
@@ -35,7 +36,7 @@
   width: 24px;
   height: 24px;
   margin-left: 10px;
-  transition: transform 0.2s ease-in-out;
+  transition: transform var(--transition-base);
 }
 
 .selectOpen .arrow {
@@ -53,6 +54,7 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   border: 1px solid var(--color-royal-blue-light);
+  background-color: var(--opacity-white-60);
   border-top: none;
   z-index: 10;
 }
@@ -74,6 +76,10 @@
 }
 
 .selectedOption {
+  background-color: var(--color-neutral-lightest);
+}
+
+.highlighted {
   background-color: var(--color-neutral-lightest);
 }
 
