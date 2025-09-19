@@ -2,33 +2,29 @@
  * Компонент Section — обгортка для секцій сторінки з базовими вертикальними падінгами.
  *
  * За замовчуванням застосовує padding: 64px 0 (72px на екранах ≥1440px),
- * але дозволяє перевизначати верхній (`pt`) і нижній (`pb`) падінги через пропси.
+ * але дозволяє повністю перевизначити стилі через className.
  *
  * @param {object} props - Властивості компонента
  * @param {React.ReactNode} props.children - Вміст секції
  * @param {string} [props.className] - Додаткові CSS класи
- * @param {number} [props.pt] - Верхній падінг (у px), повинен відповідати класу .pt-{значення}
- * @param {number} [props.pb] - Нижній падінг (у px), повинен відповідати класу .pb-{значення}
  * 
- * example how to use custom paddings:
- *     <Section pt={32} pb={16}>
-      <h2>Про нас</h2>
-      <p>Ця секція має менші падінги: 32px зверху і 16px знизу.</p>
-    </Section>
+ !!!!!!!!* How to Use in JSX *!!!!!!!
+<Section className="pt-32 pt-md-64 pb-64 pb-lg-124">
+  ...
+</Section>
+Meaning:
+Mobile: padding-top: 32px, padding-bottom: 64px
+Tablet (768px+): padding-top: 64px
+Desktop (1440px+): padding-bottom: 124px
  */
 
 import css from './Section.module.css';
 import clsx from 'clsx';
 
-const Section = ({ children, className, pt, pb }) => {
-  const sectionClass = clsx(
-    css.section,
-    pt && css[`pt-${pt}`],
-    pb && css[`pb-${pb}`],
-    className
-  );
+const Section = ({ children, className }) => {
+  const sectionClass = clsx(css.section, className);
 
-  return <div className={sectionClass}>{children}</div>;
+  return <section className={sectionClass}>{children}</section>;
 };
 
 export default Section;
