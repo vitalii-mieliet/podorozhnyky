@@ -17,6 +17,11 @@ export const getStories = async (
     storiesQuery.where('category').equals(filters.category);
   }
 
+  storiesQuery.populate({
+    path: 'ownerId',
+    select: 'name avatar',
+  });
+
   const [storiesCount, stories] = await Promise.all([
     StoriesCollection.find().merge(storiesQuery).countDocuments(),
 
@@ -26,9 +31,16 @@ export const getStories = async (
       .sort({ [sortBy]: sortOrder }),
   ]);
 
+  const modifiedStories = stories.map((story) => {
+    const obj = story.toObject();
+    obj.owner = obj.ownerId;
+    delete obj.ownerId;
+    return obj;
+  });
+
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
-  return { data: stories, ...paginationData };
+  return { data: modifiedStories, ...paginationData };
 };
 
 export const getStory = async (id) => {
@@ -65,6 +77,11 @@ export const getStoriesByAuthorId = async (ownerId, page = 1, perPage = 10) => {
 
   const storiesQuery = StoriesCollection.find({ ownerId });
 
+  storiesQuery.populate({
+    path: 'ownerId',
+    select: 'name avatar',
+  });
+
   const [storiesCount, stories] = await Promise.all([
     StoriesCollection.find({ ownerId }).countDocuments(),
     storiesQuery.skip(skip).limit(perPage),
@@ -72,5 +89,12 @@ export const getStoriesByAuthorId = async (ownerId, page = 1, perPage = 10) => {
 
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
-  return { data: stories, ...paginationData };
+  const modifiedStories = stories.map((story) => {
+    const obj = story.toObject();
+    obj.owner = obj.ownerId;
+    delete obj.ownerId;
+    return obj;
+  });
+
+  return { data: modifiedStories, ...paginationData };
 };

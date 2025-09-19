@@ -14,93 +14,74 @@ import {
   getStoriesByAuthorId,
 } from '../services/stories.js';
 
-export const getStoriesController = async (req, res, next) => {
+export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, STORY_SORT_FIELDS);
   const filters = parseFilters(req.query);
 
-  try {
-    const data = await getStories(page, perPage, sortBy, sortOrder, filters);
+  const data = await getStories(page, perPage, sortBy, sortOrder, filters);
 
-    res.json({
-      status: 200,
-      message: 'Successfully found stories!',
-      data,
-    });
-  } catch (error) {
-    next(error);
-  }
+  res.json({
+    status: 200,
+    message: 'Successfully found stories!',
+    data,
+  });
 };
 
-export const getStoryById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+export const getStoryById = async (req, res) => {
+  const { id } = req.params;
 
-    const data = await getStory(id);
+  const data = await getStory(id);
 
-    if (!data) {
-      throw createHttpError(404, 'Story not found');
-    }
-
-    res.json({
-      status: 200,
-      message: 'Successfully found story!',
-      data,
-    });
-  } catch (error) {
-    next(error);
+  if (!data) {
+    throw createHttpError(404, 'Story not found');
   }
+
+  res.json({
+    status: 200,
+    message: 'Successfully found story!',
+    data,
+  });
 };
 
-export const getStoriesAuthorsController = async (req, res, next) => {
+export const getStoriesAuthorsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query, AUTHORS_SORT_FILEDS);
-  try {
-    const data = await getAuthors(page, perPage, sortBy, sortOrder);
 
-    res.json({
-      status: 200,
-      message: 'Successfully found authors!',
-      data,
-    });
-  } catch (error) {
-    next(error);
-  }
+  const data = await getAuthors(page, perPage, sortBy, sortOrder);
+
+  res.json({
+    status: 200,
+    message: 'Successfully found authors!',
+    data,
+  });
 };
 
-export const getAuthorByIdController = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+export const getAuthorByIdController = async (req, res) => {
+  const { id } = req.params;
 
-    const data = await getAuthor(id);
+  const data = await getAuthor(id);
 
-    if (!data) {
-      throw createHttpError(404, 'User not found');
-    }
-
-    res.json({
-      status: 200,
-      message: 'Successfully found author!',
-      data,
-    });
-  } catch (error) {
-    next(error);
+  if (!data) {
+    throw createHttpError(404, 'User not found');
   }
+
+  res.json({
+    status: 200,
+    message: 'Successfully found author!',
+    data,
+  });
 };
 
-export const getStoriesByAuthorIdConntroller = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { page, perPage } = parsePaginationParams(req.query);
+export const getStoriesByAuthorIdConntroller = async (req, res) => {
+  const { id } = req.params;
+  const { page, perPage } = parsePaginationParams(req.query);
 
-    const data = await getStoriesByAuthorId(id, page, perPage);
+  const data = await getStoriesByAuthorId(id, page, perPage);
 
-    res.json({
-      status: 200,
-      message: 'Successfully found stories!',
-      data,
-    });
-  } catch (error) {
-    next(error);
-  }
+  res.json({
+    status: 200,
+    message: 'Successfully found stories!',
+    data,
+  });
 };

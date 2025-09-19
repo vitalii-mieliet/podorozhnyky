@@ -1,15 +1,11 @@
 import { getUserInfoService } from '../services/users.js';
 
-export const getUserInfoController = async (req, res, next) => {
-  try {
-    const data = await getUserInfoService(req.user);
+export const getUserInfoController = async (req, res) => {
+  const data = await getUserInfoService(req.user);
 
-    res.json({
-      status: 200,
-      message: 'User information found',
-      data,
-    });
-  } catch (error) {
-    next(err);
-  }
+  res.json({
+    status: 200,
+    message: 'User information found',
+    data,
+  });
 };
