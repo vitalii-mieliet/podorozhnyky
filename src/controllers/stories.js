@@ -34,23 +34,23 @@ export const addStoryController = async (req, res) => {
   const { title, article, category } = req.body;
   const { _id } = req.user;
   const photo = req.file;
+  let photoUrl;
 
-  if (!photo) throw createHttpError(400, 'Photo is required');
+  if (photo)
+    try {
+      photoUrl = await saveFileToCloudinary(photo);
+    } catch {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
+    }
 
   // upload to Cloudinary
-  let photoUrl;
-  try {
-    photoUrl = await saveFileToCloudinary(photo);
-  } catch {
-    throw createHttpError(500, 'Failed to upload photo to cloud storage');
-  }
 
   //new Story
   const newStory = await StoriesCollection.create({
     title,
     article,
     category,
-    photo: photoUrl,
+    img: photoUrl,
     ownerId: _id,
   });
 

@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
-import { handleSaveError, setUpdateSetting } from '../hooks.js';
 
 const storiesSchema = new Schema(
   {
     img: {
       type: String,
-      default: null,
+      default:
+        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
     },
     title: {
       type: String,
@@ -23,18 +23,14 @@ const storiesSchema = new Schema(
     },
     rate: {
       type: Number,
-      required: false,
+      default: 0,
     },
     ownerId: {
       type: Schema.Types.ObjectId,
       ref: 'user',
       required: true,
     },
-    photo: {
-      type: String,
-      default:
-        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
-    },
+
     date: {
       type: String,
       default: () => {
@@ -45,11 +41,5 @@ const storiesSchema = new Schema(
   },
   { timestamps: true, versionKey: false },
 );
-
-storiesSchema.post('save', handleSaveError);
-
-storiesSchema.pre('findOneAndUpdate', setUpdateSetting);
-
-storiesSchema.post('findOneAndUpdate', handleSaveError);
 
 export const StoriesCollection = model('stories', storiesSchema);
