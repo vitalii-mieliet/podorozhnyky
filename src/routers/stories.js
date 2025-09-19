@@ -6,6 +6,8 @@ import {
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { upload } from '../middlewares/multer.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import { createStorySchema } from '../validation/stories.js';
 
 const storyRouter = Router();
 
@@ -15,6 +17,7 @@ storyRouter.post(
   '/',
   authenticate,
   upload.single('photo'),
+  validateBody(createStorySchema),
   ctrlWrapper(addStoryController),
 );
 

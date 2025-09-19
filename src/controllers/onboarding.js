@@ -3,7 +3,7 @@
 import { updateUserById } from '../services/users.js';
 
 export const onboardingController = async (req, res) => {
-  const userId = req.user_id || '68cb1a7465ec501c0ff95094';
+  const userId = req.user_id;
   const data = { ...req.body, onboardingCompleted: true };
   const updatedUser = await updateUserById(userId, data);
 

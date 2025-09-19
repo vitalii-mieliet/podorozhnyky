@@ -2,6 +2,7 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { getStories } from '../services/stories.js';
 import { StoriesCollection } from '../db/models/story.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import createHttpError from 'http-errors';
 
 export const getStoriesController = async (req, res, next) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -25,28 +26,16 @@ export const addStoryController = async (req, res, next) => {
   try {
     const { title, article, category } = req.body;
     const { _id } = req.user;
-    console.log(_id);
-
     const photo = req.file;
 
-    //validation
-    if (!title) return res.status(400).json({ message: 'title is required' });
-
-    if (!article || article.length < 20)
-      return res
-        .status(400)
-        .json({ message: 'Article must be at list 20 characters' });
-
-    if (!photo) return res.status(400).json({ message: 'Photo is required' });
+    if (!photo) throw createHttpError(400, 'Photo is required');
 
     // upload to Cloudinary
     let photoUrl;
     try {
       photoUrl = await saveFileToCloudinary(photo);
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ message: 'Failed to upload photo to cloud storage' });
+    } catch {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
     }
 
     //new Story
@@ -58,7 +47,11 @@ export const addStoryController = async (req, res, next) => {
       ownerId: _id,
     });
 
-    res.status(201).json(newStory);
+    res.status(201).json({
+      status: 201,
+      message: 'Story successfully created!',
+      data: newStory,
+    });
   } catch (error) {
     next(error);
   }
