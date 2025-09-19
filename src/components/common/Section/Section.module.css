@@ -1,11 +1,75 @@
-@media screen and (min-width: 375px) {
-  .section {
-    padding: 64px 0 64px 0;
-  }
+.section {
+  padding: 64px 0;
 }
 
 @media screen and (min-width: 1440px) {
   .section {
-    padding: 72px 0 72px 0;
+    padding: 72px 0;
   }
+}
+
+/* Динамічні padding-top класи */
+.pt-0 {
+  padding-top: 0;
+}
+.pt-16 {
+  padding-top: 16px;
+}
+.pt-32 {
+  padding-top: 32px;
+}
+.pt-48 {
+  padding-top: 48px;
+}
+.pt-64 {
+  padding-top: 64px;
+}
+.pt-72 {
+  padding-top: 72px;
+}
+.pt-80 {
+  padding-top: 80px;
+}
+.pt-124 {
+  padding-top: 124px;
+}
+.pt-172 {
+  padding-top: 172px;
+}
+/* Динамічні padding-bottom класи */
+.pb-0 {
+  padding-bottom: 0;
+}
+.pb-16 {
+  padding-bottom: 16px;
+}
+.pb-32 {
+  padding-bottom: 32px;
+}
+.pb-48 {
+  padding-bottom: 48px;
+}
+.pb-64 {
+  padding-bottom: 64px;
+}
+.pb-72 {
+  padding-bottom: 72px;
+}
+.pt-80 {
+  padding-bottom: 80px;
+}
+.pb-111 {
+  padding-bottom: 111px;
+}
+.pb-117 {
+  padding-bottom: 117px;
+}
+.pb-213 {
+  padding-bottom: 213px;
+}
+.pb-331 {
+  padding-bottom: 331px;
+}
+.pb-347 {
+  padding-bottom: 347px;
 }
