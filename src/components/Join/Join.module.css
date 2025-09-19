@@ -14,11 +14,7 @@
 }
 
 .title {
-  font-family: var(--second-family);
-  font-weight: 700;
   font-size: 26px;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
   color: var(--color-white);
   margin-bottom: 16px;
 }
