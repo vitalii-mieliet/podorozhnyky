@@ -22,13 +22,11 @@
   background: var(--color-royal-blue-lighter);
   color: var(--color-scheme-2-text);
   cursor: pointer;
-
-  transition: background-color 300ms ease-in-out;
+  transition: background-color var(--transition-base);
 }
 
 .blue:active {
   background: var(--color-royal-blue-light);
-  transition: background-color 300ms ease-in-out;
 }
 
 .blue:disabled {
@@ -71,7 +69,7 @@
   color: var(--color-neutral-darkest);
 }
 
-/* /////////////////////// */
+/* /////////////////////////////// */
 
 /* DARK THEMA*/
 
