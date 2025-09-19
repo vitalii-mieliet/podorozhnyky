@@ -1,19 +1,33 @@
-/* blue button */
+/* shared */
 
-.blue {
-  border: 1px solid var(--color-royal-blue);
+.base {
+  display: inline-block;
   border-radius: 8px;
-  width: 80px;
-  height: 48px;
-  display: grid;
-  place-items: center;
+
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 3px;
 
   font-family: var(--font-family);
   font-weight: 500;
   font-size: 18px;
-  line-height: 150%;
-  color: var(--color-white);
 
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* blue  */
+
+.blue {
+  border: 1px solid var(--color-royal-blue);
+  color: var(--color-white);
   background: var(--color-royal-blue);
 }
 
@@ -21,7 +35,7 @@
 .blue:focus {
   background: var(--color-royal-blue-lighter);
   color: var(--color-scheme-2-text);
-  cursor: pointer;
+
   transition: background-color var(--transition-base);
 }
 
@@ -31,7 +45,6 @@
 
 .blue:disabled {
   background: var(--color-royal-blue);
-  opacity: 0.3;
 }
 
 .blue:disabled:hover,
@@ -61,7 +74,6 @@
 .grey:disabled {
   border: 1px solid var(--opacity-transparent);
   background: var(--opacity-neutral-darkest-5);
-  opacity: 0.3;
 }
 
 .grey:disabled:hover,
@@ -94,7 +106,6 @@
   border: 1px solid #4c4c4c;
   background-color: #4c4c4c;
   color: var(--color-neutral-darkest);
-  opacity: 0.3;
 }
 
 .dark:disabled:hover,
@@ -125,6 +136,5 @@
 .black:disabled {
   border: 1px solid var(--opacity-transparent);
   background: var(--opacity-white-10);
-  opacity: 0.3;
   color: var(--color-white);
 }

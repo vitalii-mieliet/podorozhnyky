@@ -3,17 +3,41 @@ import clsx from 'clsx';
 
 import s from './AppButton.module.css';
 
-function AppButton({ children, width, height, disabled, variant = 'blue' }) {
+const AppButton = ({
+  children,
+  width,
+  height,
+  disabled,
+  variant = 'blue',
+  type = 'button',
+  href,
+  ...rest
+}) => {
+  const commonProps = {
+    className: clsx(s.base, s[variant]),
+    style: { width, height },
+    ...rest,
+  };
+
+  if (href && !disabled) {
+    return (
+      <a href={href} {...commonProps}>
+        {children}
+      </a>
+    );
+  }
+
   return (
     <button
-      className={clsx(s.blue, s[variant])}
+      className={clsx(s.base, s[variant])}
       style={{ width, height }}
       disabled={disabled}
-      tabIndex={0}
+      type={type}
+      {...rest}
     >
       {children}
     </button>
   );
-}
+};
 
 export default AppButton;
