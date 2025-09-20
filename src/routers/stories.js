@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import {
   addStoryController,
+  deleteStoryByIdController,
   getAuthorByIdController,
   getStoriesAuthorsController,
-  getStoriesByAuthorIdConntroller,
+  getStoriesByAuthorIdController,
   getStoriesController,
   getStoryById,
 } from '../controllers/stories.js';
@@ -27,9 +28,11 @@ storyRouter.post(
   addStoryController,
 );
 
+storyRouter.delete('/:id', authenticate, isValidId, deleteStoryByIdController);
+
 storyRouter.get('/story/:id', isValidId, getStoryById);
 
-storyRouter.get('/byauthor/:id', isValidId, getStoriesByAuthorIdConntroller);
+storyRouter.get('/byauthor/:id', isValidId, getStoriesByAuthorIdController);
 
 storyRouter.get('/authors', getStoriesAuthorsController);
 

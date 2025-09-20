@@ -1,7 +1,8 @@
 import createHttpError from 'http-errors';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { SavedArticleCollection } from '../db/models/savedArticle.js';
 import { StoriesCollection } from '../db/models/story.js';
 import { UserCollection } from '../db/models/user.js';
-import { SavedArticleCollection } from '../db/models/savedArticle.js';
 
 export const getUserInfoService = async (query) => {
   return UserCollection.findOne(query);
@@ -62,9 +63,41 @@ export const unsaveArticle = async (userId, storyId) => {
   );
 };
 
-export const getSavedArticles = async (userId) => {
-  const user = await UserCollection.findById(userId).populate('savedStories');
-  if (!user) throw createHttpError(404, 'User not found');
+export const getSavedArticles = async (
+  userId,
+  page = 1,
+  perPage = 10,
+  sortBy,
+  sortOrder,
+) => {
+  const skip = (page - 1) * perPage;
 
-  return user.savedStories;
+  const storiesCount = await UserCollection.findById(userId)
+    .select('savedStories')
+    .lean()
+    .then((user) => {
+      if (!user) throw createHttpError(404, 'User not found');
+      return user.savedStories.length;
+    });
+
+  const user = await UserCollection.findById(userId).populate({
+    path: 'savedStories',
+    options: { skip, limit: perPage, sort: { [sortBy]: sortOrder } },
+    populate: {
+      path: 'ownerId',
+      select: 'name avatar',
+    },
+  });
+
+  const stories = user.savedStories;
+  const paginationData = calculatePaginationData(storiesCount, perPage, page);
+
+  const modifiedStories = stories.map((story) => {
+    const obj = story.toObject();
+    obj.owner = obj.ownerId;
+    delete obj.ownerId;
+    return obj;
+  });
+
+  return { data: modifiedStories, ...paginationData };
 };

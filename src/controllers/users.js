@@ -4,7 +4,9 @@ import {
   saveArticle,
   unsaveArticle,
 } from '../services/users.js';
-
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { STORY_SORT_FIELDS } from '../constants/validation.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 import { updateUserById } from '../services/users.js';
 
 export const onboardingController = async (req, res) => {
@@ -56,11 +58,20 @@ export const deleteUserArticleController = async (req, res) => {
 
 export const getUserAllSavedArticle = async (req, res) => {
   const userId = req.user._id;
-  const savedStories = await getSavedArticles(userId);
+  const { sortBy, sortOrder } = parseSortParams(req.query, STORY_SORT_FIELDS);
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  const savedStories = await getSavedArticles(
+    userId,
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+  );
 
   res.json({
     status: 200,
-    message: 'Successfully ',
+    message: 'Successfully found saved stories',
     data: savedStories,
   });
 };

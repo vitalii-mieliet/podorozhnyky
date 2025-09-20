@@ -6,6 +6,8 @@ import {
   getAuthors,
   getAuthor,
   getStoriesByAuthorId,
+  addStory,
+  deleteStoryById,
 } from '../services/stories.js';
 import {
   AUTHORS_SORT_FILEDS,
@@ -13,8 +15,6 @@ import {
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
-import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
-import { StoriesCollection } from '../db/models/story.js';
 
 export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -31,34 +31,26 @@ export const getStoriesController = async (req, res) => {
 };
 
 export const addStoryController = async (req, res) => {
-  const { title, article, category } = req.body;
-  const { _id } = req.user;
-  const photo = req.file;
-  let photoUrl;
+  const { _id: ownerId } = req.user;
 
-  if (photo)
-    try {
-      photoUrl = await saveFileToCloudinary(photo);
-    } catch {
-      throw createHttpError(500, 'Failed to upload photo to cloud storage');
-    }
-
-  // upload to Cloudinary
-
-  //new Story
-  const newStory = await StoriesCollection.create({
-    title,
-    article,
-    category,
-    img: photoUrl,
-    ownerId: _id,
-  });
+  const data = await addStory({ ...req.body, ownerId }, req.file);
 
   res.status(201).json({
     status: 201,
     message: 'Story successfully created!',
-    data: newStory,
+    data,
   });
+};
+
+export const deleteStoryByIdController = async (req, res) => {
+  const { id } = req.params;
+
+  const data = await deleteStoryById(id);
+  if (!data) {
+    throw createHttpError(404, 'Story not found');
+  }
+
+  res.status(204).send();
 };
 
 export const getStoryById = async (req, res) => {
@@ -106,11 +98,12 @@ export const getAuthorByIdController = async (req, res) => {
   });
 };
 
-export const getStoriesByAuthorIdConntroller = async (req, res) => {
+export const getStoriesByAuthorIdController = async (req, res) => {
   const { id } = req.params;
   const { page, perPage } = parsePaginationParams(req.query);
+  const { sortBy, sortOrder } = parseSortParams(req.query, STORY_SORT_FIELDS);
 
-  const data = await getStoriesByAuthorId(id, page, perPage);
+  const data = await getStoriesByAuthorId(id, page, perPage, sortBy, sortOrder);
 
   res.json({
     status: 200,

@@ -27,6 +27,7 @@ userRouter.delete(
   authenticate,
   deleteUserArticleController,
 );
+
 userRouter.get('/save-article', authenticate, getUserAllSavedArticle);
 
 export default userRouter;
