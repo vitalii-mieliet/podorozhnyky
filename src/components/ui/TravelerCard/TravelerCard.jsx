@@ -4,17 +4,9 @@ import placeholder from '../../../assets/images/placeholder.png';
 import avatarPlaceholder from '../../../assets/icons/AvatarImage.svg';
 import bookmark from '../../../assets/icons/Bookmark.svg';
 import editIcon from '../../../assets/icons/edit.svg';
-function TravelerCard({
-  photo,
-  category,
-  title,
-  description,
-  fullName,
-  date,
-  views,
-  avatar,
-  isOwner = false,
-}) {
+function TravelerCard({ userData = {}, isOwner = false }) {
+  const { photo, category, title, description, fullName, date, views, avatar } =
+    userData;
   const [isActive, setIsActive] = useState(false); // ✅ стейт для активной иконки
 
   const img = photo ? photo : placeholder;
