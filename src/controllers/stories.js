@@ -11,14 +11,18 @@ import {
 } from '../services/stories.js';
 import {
   AUTHORS_SORT_FILEDS,
-  STORY_SORT_FIELDS,
+  STORIES_SORT_FIELDS,
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
 
 export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query, STORY_SORT_FIELDS);
+  const { sortBy, sortOrder } = parseSortParams(
+    req.query,
+    STORIES_SORT_FIELDS,
+    STORIES_SORT_FIELDS[0],
+  );
   const filters = parseFilters(req.query);
 
   const data = await getStories(page, perPage, sortBy, sortOrder, filters);
@@ -71,7 +75,11 @@ export const getStoryById = async (req, res) => {
 
 export const getStoriesAuthorsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query, AUTHORS_SORT_FILEDS);
+  const { sortBy, sortOrder } = parseSortParams(
+    req.query,
+    AUTHORS_SORT_FILEDS,
+    AUTHORS_SORT_FILEDS[0],
+  );
 
   const data = await getAuthors(page, perPage, sortBy, sortOrder);
 
@@ -101,7 +109,11 @@ export const getAuthorByIdController = async (req, res) => {
 export const getStoriesByAuthorIdController = async (req, res) => {
   const { id } = req.params;
   const { page, perPage } = parsePaginationParams(req.query);
-  const { sortBy, sortOrder } = parseSortParams(req.query, STORY_SORT_FIELDS);
+  const { sortBy, sortOrder } = parseSortParams(
+    req.query,
+    STORIES_SORT_FIELDS,
+    STORIES_SORT_FIELDS[0],
+  );
 
   const data = await getStoriesByAuthorId(id, page, perPage, sortBy, sortOrder);
 

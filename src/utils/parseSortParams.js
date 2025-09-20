@@ -1,13 +1,14 @@
-import { STORY_SORT_FIELDS } from '../constants/validation.js';
-const sortOrderList = ['asc', 'desc'];
+import { SORT_ORDER_LIST } from '../constants/validation.js';
 
-export const parseSortParams = ({ sortBy, sortOrder }, sortFields) => {
-  const parsedSortBy = sortFields.includes(sortBy)
-    ? sortBy
-    : STORY_SORT_FIELDS[0];
-  const parsedSortOrder = sortOrderList.includes(sortOrder)
+export const parseSortParams = (
+  { sortBy, sortOrder },
+  sortFields,
+  dafaultSort,
+) => {
+  const parsedSortBy = sortFields.includes(sortBy) ? sortBy : dafaultSort;
+  const parsedSortOrder = SORT_ORDER_LIST.includes(sortOrder)
     ? sortOrder
-    : sortOrderList[1];
+    : SORT_ORDER_LIST[1];
 
   return {
     sortBy: parsedSortBy,
