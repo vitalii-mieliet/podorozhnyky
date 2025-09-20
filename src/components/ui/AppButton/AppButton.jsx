@@ -3,57 +3,102 @@ import clsx from 'clsx';
 import s from './AppButton.module.css';
 
 /**
- * Універсальна кнопка, яка може бути:
- * - Звичайною кнопкою (<button>)
- * - Посиланням (<a>) — якщо передано `href`
+ * Універсальний компонент кнопки, який може рендеритись як нативна кнопка `<button>`
+ * або як посилання `<a>` залежно від переданих пропсів.
  *
- * Автоматично застосовує загальні стилі та варіант оформлення.
- *
- * @param {React.ReactNode} children      — Вміст кнопки (текст, іконка тощо)
- * @param {number|string} [width]         — Ширина кнопки (наприклад, 100 або '100%')
- * @param {number|string} [height]        — Висота кнопки
- * @param {boolean} [disabled=false]      — Якщо true — кнопка неактивна
- * @param {'blue'|'grey'|'dark'|'black'} [variant='blue'] — Стильовий варіант кнопки
- * @param {'button'|'submit'|'reset'} [type='button'] — Тип кнопки (тільки для <button>)
- * @param {string} [href]                 — URL. Якщо вказано — рендериться як <a>
- * @param {object} rest                   — Будь-які інші пропси (onClick, id, className, target, rel тощо)
- *
- * @example
- * <AppButton onClick={() => alert('click')}>Кнопка</AppButton>
+ * @component
+ * @param {Object} props - Властивості компонента.
+ * @param {React.ReactNode} props.children - Вміст кнопки (текст, іконки тощо).
+ * @param {'sm' | 'md'} [props.size='md'] - Розмір кнопки: маленька (`sm`) або стандартна (`md`).
+ * @param {boolean} [props.fullWidth=false] - Якщо true, кнопка займає 100% ширини контейнера.
+ * @param {boolean} [props.disabled=false] - Вимикає кнопку (працює як для `<button>`, так і для `<a>`).
+ * @param {'blue' | 'grey'} [props.variant='blue'] - Візуальний стиль кнопки.
+ * @param {'button' | 'submit' | 'reset'} [props.type='button'] - Тип кнопки (застосовується лише якщо рендериться `<button>`).
+ * @param {string} [props.href] - Якщо передано, компонент рендериться як посилання `<a>` замість кнопки.
+ * @param {string} [props.className] - Додатковий CSS-клас для стилізації.
+ * @param {function(MouseEvent):void} [props.onClick] - Обробник кліку. Викликається як для `<button>`, так і для `<a>`, крім випадку `disabled`.
+ * @returns {JSX.Element} Відрендерений елемент кнопки або посилання.
  *
  * @example
- * <AppButton href="/profile" variant="grey">Профіль</AppButton>
+ * // Стандартна синя кнопка
+ * <AppButton>Натисни мене</AppButton>
  *
  * @example
- * <AppButton width={120} height={40} disabled>Завантаження...</AppButton>
+ * // Сіра маленька кнопка
+ * <AppButton size="sm" variant="grey">Вхід</AppButton>
+ *
+ * @example
+ * // Кнопка на всю ширину (наприклад, у мобільному меню)
+ * <AppButton fullWidth variant="blue">Реєстрація</AppButton>
+ *
+ * @example
+ * // Кнопка як посилання
+ * <AppButton href="/auth/login" variant="grey">Увійти</AppButton>
+ *
+ * @example
+ * // Кнопка з обробником кліку
+ * <AppButton onClick={() => alert('Клік!')}>Натисни</AppButton>
  */
 
 const AppButton = ({
   children,
-  width,
-  height,
-  disabled,
+  size = 'md',
+  fullWidth = false,
+  disabled = false,
   variant = 'blue',
   type = 'button',
   href,
-  ...rest
+  className,
+  onClick,
+  ...props
 }) => {
   const commonProps = {
-    className: clsx(s.base, s[variant]),
-    style: { width, height },
-    ...rest,
+    className: clsx(
+      s.button,
+      s[variant],
+      s[`button--${size}`],
+      fullWidth && s.fullWidth,
+      className
+    ),
+    ...props,
   };
 
-  if (href && !disabled) {
+  if (href?.startsWith('http')) {
+    commonProps.rel = 'noopener noreferrer';
+  }
+
+  if (href) {
     return (
-      <a href={href} {...commonProps}>
+      <a
+        href={disabled ? undefined : href}
+        aria-disabled={disabled}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
+        {...commonProps}
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <button type={type} disabled={disabled} {...commonProps}>
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={(e) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        onClick?.(e);
+      }}
+      {...commonProps}
+    >
       {children}
     </button>
   );
