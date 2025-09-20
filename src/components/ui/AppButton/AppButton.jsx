@@ -16,6 +16,7 @@ import s from './AppButton.module.css';
  * @param {'button' | 'submit' | 'reset'} [props.type='button'] - Тип кнопки (застосовується лише якщо рендериться `<button>`).
  * @param {string} [props.href] - Якщо передано, компонент рендериться як посилання `<a>` замість кнопки.
  * @param {string} [props.className] - Додатковий CSS-клас для стилізації.
+ * @param {function(MouseEvent):void} [props.onClick] - Обробник кліку. Викликається як для `<button>`, так і для `<a>`, крім випадку `disabled`.
  * @returns {JSX.Element} Відрендерений елемент кнопки або посилання.
  *
  * @example
@@ -33,6 +34,10 @@ import s from './AppButton.module.css';
  * @example
  * // Кнопка як посилання
  * <AppButton href="/auth/login" variant="grey">Увійти</AppButton>
+ *
+ * @example
+ * // Кнопка з обробником кліку
+ * <AppButton onClick={() => alert('Клік!')}>Натисни</AppButton>
  */
 
 const AppButton = ({
@@ -44,6 +49,7 @@ const AppButton = ({
   type = 'button',
   href,
   className,
+  onClick,
   ...props
 }) => {
   const commonProps = {
@@ -66,7 +72,13 @@ const AppButton = ({
       <a
         href={disabled ? undefined : href}
         aria-disabled={disabled}
-        onClick={disabled ? (e) => e.preventDefault() : undefined}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
         {...commonProps}
       >
         {children}
@@ -75,7 +87,18 @@ const AppButton = ({
   }
 
   return (
-    <button type={type} disabled={disabled} {...commonProps}>
+    <button
+      type={type}
+      disabled={disabled}
+      onClick={(e) => {
+        if (disabled) {
+          e.preventDefault();
+          return;
+        }
+        onClick?.(e);
+      }}
+      {...commonProps}
+    >
       {children}
     </button>
   );
