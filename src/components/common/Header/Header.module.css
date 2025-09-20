@@ -54,18 +54,26 @@
 
 /* #endregion Mobile */
 
-/* #region Main */
+/* ------------------------------- */
 
-/* .nav ul {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-} */
+/* #region Desktop */
 
-/* .nav li:nth-child(-n + 3) a {
-  display: inline-block;
-  padding: 23px 0;
-  color: var(--color-scheme-1-background);
-} */
+@media screen and (min-width: 1440px) {
+  .nav ul {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
 
-/* #endregion Main */
+  .nav li:nth-child(-n + 3) a {
+    display: inline-block;
+    padding: 23px 0;
+    color: var(--color-scheme-1-background);
+  }
+
+  .nav.outHome li:nth-child(-n + 3) a {
+    color: var(--color-scheme-2-text);
+  }
+}
+
+/* #endregion Desktop */

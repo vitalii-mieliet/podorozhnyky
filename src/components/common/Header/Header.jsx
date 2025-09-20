@@ -50,7 +50,7 @@ const Header = () => {
 
         {/* Desktop */}
         {!isMobile && (
-          <nav className={s.nav}>
+          <nav className={clsx(s.nav, !isHome && s.outHome)}>
             <ul>
               <li>
                 <Link to="/">Головна</Link>
@@ -64,7 +64,7 @@ const Header = () => {
               <li>
                 <AppButton
                   href="/auth/login"
-                  variant="grey"
+                  variant={isHome ? 'init' : 'grey'}
                   width="58px"
                   height="35px"
                 >
@@ -74,7 +74,7 @@ const Header = () => {
               <li>
                 <AppButton
                   href="/auth/register"
-                  variant="dark"
+                  variant={isHome ? 'dark' : 'blue'}
                   width="113px"
                   height="35px"
                 >
@@ -86,7 +86,7 @@ const Header = () => {
         )}
 
         {isMobile && (
-          <AppButton variant="grey" onClick={toggleMenu}>
+          <AppButton variant={isHome ? 'init' : 'grey'} onClick={toggleMenu}>
             {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
           </AppButton>
         )}
@@ -94,7 +94,7 @@ const Header = () => {
 
       {/* Mobile */}
       {isMobile && isMenuOpen && (
-        <div className={clsx(s.overlay, isMenuOpen && s['isOpen'])}>
+        <div className={clsx(s.overlay, isMenuOpen && s.isOpen)}>
           <nav className={s.nav}>
             <ul>
               <li>
