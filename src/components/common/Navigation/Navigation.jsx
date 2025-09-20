@@ -26,20 +26,22 @@ import styles from './Navigation.module.css';
 
 const Navigation = ({ navLinks }) => {
   return (
-    <ul className={styles.nav}>
-      {navLinks.map(({ to, label }) => (
-        <li className={styles.navItem} key={label}>
-          <NavLink
-            to={to}
-            className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }
-          >
-            {label}
-          </NavLink>
-        </li>
-      ))}
-    </ul>
+    <nav>
+      <ul className={styles.nav}>
+        {navLinks.map(({ to, label }) => (
+          <li className={styles.navItem} key={label}>
+            <NavLink
+              to={to}
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
+              {label}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 export default Navigation;
