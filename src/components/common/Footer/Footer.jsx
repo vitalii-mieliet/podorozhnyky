@@ -5,15 +5,18 @@ import Socials from '../Socials/Socials';
 import Navigation from '../Navigation/Navigation';
 
 const Footer = () => {
-  const isLoggedIn = useSelector((state) => {
-    state.auth.isLoggedIn;
-  });
+  const navLinks = [
+    { to: '/', label: 'Головна' },
+    { to: '/stories', label: 'Історії' },
+    { to: '/travelers', label: 'Мандрівники' },
+  ];
+
   return (
     <footer className={styles.footer}>
       <div className={styles.topSection}>
         <Logo />
         <Socials />
-        <Navigation isLoggedIn={isLoggedIn} />
+        <Navigation navLinks={navLinks} />
       </div>
       <div className={styles.copy}>
         <p>© 2025 Подорожники. Усі права захищені.</p>

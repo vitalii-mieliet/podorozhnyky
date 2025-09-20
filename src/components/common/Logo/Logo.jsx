@@ -4,7 +4,7 @@ import styles from './Logo.module.css';
 const Logo = () => {
   return (
     <div className={styles.logo}>
-      <svg className={styles.logoIcon}>
+      <svg width={156} height={40} className={styles.logoIcon}>
         <use href={`${sprite}#logo_text`} />
       </svg>
     </div>

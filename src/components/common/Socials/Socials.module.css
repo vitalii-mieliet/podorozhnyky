@@ -1,0 +1,9 @@
+.socials {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}

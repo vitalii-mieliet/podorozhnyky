@@ -19,7 +19,7 @@ const Socials = () => {
             rel="noopener noreferrer"
             aria-label={label}
           >
-            <svg className={styles.socialIcon}>
+            <svg width={32} height={32} className={styles.socialIcon}>
               <use href={`${sprite}#${id}`} />
             </svg>
           </a>
