@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import Logo from '../Logo/logo.svg?react';
+
 import Container from '../Container/Container';
+import s from './Header.module.css';
+import AppButton from '../../ui/AppButton/AppButton';
 
 const Header = () => {
   const location = useLocation();
@@ -10,7 +13,7 @@ const Header = () => {
   // JSX
   return (
     <Container>
-      <header>
+      <header className={s.header}>
         <NavLink to="/">
           <Logo
             style={{
@@ -20,7 +23,7 @@ const Header = () => {
             }}
           />
         </NavLink>
-        <nav>
+        <nav className={s.nav}>
           <ul>
             <li>
               <Link to="/">Головна</Link>
@@ -32,10 +35,24 @@ const Header = () => {
               <Link to="/travellers">Мандрівники</Link>
             </li>
             <li>
-              <Link to="/auth/login">Вхід</Link>
+              <AppButton
+                href="/auth/login"
+                variant="grey"
+                width="58px"
+                height="35px"
+              >
+                Вхід
+              </AppButton>
             </li>
             <li>
-              <Link to="/auth/register">Реєстрація</Link>
+              <AppButton
+                href="/auth/register"
+                variant="dark"
+                width="113px"
+                height="35px"
+              >
+                Реєстрація
+              </AppButton>
             </li>
           </ul>
         </nav>
