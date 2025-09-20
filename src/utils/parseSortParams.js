@@ -7,7 +7,7 @@ export const parseSortParams = ({ sortBy, sortOrder }, sortFields) => {
     : STORY_SORT_FIELDS[0];
   const parsedSortOrder = sortOrderList.includes(sortOrder)
     ? sortOrder
-    : sortOrderList[0];
+    : sortOrderList[1];
 
   return {
     sortBy: parsedSortBy,

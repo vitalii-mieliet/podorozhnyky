@@ -7,6 +7,6 @@ export const STORY_CATEGORIES = [
   'Україна',
 ];
 
-export const STORY_SORT_FIELDS = ['rate'];
+export const STORY_SORT_FIELDS = ['rate', 'date'];
 
 export const AUTHORS_SORT_FILEDS = ['name'];
