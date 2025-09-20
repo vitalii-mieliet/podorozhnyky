@@ -1,54 +1,85 @@
-import { useState } from 'react';
 import clsx from 'clsx';
 import css from './AppTabs.module.css';
 
 const AppTabs = ({
-  children,
-  defaultValue,
+  options = [],
+  value,
+  onChange,
   variant = 'contained',
-  size = 'md',
   type = 'button',
-  color = 'primary',
   className,
   ...props
 }) => {
-  const [active, setActive] = useState(defaultValue);
-
   return (
-    <div className={clsx(css.wrapper, className)} {...props}>
-      {children.map((child) => {
-        const isActive = child.props.value === active;
-
-        const tabClass = clsx(css.tab, css[variant], css[size], css[color], {
-          [css.active]: isActive,
-        });
+    <div
+      className={clsx(css.group, css[variant], className)}
+      role="radiogroup"
+      {...props}
+    >
+      {options.map((option) => {
+        const isActive = value === option.value;
+        const classes = clsx(css.base, css[variant], isActive && css.active);
 
         if (type === 'link') {
           return (
             <a
-              key={child.props.value}
-              href="#"
-              className={tabClass}
-              onClick={() => setActive(child.props.value)}
+              key={option.value}
+              role="radio"
+              aria-checked={isActive}
+              className={classes}
+              href={option.href || '#'}
+              onClick={(e) => {
+                e.preventDefault();
+                onChange?.(option.value);
+              }}
             >
-              {child.props.children}
+              {option.label}
             </a>
           );
         }
 
         return (
           <button
-            key={child.props.value}
+            key={option.value}
             type="button"
-            className={tabClass}
-            onClick={() => setActive(child.props.value)}
+            role="radio"
+            aria-checked={isActive}
+            className={classes}
+            onClick={() => onChange?.(option.value)}
           >
-            {child.props.children}
+            {option.label}
           </button>
         );
       })}
     </div>
   );
 };
-
 export default AppTabs;
+//  фільтри
+//  <section>
+//    <AppTabs
+//      options={[
+//        { label: "Всі історії", value: "all" },
+//        { label: "Європа", value: "eu" },
+//        { label: "Азія", value: "asia" },
+//        { label: "Пустелі", value: "desert" },
+//        { label: "Африка", value: "africa" },
+//      ]}
+//      value={filter}
+//      onChange={setFilter}
+//      variant="outlined"
+//    />
+//  </section>;
+
+//  таби
+//  <section>
+//    <AppTabs
+//      options={[
+//        { label: "Збережені історії", value: "all" },
+//        { label: "Мої історії", value: "saved" },
+//      ]}
+//      value={tab}
+//      onChange={setTab}
+//      variant="contained"
+//    />
+//  </section>;

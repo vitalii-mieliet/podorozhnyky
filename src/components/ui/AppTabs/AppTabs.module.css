@@ -1,103 +1,80 @@
-:root {
-  --bp-mobile: 375px;
-  --bp-tablet: 768px;
-  --bp-desktop: 1440px;
-
-  --font-family: 'Nunito Sans', sans-serif;
-
-  --color-neutral-darkest: #000;
-  --color-neutral-dark: #4c4c4c;
-  --color-neutral-light: #b2b2b2;
-  --color-white: #fff;
-  --color-royal-blue-lighter: #e8eeff;
-  --color-royal-blue-lightest: #f7f9ff;
-  --opacity-neutral-darkest-15: rgba(0, 0, 0, 0.15);
-  --opacity-transparent: rgba(255, 255, 255, 0);
-  --transition-base: 0.3s ease-in-out;
-}
-
-/* Контейнер */
-.wrapper {
+/* база */
+.group {
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: var(--color-royal-blue-lighter);
-  border-radius: 10px;
   padding: 4px;
-  width: 100%;
-  height: 48px;
 }
-
-/* таб не актив */
-.tab {
-  flex: 1 1 auto;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  min-width: 140px;
-  transition: all var(--transition-base);
+.base {
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
-  text-align: center;
-  background: var(--opacity-transparent);
-  border: 1px solid var(--opacity-transparent);
+  color: var(--color-neutral-darkest);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  border: none;
 }
-
-/* актив таб*/
-.active {
+/* таби */
+.contained {
+  background: var(--color-royal-blue-lighter);
+  color: --color-neutral-darker;
+  border-radius: 10px;
+  height: 48px;
+}
+.group .contained {
+  border: 1px solid var(--opacity-transparent);
+  width: 100%;
+  height: 48px;
+}
+.contained.active {
+  background: var(--color-royal-blue-lightest);
+  border: 1px solid var(--opacity-neutral-darkest-15);
+  border-radius: 8px;
+  width: 100%;
   font-weight: 500;
 }
 
-/* --- Variant тільки 1 --- */
-.contained.active {
-  background: var(--color-white);
-  border: 1px solid var(--opacity-neutral-darkest-15);
-}
-
-/* розміри всі*/
-.sm {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  height: 40px;
-}
-.md {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  height: 40px;
-}
-.lg {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  height: 40px;
-}
-
-/* --- Адаптив --- */
 @media (min-width: 375px) {
-  .wrapper {
+  .contained {
     width: 335px;
-  }
-  .tab {
-    flex: 0 0 auto;
-    width: 163px;
   }
 }
 
 @media (min-width: 768px) {
-  .wrapper {
+  .contained {
     width: 422px;
   }
-  .tab {
-    width: 207px;
-    height: 40px;
+}
+@media (min-width: 1440px) {
+  .base.contained {
+    font-size: 18px;
   }
 }
 
+/* фільтри */
+.group .outlined {
+  height: 36px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: auto;
+}
+.outlined {
+  background: transparent;
+  color: var(--color-neutral-darker);
+  font-weight: 400;
+}
+
+.outlined.active {
+  background: var(--color-neutral-lightest);
+  font-weight: 500;
+}
+
 @media (min-width: 1440px) {
-  .tab {
+  .base.outlined {
     font-size: 18px;
+    height: 39px;
   }
 }

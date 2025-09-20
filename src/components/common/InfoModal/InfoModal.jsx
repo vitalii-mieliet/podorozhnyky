@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import css from './InfoModal.module.css';
 import clsx from 'clsx';
+import FocusTrap from 'focus-trap-react';
 import { ReactComponent as CloseIcon } from '../../../assets/icons/close.svg';
+import AppButton from '../../ui/AppButton/AppButton.jsx';
 
 const InfoModal = ({
   title,
@@ -31,43 +33,73 @@ const InfoModal = ({
     }
   };
 
+  const cancelBtnRef = useRef(null);
+
   return (
     <div className={css.backdrop} onClick={handleBackdropClick}>
-      <div className={clsx(css.modal, className)} {...props}>
-        <button className={css.close} onClick={onCancel} aria-label="Close">
-          <CloseIcon />
-        </button>
+      <FocusTrap
+        focusTrapOptions={{
+          initialFocus: cancelBtnRef,
+        }}
+      >
+        <div
+          className={clsx(css.modal, className)}
+          {...props}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-text"
+        >
+          <button
+            className={css.close}
+            onClick={onCancel}
+            aria-label="Close modal"
+            autoFocus
+          >
+            <CloseIcon />
+          </button>
 
-        {title && <h2 className={css.title}>{title}</h2>}
-        {text && <p className={css.text}>{text}</p>}
+          {title && (
+            <h2 className={css.title} id="modal-title">
+              {title}
+            </h2>
+          )}
+          {text && (
+            <p className={css.text} id="modal-text">
+              {text}
+            </p>
+          )}
 
-        <div className={css.actions}>
-          {cancelButtonText && (
-            <button className={css.secondary} onClick={onCancel}>
-              {cancelButtonText}
-            </button>
-          )}
-          {confirmButtonText && (
-            <button className={css.primary} onClick={onConfirm}>
-              {confirmButtonText}
-            </button>
-          )}
+          <div className={css.actions}>
+            {cancelButtonText && (
+              <AppButton
+                variant="grey"
+                onClick={onCancel}
+                type="button"
+                ref={cancelBtnRef}
+                aria-label={cancelButtonText}
+              >
+                {cancelButtonText}
+              </AppButton>
+            )}
+            {confirmButtonText && (
+              <AppButton
+                variant="blue"
+                onClick={onConfirm}
+                type="button"
+                aria-label={confirmButtonText}
+              >
+                {confirmButtonText}
+              </AppButton>
+            )}
+          </div>
         </div>
-      </div>
+      </FocusTrap>
     </div>
   );
 };
 export default InfoModal;
 // ====================  Example ====================
-// import { useState } from "react";
-// import InfoModal from "./InfoModal";
-//
-// function Example() {
-//   const [isOpen, setIsOpen] = useState(false);
-//   return (
-//     <>
-//       <button onClick={() => setIsOpen(true)}>Відкрити модалку</button>
-//       {isOpen && (
 //         <InfoModal
 //           title="Ви точно хочете вийти?"
 //           text="Ми будемо сумувати за вами!"
@@ -76,8 +108,4 @@ export default InfoModal;
 //           onConfirm={() => setIsOpen(false)}
 //           onCancel={() => setIsOpen(false)}
 //         />
-//       )}
-//     </>
-//   );
-// }
 // =======================================================

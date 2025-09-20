@@ -7,5 +7,5 @@ const Logo = ({ color = 'currentColor', className, ...props }) => {
 export default Logo;
 
 // колір через пропси або стилі
-//  <Logo color="black" />
-//  <Logo color="white" />
+//  <Logo color="black" /> футер
+//  <Logo color="white" /> хедер
