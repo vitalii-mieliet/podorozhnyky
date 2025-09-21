@@ -19,6 +19,7 @@ import React from 'react';
 import Container from '../Container/Container';
 import Section from '../Section/Section';
 import css from './Hero.module.css';
+import AppButton from '../../ui/AppButton/AppButton';
 
 const Hero = () => {
   return (
@@ -31,9 +32,18 @@ const Hero = () => {
             своїми історіями та отримувати натхнення для нових пригод. Відкрийте
             для себе нові місця та знайдіть однодумців!
           </p>
-          <a href="#join" className={css.heroButton}>
+          {/* <a href="#join" className={css.heroButton}>
             Доєднатись
-          </a>
+          </a> */}
+          <AppButton
+            href="#join"
+            variant="blue"
+            fullWidth
+            size="md"
+            className={heroButton}
+          >
+            Доєднатись
+          </AppButton>
         </Container>
       </div>
     </Section>
