@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import AppButton from '../../ui/AppButton/AppButton';
 import styles from './StoryCard.module.css';
 import bookmarkIconUrl from '../../../assets/icons/bookmark.svg';
@@ -6,11 +5,10 @@ import editIconUrl from '../../../assets/icons/edit.svg';
 
 
 const StoryCard = ({ storyInfo, isOwner = false }) => {
-  // перевірка на існування storyInfo, якщо дані ще не завантажились, компонент нічого не рендерить
   if (!storyInfo) {
     return null; 
   }
-  // деструктуризація 
+
   const { _id, img, category, title, article, owner, date } = storyInfo;
 
   const imageUrl = img?.startsWith('http') ? img : `https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png`;
@@ -52,17 +50,21 @@ const StoryCard = ({ storyInfo, isOwner = false }) => {
           </AppButton>
           
           {isOwner ? (
-            <Link to={`/edit-story/${_id}`} className={styles.iconButton} aria-label="Редагувати історію">
-               <img src={editIconUrl} alt="Редагувати" className={styles.actionIcon} />
-            </Link>
-          ) : (
-            <button
-              type="button"
+            <AppButton 
+              href={`/edit-story/${_id}`} 
+              aria-label="Редагувати історію" 
               className={styles.iconButton}
-              aria-label="Додати в збережені"
             >
-              <img src={bookmarkIconUrl} alt="Додати в збережені" className={styles.actionIcon} />
-            </button>
+              <img src={editIconUrl} alt="" className={styles.actionIcon} />
+            </AppButton>
+          ) : (
+            <AppButton
+              onClick={() => console.log('Bookmark clicked!')}
+              aria-label="Додати в збережені"
+              className={styles.iconButton}
+            >
+              <img src={bookmarkIconUrl} alt="" className={styles.actionIcon} />
+            </AppButton>
           )}
         </div>
       </div>
