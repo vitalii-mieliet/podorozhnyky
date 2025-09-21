@@ -71,7 +71,11 @@ const Header = () => {
     ? [
         ...navLinks,
         { to: '/profile', label: 'Мій Профіль' },
-        { to: '/publish', label: 'Опублікувати історію ' },
+        {
+          to: '/publish',
+          label: 'Опублікувати історію ',
+          linkClassName: s.publish,
+        },
       ]
     : navLinks;
 
@@ -97,7 +101,10 @@ const Header = () => {
             <div className={s.linksWrap}>
               {isLoggedIn ? (
                 <>
-                  <Navigation navLinks={extendedNavLinks} />
+                  <Navigation
+                    navLinks={extendedNavLinks}
+                    // linkClassName={s.public}
+                  />
                   <UserBar isLoggedIn={isLoggedIn} user={user} />
                 </>
               ) : (

@@ -30,7 +30,7 @@ const Navigation = ({ navLinks, linkClassName }) => {
   return (
     <nav className={styles.nav}>
       <ul className={styles.navList}>
-        {navLinks.map(({ to, label }) => (
+        {navLinks.map(({ to, label, linkClassName }) => (
           <li className={styles.navItem} key={label}>
             <NavLink to={to} className={clsx(styles.navLink, linkClassName)}>
               {label}

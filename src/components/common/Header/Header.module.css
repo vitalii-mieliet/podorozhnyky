@@ -12,6 +12,13 @@
   padding: 25px 0;
 }
 
+.publish {
+  composes: blue from '../../ui/AppButton/AppButton.module.css';
+  max-width: 335px;
+  width: 100%;
+  min-height: 32px;
+}
+
 .header .menuButton {
   min-width: 32px;
   padding: 4px;
