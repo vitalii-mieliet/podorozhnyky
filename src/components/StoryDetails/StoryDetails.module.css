@@ -1,0 +1,142 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 24px;
+  color: var(--color-royal-blue);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;  
+  padding: 20px;
+  font-family: var(--font-family);
+  color: var(--color-scheme-2-text);
+}
+
+.header {
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--color-scheme-2-border);
+  padding-bottom: 24px;
+}
+
+.category {
+  display: inline-block;
+  background-color: var(--color-royal-blue-lighter);
+  color: var(--color-royal-blue);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 24px 0;
+}
+
+@media (min-width: var(--bp-tablet)) {
+  .title {
+    font-size: 48px;
+  }
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: var(--bp-tablet)) {
+  .meta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.authorInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.authorAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorLabel, .dateLabel {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0 0 4px 0;
+}
+
+.authorName, .date {
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0;
+}
+
+.mainImage {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  object-fit: cover;
+  max-height: 500px; /* обмеження висоти */
+}
+
+.articleBody {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.articleBody p {
+  margin-bottom: 20px;
+}
+
+.articleBody h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+.saveSection {
+  margin-top: 60px;
+  padding: 32px;
+  border: 1px solid var(--color-scheme-2-border);
+  border-radius: 12px;
+  text-align: center;
+  background-color: var(--color-scheme-2-background);
+}
+
+.saveIconWrapper {
+    margin-bottom: 16px;
+}
+
+ 
+.saveIcon {
+    width: 32px;
+    height: 32px;
+}
+
+.saveTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.saveText {
+  font-size: 16px;
+  color: #6c757d;
+  max-width: 400px;
+  margin: 0 auto 24px auto;
+}
