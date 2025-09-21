@@ -1,14 +1,14 @@
 import React from 'react';
-import css from './TravalerInfoCart.module.css';
+import css from './TravelerInfoCard.module.css';
 import avatarPlaceholder from '../../../assets/icons/AvatarImage.svg';
+import { AppButton } from '../../ui/AppButton';
 
-function TravalerInfoCart({ userData = {} }) {
+function TravelerInfoCard({ userData = {} }) {
   const { avatar, fullName, job, description } = userData;
-
   const userAvatar = avatar || avatarPlaceholder;
 
   return (
-    <div className={css.travalerInfoCart}>
+    <article className={css.travelerInfoCard}>
       <img
         src={userAvatar}
         width={112}
@@ -17,16 +17,18 @@ function TravalerInfoCart({ userData = {} }) {
         className={css.imgPlaceholder}
       />
       <div className={css.infoBlock}>
-        <div className={css.name}>{fullName || 'Full name'}</div>
-        <div className={css.job}>{job || 'Job title'}</div>
-        <div className={css.description}>
+        <h2 className={css.name}>{fullName || 'Full name'}</h2>
+        <p className={css.job}>{job || 'Job title'}</p>
+        <p className={css.description}>
           {description ||
-            'adipisicing elit. Id, impedit error. Libero aspernatur quo a. Illum dignissimos quasi pariatur'}
-        </div>
-        <button className={css.btn}>Переглянути профіль</button>
+            'adipisicing elit. Id, impedit error. Libero aspernatur quo a.'}
+        </p>
+        <AppButton href="#" variant="primary">
+          Переглянути профіль
+        </AppButton>
       </div>
-    </div>
+    </article>
   );
 }
 
-export default TravalerInfoCart;
+export default TravelerInfoCard;
