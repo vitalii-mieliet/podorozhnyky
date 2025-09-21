@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
 import BurgerMenu from '../../../assets/icons/menu.svg?react';
 import BurgerClose from '../../../assets/icons/close.svg?react';
 import Logo from '../Header/Logo.svg?react';
-import Logout from '../../../assets/icons/logout.svg?react';
 
 import Container from '../Container/Container';
 import s from './Header.module.css';
@@ -14,7 +13,7 @@ import AppButton from '../../ui/AppButton/AppButton';
 import Navigation from '../Navigation/Navigation';
 import AuthButtons from '../../AuthButtons/AuthButtons';
 import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
-import { authActions } from '../../../redux/auth/slice';
+import UserBar from '../../ui/UserBar/UserBar';
 
 const Header = () => {
   const navLinks = [
@@ -31,7 +30,6 @@ const Header = () => {
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
-  const dispatch = useDispatch();
 
   // handler
   const toggleMenu = () => {
@@ -77,32 +75,6 @@ const Header = () => {
       ]
     : navLinks;
 
-  const UserBar = () => {
-    return (
-      <div className={s.userBar}>
-        {isLoggedIn && (
-          <>
-            <div className={s.avatar}>
-              {user.avatar ? (
-                <img src={user.avatar} alt="аватар" />
-              ) : (
-                user.name.charAt(0)
-              )}
-            </div>
-            <span>{user.name}</span>
-            <button
-              className={s.logoutBtn}
-              aria-label="Вихід"
-              onClick={() => dispatch(authActions.logout())}
-            >
-              <Logout />
-            </button>
-          </>
-        )}
-      </div>
-    );
-  };
-
   // JSX
   return (
     <Container>
@@ -126,7 +98,7 @@ const Header = () => {
               {isLoggedIn ? (
                 <>
                   <Navigation navLinks={extendedNavLinks} />
-                  <UserBar />
+                  <UserBar isLoggedIn={isLoggedIn} user={user} />
                 </>
               ) : (
                 <>
@@ -161,7 +133,7 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <Navigation navLinks={extendedNavLinks} />
-              <UserBar />
+              <UserBar isLoggedIn={isLoggedIn} user={user} />
             </>
           ) : (
             <>

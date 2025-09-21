@@ -48,24 +48,6 @@
   gap: 32px;
 }
 
-/* authContent */
-.userBar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #999;
-}
-
 .logoutBtn {
   display: flex;
   align-items: center;
