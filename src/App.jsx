@@ -4,7 +4,6 @@ import { Suspense, lazy } from 'react';
 import SharedLayout from './components/Layouts/SharedLayout';
 import PublicLayout from './components/Layouts/PublicLayout';
 import PrivateLayout from './components/Layouts/PrivateLayout';
-import TravelerCard from './components/ui/TravelerCard/TravelerCard';
 
 const AddStory = lazy(() => import('./pages/AddStory/AddStory'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage/PersonalPage'));
