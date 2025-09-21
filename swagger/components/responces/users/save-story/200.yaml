@@ -1,0 +1,56 @@
+description: Successfully retrieved saved stories.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          description: 'HTTP status code of the response.'
+          type: integer
+          example: 200
+        message:
+          description: 'Response message indicating the success or failure of the request.'
+          type: string
+          example: 'Successfully found saved stories'
+        data:
+          type: object
+          required:
+            - data
+            - page
+            - perPage
+            - totalItems
+            - totalPages
+            - hasNextPage
+            - hasPreviousPage
+          properties:
+            data:
+              type: array
+              $ref: '../../../schemas/story.yaml'
+            page:
+              type: integer
+              description: 'Current page number in the paginated response.'
+              example: 1
+            perPage:
+              type: integer
+              description: 'Number of stories returned per page.'
+              example: 4
+            totalItems:
+              type: integer
+              description: 'Total number of saved stories for the user.'
+              example: 5
+            totalPages:
+              type: integer
+              description: 'Total number of pages of stories (calculated from totalItems and perPage).'
+              example: 2
+            hasNextPage:
+              type: boolean
+              description: 'Indicates if there is a next page available.'
+              example: true
+            hasPreviousPage:
+              type: boolean
+              description: 'Indicates if there is a previous page available.'
+              example: false

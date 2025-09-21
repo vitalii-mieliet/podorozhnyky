@@ -14,7 +14,7 @@ const storiesSchema = new Schema(
     },
     article: {
       type: String,
-      required: false,
+      required: true,
     },
     category: {
       type: String,

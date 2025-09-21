@@ -1,0 +1,71 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+  - password
+  - bio
+properties:
+  _id:
+    description: 'User identifier'
+    type: string
+    example: '68cb1a7465ec501c0ff95094'
+  name:
+    description: "User's name"
+    type: string
+    example: 'Tim Cook'
+  email:
+    description: "User's email"
+    type: string
+    format: email
+    example: 'timcook.official@icloud.com'
+  password:
+    description: "User's phone password"
+    type: string
+    example: '12345678'
+  bio:
+    description: "User's biography"
+    type: string
+    example: 'CEO of Apple, passionate about technology and innovation.'
+  avatar:
+    description: "Link to the user's avatar"
+    type: string
+    format: uri
+    example: 'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png'
+  onboardingCompleted:
+    description: 'Indicates whether the user has completed onboarding'
+    type: boolean
+    example: true
+  savedStories:
+    type: array
+    items:
+      type: string
+    description: 'List of saved stories'
+    example:
+      - '68cbb1bc6ec9142c8bc37470'
+      - '68cd96e3e9fd23bcef3b066d'
+      - '68498236a100312bea078ff3'
+      - '68498236a100312bea079000'
+      - '68cd6707f1827a0dda37ef5e'
+  settings:
+    type: object
+    properties:
+      darkMode:
+        type: boolean
+        description: 'Indicates whether dark mode is enabled.'
+        example: false
+  socialLinks:
+    type: object
+    properties:
+      twitter:
+        type: string
+        description: 'Twitter profile link'
+        example: ''
+      facebook:
+        type: string
+        description: 'Facebook profile link'
+        example: ''
+      instagram:
+        type: string
+        description: 'Instagram profile link'
+        example: ''
