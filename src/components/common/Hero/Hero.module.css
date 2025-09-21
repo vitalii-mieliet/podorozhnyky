@@ -18,12 +18,6 @@
   }
 }
 
-.heroContent {
-  text-align: left;
-  width: 335px;
-  height: 523px;
-}
-
 .heroTitle {
   font-family: var(--second-family);
   font-weight: 700;
@@ -73,10 +67,6 @@
     padding-top: 172px;
     padding-bottom: 117px;
   }
-  .heroContent {
-    width: 704px;
-    height: auto;
-  }
   .heroTitle {
     font-size: 48px;
     max-width: 600px;
@@ -104,11 +94,6 @@
   .hero {
     background-image: url('./hero-img/hero-desk.webp');
     padding-bottom: 347px;
-  }
-  .heroContent {
-    width: 1312px;
-    height: 309px;
-    height: auto;
   }
   .heroTitle {
     font-size: 56px;
