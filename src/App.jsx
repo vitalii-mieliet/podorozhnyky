@@ -4,7 +4,6 @@ import { Suspense, lazy } from 'react';
 import SharedLayout from './components/Layouts/SharedLayout';
 import PublicLayout from './components/Layouts/PublicLayout';
 import PrivateLayout from './components/Layouts/PrivateLayout';
-import TravalerInfoCart from './components/ui/TravalerInfoCart/TravalerInfoCart';
 
 const AddStory = lazy(() => import('./pages/AddStory/AddStory'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage/PersonalPage'));
@@ -44,7 +43,6 @@ function App() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <TravalerInfoCart />
     </Suspense>
   );
 }
