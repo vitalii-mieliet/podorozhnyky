@@ -14,6 +14,7 @@ import AppButton from '../../ui/AppButton/AppButton';
 import Navigation from '../Navigation/Navigation';
 import AuthButtons from '../../AuthButtons/AuthButtons';
 import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
+import { authActions } from '../../../redux/auth/slice';
 
 const Header = () => {
   const navLinks = [
@@ -76,9 +77,9 @@ const Header = () => {
       ]
     : navLinks;
 
-  const Authcontent = () => {
+  const UserBar = () => {
     return (
-      <div className={s.authContainer}>
+      <div className={s.userBar}>
         {isLoggedIn && (
           <>
             <div className={s.avatar}>
@@ -92,7 +93,7 @@ const Header = () => {
             <button
               className={s.logoutBtn}
               aria-label="Вихід"
-              onClick={() => dispatch(logout())}
+              onClick={() => dispatch(authActions.logout())}
             >
               <Logout />
             </button>
@@ -125,7 +126,7 @@ const Header = () => {
               {isLoggedIn ? (
                 <>
                   <Navigation navLinks={extendedNavLinks} />
-                  <Authcontent />
+                  <UserBar />
                 </>
               ) : (
                 <>
@@ -160,7 +161,7 @@ const Header = () => {
           {isLoggedIn ? (
             <>
               <Navigation navLinks={extendedNavLinks} />
-              <Authcontent />
+              <UserBar />
             </>
           ) : (
             <>

@@ -1,14 +1,16 @@
 import React from 'react';
 import AppButton from '../ui/AppButton/AppButton';
 import s from './AuthButtons.module.css';
+import clsx from 'clsx';
 
-function AuthButtons({ isMenuOpen, isHome }) {
+function AuthButtons({ isHome, isMenuOpen }) {
   return (
     <>
       <div className={s.buttonWrap}>
         <AppButton
           href="/auth/login"
-          variant={!isHome || isMenuOpen ? 'grey' : 'init'}
+          variant={(isMenuOpen || !isHome) && 'grey'}
+          className={isHome && !isMenuOpen && s.init}
           size="sm"
           aria-label="Увійти в акаунт"
         >
