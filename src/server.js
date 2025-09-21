@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { swaggerDocs } from './middlewares/swaggerDocs.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { logger } from './middlewares/logger.js';
 import router from './routers/index.js';
@@ -21,6 +22,7 @@ export const startServer = () => {
 
   app.use(cors());
   app.use(cookieParser());
+  app.use('/api-docs', swaggerDocs());
   // app.use(logger);
 
   app.use('/api', router);

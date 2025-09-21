@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   deleteUserArticleController,
   getUserAllSavedArticle,
+  getUserCreatedStoriesController,
   getUserInfoController,
   saveUserArticleController,
 } from '../controllers/users.js';
@@ -20,14 +21,16 @@ userRouter.patch(
   onboardingController,
 );
 
-userRouter.post('/save-article/:id', authenticate, saveUserArticleController);
+userRouter.post('/save-story/:id', authenticate, saveUserArticleController);
 
-userRouter.delete(
-  '/save-article/:id',
+userRouter.delete('/save-story/:id', authenticate, deleteUserArticleController);
+
+userRouter.get('/save-story', authenticate, getUserAllSavedArticle);
+
+userRouter.get(
+  '/created-stories',
   authenticate,
-  deleteUserArticleController,
+  getUserCreatedStoriesController,
 );
-
-userRouter.get('/save-article', authenticate, getUserAllSavedArticle);
 
 export default userRouter;

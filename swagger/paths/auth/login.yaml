@@ -1,0 +1,26 @@
+tags:
+  - Auth
+summary: Log in user
+operationId: loginUser
+description: 'Log in with email and password to get an authentication token'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            example: 'timcook.official@icloud.com'
+          password:
+            type: string
+            example: 'appleCompany1'
+responses:
+  '200':
+    $ref: '../../components/responces/auth/login/200.yaml'
+  '401':
+    $ref: '../../components/responces/auth/login/401.yaml'

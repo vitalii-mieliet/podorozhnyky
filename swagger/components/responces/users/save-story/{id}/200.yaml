@@ -1,0 +1,22 @@
+description: 'Successfully saved article.'
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          description: 'HTTP status code of the response.'
+          type: integer
+          example: 201
+        message:
+          description: 'Response message indicating the success of the operation.'
+          type: string
+          example: 'Successfully saved article'
+        data:
+          type: object
+          description: 'Additional data related to the operation (if any).'
+          properties: {}

@@ -1,0 +1,22 @@
+description: 'Unauthorized - User is not authenticated or session is missing'
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 401
+        message:
+          type: string
+          example: 'UnauthorizedError'
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: 'Session not found / Access token expired'

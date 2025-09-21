@@ -1,0 +1,19 @@
+tags:
+  - Authors
+summary: Get author by ID
+operationId: getAuthorById
+description: 'Fetch author details by their unique ID.'
+security: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      description: 'The unique ID of the author'
+      example: '68cb1a7465ec501c0ff95094'
+responses:
+  '200':
+    $ref: ../../../../components/responces/stories/authors/{id}/200.yaml
+  '404':
+    $ref: ../../../../components/responces/stories/authors/{id}/404.yaml

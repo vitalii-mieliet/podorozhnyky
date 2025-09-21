@@ -1,0 +1,19 @@
+description: Successfully found story!
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: 'Successfully found story!'
+        data:
+          type: object
+          $ref: '../../../../schemas/story.yaml'

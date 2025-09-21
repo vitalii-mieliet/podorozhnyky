@@ -1,0 +1,24 @@
+tags:
+  - Users
+summary: Remove a story from the saved list
+operationId: removeSavedStory
+description: 'Remove the specified story from the saved list of the authenticated user.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    description: 'ID of the story to remove from the saved list.'
+    schema:
+      type: string
+      example: '68cd6707f1827a0dda37ef5e'
+responses:
+  '204':
+    description: 'No Content - Story successfully deleted'
+  '400':
+    $ref: '../../../../components/responces/stories/400.yaml'
+  '401':
+    $ref: '../../../../components/responces/stories/401.yaml'
+  '404':
+    $ref: '../../../../components/responces/stories/story/{id}/404.yaml'

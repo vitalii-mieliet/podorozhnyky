@@ -1,0 +1,19 @@
+tags:
+  - Story
+summary: Get a story by id
+operationId: getStoryById
+description: 'Retrieve a single story by author unique ID'
+security: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    description: 'The unique ID of the story to be fetched'
+    schema:
+      type: string
+      example: '68cf3738147f34b70f224b30'
+responses:
+  '200':
+    $ref: '../../../../components/responces/stories/story/{id}/200.yaml'
+  '404':
+    $ref: '../../../../components/responces/stories/story/{id}/404.yaml'

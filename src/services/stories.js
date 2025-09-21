@@ -61,7 +61,19 @@ export const deleteStoryById = (query) =>
   StoriesCollection.findByIdAndDelete(query);
 
 export const getStory = async (id) => {
-  return StoriesCollection.findById(id);
+  const story = await StoriesCollection.findById(id)
+    .populate({
+      path: 'ownerId',
+      select: 'name avatar',
+    })
+    .lean();
+
+  if (story && story.ownerId) {
+    story.owner = story.ownerId;
+    delete story.ownerId;
+  }
+
+  return story;
 };
 
 export const getAuthors = async (

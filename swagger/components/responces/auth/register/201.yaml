@@ -1,0 +1,34 @@
+description: Successfully registered a user
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: 'Successfully registered a user!'
+        data:
+          type: object
+          required:
+            - user
+          properties:
+            user:
+              type: object
+              required:
+                - name
+                - email
+              properties:
+                name:
+                  type: string
+                  example: 'Tim Cook'
+                email:
+                  type: string
+                  format: email
+                  example: 'timcook.official@icloud.com'

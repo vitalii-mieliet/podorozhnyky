@@ -1,0 +1,12 @@
+tags:
+  - Users
+summary: Get information about the authenticated user
+operationId: getUserInfo
+description: Fetches the information of the authenticated user (private route).
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    $ref: '../../../components/responces/users/info/200.yaml'
+  '401':
+    $ref: ../../../components/responces/stories/401.yaml

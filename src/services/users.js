@@ -92,6 +92,10 @@ export const getSavedArticles = async (
   const stories = user.savedStories;
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
+  if (stories.length === 0) {
+    throw createHttpError(404, 'Stories not found');
+  }
+
   const modifiedStories = stories.map((story) => {
     const obj = story.toObject();
     obj.owner = obj.ownerId;

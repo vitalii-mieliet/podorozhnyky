@@ -1,0 +1,65 @@
+type: object
+required:
+  - _id
+  - title
+  - category
+  - owner
+properties:
+  _id:
+    description: 'Story ID'
+    type: string
+    example: '68498236a100312bea07900e'
+  img:
+    description: 'Story image URL'
+    type: string
+    format: uri
+    example: 'https://ftp.goit.study/img/travel-blog/68498236a100312bea07900e_31_11zon.webp'
+  title:
+    description: 'Title of the story'
+    type: string
+    example: 'Канада: краса національного парку Банф'
+  article:
+    description: 'Content of the story'
+    type: string
+    example: 'Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф...'
+  category:
+    description: 'Story category'
+    type: string
+    enum:
+      - 'Європа'
+      - 'Азія'
+      - 'Америка'
+      - 'Африка'
+      - 'Пустелі'
+      - 'Україна'
+    example: 'Америка'
+  rate:
+    description: 'Rating of the story'
+    type: integer
+    example: 45
+  date:
+    description: 'Date of publication'
+    type: string
+    format: date
+    example: '2025-06-17'
+  owner:
+    description: 'Author of the story'
+    type: object
+    required:
+      - _id
+      - name
+      - avatar
+    properties:
+      _id:
+        description: 'Author ID'
+        type: string
+        example: '68cf2fef64ba8aed80b91ae0'
+      name:
+        description: "Author's name"
+        type: string
+        example: 'Tim Cook'
+      avatar:
+        description: "Author's avatar image URL"
+        type: string
+        format: uri
+        example: 'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png'

@@ -4,7 +4,7 @@ import { STORY_CATEGORIES } from '../constants/validation.js';
 export const createStorySchema = Joi.object({
   img: Joi.string().uri().allow(''),
   title: Joi.string().min(3).max(128).required(),
-  article: Joi.string().allow(''),
+  article: Joi.string().allow('').required(),
   category: Joi.string()
     .valid(...STORY_CATEGORIES)
     .required(),
@@ -13,7 +13,7 @@ export const createStorySchema = Joi.object({
 export const updateStoriesSchema = Joi.object({
   img: Joi.string().uri().allow(''),
   title: Joi.string().min(3).max(128).required(),
-  article: Joi.string().allow(''),
+  article: Joi.string().allow('').required(),
   category: Joi.string()
     .valid(...STORY_CATEGORIES)
     .required(),
