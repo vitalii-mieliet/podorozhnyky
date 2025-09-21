@@ -1,7 +1,8 @@
-.travalerInfoCart {
+.travelerInfoCard {
   border-radius: 16px;
   padding: 24px;
-  width: 310px;
+  width: 100%;
+  max-width: 310px;
   background: var(--color-scheme-2-foreground);
   display: flex;
   flex-direction: column;
@@ -9,34 +10,27 @@
 }
 
 .imgPlaceholder {
-  border-radius: 100%;
+  border-radius: 50%;
   margin-bottom: 24px;
 }
+
 .infoBlock {
   width: 100%;
   max-width: 262px;
 }
 .name {
-  font-family: var(--font-family);
   font-weight: 600;
   font-size: 26px;
   line-height: 150%;
-  color: var(--color-scheme-2-text);
 }
+
 .job {
-  font-family: var(--font-family);
-  font-weight: 400;
   font-size: 20px;
-  line-height: 150%;
-  color: var(--color-scheme-2-text);
   margin-bottom: 16px;
 }
+
 .description {
-  font-family: var(--font-family);
-  font-weight: 400;
   font-size: 18px;
-  line-height: 150%;
-  color: var(--color-scheme-2-text);
   margin-bottom: 16px;
 }
 .btn {
