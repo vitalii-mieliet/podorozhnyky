@@ -1,5 +1,26 @@
 .cardsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cardItem {
+  display: flex;
+}
+
+/* планшет */
+@media (min-width: 768px) {
+  .cardsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* десктоп */
+@media (min-width: 1440px) {
+  .cardsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
