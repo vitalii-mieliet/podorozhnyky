@@ -6,20 +6,14 @@
 }
 
 .buttonWrap a {
-  width: 335px;
-  height: 35px;
+  width: 100%;
+  max-width: 335px;
+  min-height: 35px;
+  padding: 0;
 }
 
 @media screen and (min-width: 1440px) {
   .buttonWrap {
     flex-direction: row;
-  }
-
-  .buttonWrap .loginButton {
-    width: 58px;
-  }
-
-  .buttonWrap .register {
-    width: 113px;
   }
 }

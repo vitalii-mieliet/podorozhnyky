@@ -8,7 +8,6 @@ function AuthButtons({ isMenuOpen, isHome }) {
       <div className={s.buttonWrap}>
         <AppButton
           href="/auth/login"
-          className={s.loginButton}
           variant={!isHome || isMenuOpen ? 'grey' : 'init'}
           size="sm"
           aria-label="Увійти в акаунт"
@@ -17,8 +16,7 @@ function AuthButtons({ isMenuOpen, isHome }) {
         </AppButton>
 
         <AppButton
-          className={s.register}
-          href="/auth/login"
+          href="/auth/register"
           variant="blue"
           aria-label="Створити акаунт"
         >

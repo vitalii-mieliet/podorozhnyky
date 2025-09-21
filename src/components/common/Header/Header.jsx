@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 
 import BurgerMenu from '../../../assets/icons/menu.svg?react';
 import BurgerClose from '../../../assets/icons/close.svg?react';
+import Logo from '../Header/Logo.svg?react';
+import Logout from '../../../assets/icons/logout.svg?react';
 
 import Container from '../Container/Container';
 import s from './Header.module.css';
 import AppButton from '../../ui/AppButton/AppButton';
 import Navigation from '../Navigation/Navigation';
-
-import Logo from '../Header/Logo.svg?react';
 import AuthButtons from '../../AuthButtons/AuthButtons';
+import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
 
 const Header = () => {
   const navLinks = [
@@ -19,11 +21,16 @@ const Header = () => {
     { to: '/stories', label: 'Історії' },
     { to: '/travelers', label: 'Мандрівники' },
   ];
+
   const location = useLocation();
   const isHome = location.pathname === '/';
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  //data from Redux
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   // handler
   const toggleMenu = () => {
@@ -43,6 +50,58 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [isMenuOpen]);
+
+  // if authorizided
+
+  const extendedNavLinks = isLoggedIn
+    ? [
+        ...navLinks,
+        { to: '/profile', label: 'Мій Профіль' },
+        { to: '/publish', label: 'Опублікувати історію ' },
+      ]
+    : navLinks;
+
+  const Authcontent = () => {
+    return (
+      <div className={s.authContainer}>
+        {isLoggedIn && (
+          <>
+            <div className={s.avatar}>
+              {user.avatar ? (
+                <img src={user.avatar} alt="аватар" />
+              ) : (
+                user.name.charAt(0)
+              )}
+            </div>
+            <span>{user.name}</span>
+            <button
+              className={s.logoutBtn}
+              aria-label="Вихід"
+              onClick={() => dispatch(logout())}
+            >
+              <Logout />
+            </button>
+          </>
+        )}
+      </div>
+    );
+  };
+
   // JSX
   return (
     <Container>
@@ -60,34 +119,34 @@ const Header = () => {
         </NavLink>
 
         {/* Desktop */}
-        <div className={s.linksWrap}>
+        <>
           {!isMobile && (
             <div className={s.linksWrap}>
-              <Navigation navLinks={navLinks} />
-              <AuthButtons isMobile={isMobile} isHome={isHome} />
+              {isLoggedIn ? (
+                <>
+                  <Navigation navLinks={extendedNavLinks} />
+                  <Authcontent />
+                </>
+              ) : (
+                <>
+                  <Navigation navLinks={extendedNavLinks} />
+                  <AuthButtons isHome={isHome} />
+                </>
+              )}
             </div>
           )}
-        </div>
+        </>
 
         {isMobile && (
           <AppButton
             className={s.menuButton}
             variant={isHome ? 'init' : 'grey'}
             onClick={toggleMenu}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-nav"
+            aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
           >
-            {isMenuOpen ? (
-              <BurgerClose
-                aria-expanded={isMenuOpen}
-                aria-controls="mobile-nav"
-                aria-label="Відкрити меню"
-              />
-            ) : (
-              <BurgerMenu
-                aria-expanded={isMenuOpen}
-                aria-controls="mobile-nav"
-                aria-label="Відкрити меню"
-              />
-            )}
+            {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
           </AppButton>
         )}
       </header>
@@ -98,10 +157,17 @@ const Header = () => {
           className={clsx(s.overlay, isMenuOpen && s.isOpen)}
           id="mobile-nav"
         >
-          <div className={s.linksWrap}>
-            <Navigation navLinks={navLinks} />
-            <AuthButtons />
-          </div>
+          {isLoggedIn ? (
+            <>
+              <Navigation navLinks={extendedNavLinks} />
+              <Authcontent />
+            </>
+          ) : (
+            <>
+              <Navigation navLinks={extendedNavLinks} />
+              <AuthButtons isHome={isHome} isMenuOpen={isMenuOpen} />
+            </>
+          )}
         </div>
       )}
     </Container>
