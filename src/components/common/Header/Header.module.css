@@ -8,8 +8,28 @@
   z-index: 1000;
 }
 
+.linksWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.linksWrap nav ul {
+  padding: 0;
+}
+
+.header nav ul {
+  padding: 0;
+}
+
 .logo {
-  padding: 23px 0;
+  padding: 25px 0;
+}
+
+.header .menuButton {
+  min-width: 32px;
+  padding: 4px;
 }
 
 .overlay {
@@ -21,10 +41,12 @@
   background: var(--color-scheme-2-background);
   z-index: 999;
 
-  opacity: 1;
+  opacity: 0;
   pointer-events: none;
 
-  transition: opacity var(--transition-base) background var(--transition-base);
+  transition:
+    opacity var(--transition-base),
+    background var(--transition-base);
 }
 
 .overlay.isOpen {
@@ -32,15 +54,8 @@
   pointer-events: auto;
 }
 
-.overlay .nav {
+.overlay nav {
   margin-top: 88px;
-}
-
-.overlay .nav ul {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
 }
 
 .nav li:nth-child(-n + 3) a {
@@ -65,14 +80,8 @@
     gap: 32px;
   }
 
-  .nav li:nth-child(-n + 3) a {
-    display: inline-block;
-    padding: 23px 0;
-    color: var(--color-scheme-1-background);
-  }
-
-  .nav.outHome li:nth-child(-n + 3) a {
-    color: var(--color-scheme-2-text);
+  .linksWrap {
+    flex-direction: row;
   }
 }
 

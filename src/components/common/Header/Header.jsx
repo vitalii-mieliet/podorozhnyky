@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 
-import Logo from '../Logo/logo.svg?react';
 import BurgerMenu from '../../../assets/icons/menu.svg?react';
 import BurgerClose from '../../../assets/icons/close.svg?react';
 
 import Container from '../Container/Container';
 import s from './Header.module.css';
 import AppButton from '../../ui/AppButton/AppButton';
+import Navigation from '../Navigation/Navigation';
+
+import Logo from '../Header/Logo.svg?react';
+import AuthButtons from '../../AuthButtons/AuthButtons';
 
 const Header = () => {
+  const navLinks = [
+    { to: '/', label: 'Головна' },
+    { to: '/stories', label: 'Історії' },
+    { to: '/travelers', label: 'Мандрівники' },
+  ];
   const location = useLocation();
   const isHome = location.pathname === '/';
 
@@ -22,14 +30,17 @@ const Header = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  //
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 1440);
-    };
+    const mediaQuery = window.matchMedia('(max-width: 1439px)');
+    const checkIfMobile = () => setIsMobile(mediaQuery.matches);
 
-    checkIfMobile(); // Listen to when start
-    window.addEventListener('resize', checkIfMobile); //Listen to changes in size
+    checkIfMobile(); //Listen to when start
+
+    mediaQuery.addEventListener('change', checkIfMobile);
+
+    return () => {
+      mediaQuery.removeEventListener('change', checkIfMobile); //remove the listener when dismantling
+    };
   }, []);
 
   // JSX
@@ -49,44 +60,21 @@ const Header = () => {
         </NavLink>
 
         {/* Desktop */}
-        {!isMobile && (
-          <nav className={clsx(s.nav, !isHome && s.outHome)}>
-            <ul>
-              <li>
-                <Link to="/">Головна</Link>
-              </li>
-              <li>
-                <Link to="/stories">Історії</Link>
-              </li>
-              <li>
-                <Link to="/travellers">Мандрівники</Link>
-              </li>
-              <li>
-                <AppButton
-                  href="/auth/login"
-                  variant={isHome ? 'init' : 'grey'}
-                  width="58px"
-                  height="35px"
-                >
-                  Вхід
-                </AppButton>
-              </li>
-              <li>
-                <AppButton
-                  href="/auth/register"
-                  variant={isHome ? 'dark' : 'blue'}
-                  width="113px"
-                  height="35px"
-                >
-                  Реєстрація
-                </AppButton>
-              </li>
-            </ul>
-          </nav>
-        )}
+        <div className={s.linksWrap}>
+          {!isMobile && (
+            <div className={s.linksWrap}>
+              <Navigation className={s.nav} navLinks={navLinks} />
+              <AuthButtons isMobile={isMobile} isHome={isHome} />
+            </div>
+          )}
+        </div>
 
         {isMobile && (
-          <AppButton variant={isHome ? 'init' : 'grey'} onClick={toggleMenu}>
+          <AppButton
+            className={s.menuButton}
+            variant={isHome ? 'init' : 'grey'}
+            onClick={toggleMenu}
+          >
             {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
           </AppButton>
         )}
@@ -95,45 +83,10 @@ const Header = () => {
       {/* Mobile */}
       {isMobile && isMenuOpen && (
         <div className={clsx(s.overlay, isMenuOpen && s.isOpen)}>
-          <nav className={s.nav}>
-            <ul>
-              <li>
-                <Link to="/" onClick={toggleMenu}>
-                  Головна
-                </Link>
-              </li>
-              <li>
-                <Link to="/stories" onClick={toggleMenu}>
-                  Історії
-                </Link>
-              </li>
-              <li>
-                <Link to="/travellers" onClick={toggleMenu}>
-                  Мандрівники
-                </Link>
-              </li>
-              <li>
-                <AppButton
-                  href="/auth/login"
-                  variant="grey"
-                  width="355px"
-                  height="35px"
-                >
-                  Вхід
-                </AppButton>
-              </li>
-              <li>
-                <AppButton
-                  href="/auth/register"
-                  variant="blue"
-                  width="355px"
-                  height="35px"
-                >
-                  Реєстрація
-                </AppButton>
-              </li>
-            </ul>
-          </nav>
+          <div className={s.linksWrap}>
+            <Navigation className={s.nav} navLinks={navLinks} />
+            <AuthButtons />
+          </div>
         </div>
       )}
     </Container>

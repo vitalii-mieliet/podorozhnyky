@@ -1,0 +1,21 @@
+.buttonWrap {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.buttonWrap button {
+  width: 335px;
+  height: 35px;
+}
+
+@media screen and (min-width: 1440px) {
+  .buttonWrap {
+    flex-direction: row;
+  }
+
+  .buttonWrap .loginButton {
+    width: 58px;
+  }
+}
