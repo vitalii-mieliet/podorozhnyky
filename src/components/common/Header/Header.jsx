@@ -63,7 +63,7 @@ const Header = () => {
         <div className={s.linksWrap}>
           {!isMobile && (
             <div className={s.linksWrap}>
-              <Navigation className={s.nav} navLinks={navLinks} />
+              <Navigation navLinks={navLinks} />
               <AuthButtons isMobile={isMobile} isHome={isHome} />
             </div>
           )}
@@ -75,16 +75,31 @@ const Header = () => {
             variant={isHome ? 'init' : 'grey'}
             onClick={toggleMenu}
           >
-            {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
+            {isMenuOpen ? (
+              <BurgerClose
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-nav"
+                aria-label="Відкрити меню"
+              />
+            ) : (
+              <BurgerMenu
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-nav"
+                aria-label="Відкрити меню"
+              />
+            )}
           </AppButton>
         )}
       </header>
 
       {/* Mobile */}
       {isMobile && isMenuOpen && (
-        <div className={clsx(s.overlay, isMenuOpen && s.isOpen)}>
+        <div
+          className={clsx(s.overlay, isMenuOpen && s.isOpen)}
+          id="mobile-nav"
+        >
           <div className={s.linksWrap}>
-            <Navigation className={s.nav} navLinks={navLinks} />
+            <Navigation navLinks={navLinks} />
             <AuthButtons />
           </div>
         </div>

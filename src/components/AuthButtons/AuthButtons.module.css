@@ -5,7 +5,7 @@
   gap: 16px;
 }
 
-.buttonWrap button {
+.buttonWrap a {
   width: 335px;
   height: 35px;
 }
@@ -17,5 +17,9 @@
 
   .buttonWrap .loginButton {
     width: 58px;
+  }
+
+  .buttonWrap .register {
+    width: 113px;
   }
 }
