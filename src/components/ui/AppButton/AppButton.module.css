@@ -1,0 +1,113 @@
+/* shared */
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 18px;
+
+  border-radius: 8px;
+  cursor: pointer;
+  width: auto;
+}
+
+.button--sm {
+  min-width: 58px;
+  padding: 4px 10px;
+}
+
+.button--md {
+  min-width: 113px;
+  padding: 6px 12px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* blue  */
+
+.blue {
+  border: 1px solid var(--color-royal-blue);
+  color: var(--color-white);
+  background-color: var(--color-royal-blue);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.blue:focus-visible {
+  outline: 2px solid var(--color-royal-blue);
+  outline-offset: 2px;
+}
+.blue:hover {
+  background-color: var(--color-royal-blue-lighter);
+  color: var(--color-scheme-2-text);
+}
+
+.blue:active {
+  background-color: var(--color-royal-blue-light);
+  color: var(--color-scheme-2-text);
+}
+
+.blue:disabled {
+  background-color: var(--color-royal-blue);
+}
+
+.blue:disabled:hover,
+.blue:disabled:focus {
+  cursor: not-allowed;
+  color: var(--color-white);
+}
+
+/* grey button*/
+.grey {
+  border: 1px solid var(--color-scheme-2-border);
+  color: var(--color-neutral-darkest);
+  background-color: var(--opacity-neutral-darkest-5);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.grey:focus-visible {
+  outline: 2px solid var(--color-royal-blue);
+  outline-offset: 2px;
+}
+
+.grey:hover {
+  border: 1px solid var(--opacity-transparent);
+  background-color: var(--color-royal-blue);
+  color: var(--color-white);
+}
+
+.grey:active {
+  background-color: var(--color-royal-blue-darker);
+}
+
+.grey:disabled {
+  border: 1px solid var(--opacity-transparent);
+  background-color: var(--opacity-neutral-darkest-5);
+}
+
+.grey:disabled:hover,
+.grey:disabled:focus {
+  color: var(--color-neutral-darkest);
+}
+
+a[aria-disabled='true'].blue,
+a[aria-disabled='true'].grey {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
