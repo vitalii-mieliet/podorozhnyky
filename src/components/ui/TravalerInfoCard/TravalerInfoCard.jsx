@@ -6,7 +6,7 @@ import { AppButton } from '../../ui/AppButton';
 function TravelerInfoCard({ userData = {} }) {
   const { avatar, fullName, job, description } = userData;
   const userAvatar = avatar || avatarPlaceholder;
-  //dsa
+
   return (
     <article className={css.travelerInfoCard}>
       <img
