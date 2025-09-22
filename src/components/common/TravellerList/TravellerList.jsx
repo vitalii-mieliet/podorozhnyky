@@ -1,7 +1,7 @@
-import TravelerCard from '../TravelerCard/TravelerCard';
-import css from './TravelerList.module.css';
+import TravellerCard from '../TravellerCard/TravellerCard';
+import css from './TravellerList.module.css';
 
-function TravelerList({ travelers = [] }) {
+function TravellerList({ travelers = [] }) {
   if (!Array.isArray(travelers)) {
     return null;
   }
@@ -10,11 +10,11 @@ function TravelerList({ travelers = [] }) {
     <ul className={css.cardsGrid}>
       {travelers.map((t) => (
         <li key={t._id} className={css.cardItem}>
-          <TravelerCard userData={t} />
+          <TravellerCard userData={t} />
         </li>
       ))}
     </ul>
   );
 }
 
-export default TravelerList;
+export default TravellerList;

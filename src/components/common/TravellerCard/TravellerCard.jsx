@@ -1,9 +1,9 @@
 import React from 'react';
-import css from './TravelerInfoCard.module.css';
+import css from './TravellerCard.module.css';
 import avatarPlaceholder from '../../../assets/icons/AvatarImage.svg';
-import { AppButton } from '../../ui/AppButton';
+import AppButton from '../../ui/AppButton/AppButton';
 
-function TravelerInfoCard({ userData = {} }) {
+function TravellerCard({ userData = {} }) {
   const { avatar, fullName, job, description } = userData;
   const userAvatar = avatar || avatarPlaceholder;
 
@@ -23,7 +23,8 @@ function TravelerInfoCard({ userData = {} }) {
           {description ||
             'adipisicing elit. Id, impedit error. Libero aspernatur quo a.'}
         </p>
-        <AppButton href="#" variant="primary">
+
+        <AppButton href="#" variant="grey">
           Переглянути профіль
         </AppButton>
       </div>
@@ -31,4 +32,4 @@ function TravelerInfoCard({ userData = {} }) {
   );
 }
 
-export default TravelerInfoCard;
+export default TravellerCard;
