@@ -1,0 +1,32 @@
+.profilePage {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid transparent;
+}
+
+.activeTab {
+  border-color: black;
+  font-weight: bold;
+}
+
+.storiesSection {
+  margin-top: 1rem;
+}
+
+.loading {
+  font-style: italic;
+}
