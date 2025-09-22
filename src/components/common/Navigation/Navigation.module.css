@@ -4,53 +4,16 @@
 .navList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   justify-content: center;
   align-items: center;
   padding-bottom: 24px;
 }
 
-.navLink {
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 0px 8px;
-  font-family: var(--font-family);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  color: var(--color-scheme-2-text);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition:
-    background-color var(--transition-base),
-    border-color var(--transition-base);
-}
-
-@media (pointer: fine) and (hover: hover) {
-  .navLink:hover,
-  .navLink:focus-visible {
-    outline: none;
-    border: 1px solid var(--color-scheme-1-text);
-  }
-}
-
-.navLink:active {
-  border-color: var(--color-scheme-1-text);
-  background: var(--color-neutral-lighter);
-}
-
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .navList {
     flex-direction: row;
-    gap: 32px;
+    gap: 16px;
     margin: auto;
-  }
-}
-
-@media (min-width: 1440px) {
-  .navLink {
-    font-size: 18px;
   }
 }
