@@ -1,7 +1,6 @@
 import React from 'react';
 import AppButton from '../ui/AppButton/AppButton';
 import s from './AuthButtons.module.css';
-import clsx from 'clsx';
 
 function AuthButtons({ isHome, isMenuOpen }) {
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -26,6 +26,7 @@ const Header = () => {
   const isHome = location.pathname === '/';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const overlayRef = useRef();
 
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -65,6 +66,18 @@ const Header = () => {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    if (isMobile && isMenuOpen && overlayRef.current) {
+      const timeOutId = setTimeout(() => {
+        const firstLink = overlayRef.current.querySelector('a, button');
+        if (firstLink) {
+          firstLink.focus();
+        }
+      }, 0);
+      return () => clearTimeout(timeOutId);
+    }
+  }, [isMobile, isMenuOpen]);
+
   // if authorizided
 
   const extendedNavLinks = isLoggedIn
@@ -101,10 +114,7 @@ const Header = () => {
             <div className={s.linksWrap}>
               {isLoggedIn ? (
                 <>
-                  <Navigation
-                    navLinks={extendedNavLinks}
-                    // linkClassName={s.public}
-                  />
+                  <Navigation navLinks={extendedNavLinks} />
                   <UserBar isLoggedIn={isLoggedIn} user={user} />
                 </>
               ) : (
@@ -136,6 +146,7 @@ const Header = () => {
         <div
           className={clsx(s.overlay, isMenuOpen && s.isOpen)}
           id="mobile-nav"
+          ref={overlayRef}
         >
           {isLoggedIn ? (
             <>
