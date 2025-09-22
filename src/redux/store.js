@@ -7,10 +7,10 @@ import filterReduser from './filter/slice';
 
 const rootReduser = combineReducers({
   auth: authReduser,
-  auth: userReduser,
-  auth: storiesReduser,
-  auth: travelersReduser,
-  auth: filterReduser,
+  user: userReduser,
+  stories: storiesReduser,
+  travelers: travelersReduser,
+  filter: filterReduser,
 });
 
 export const store = configureStore({
