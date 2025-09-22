@@ -14,23 +14,28 @@ import Navigation from '../Navigation/Navigation';
 import AuthButtons from '../../AuthButtons/AuthButtons';
 import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
 import UserBar from '../../ui/UserBar/UserBar';
+import useBreakpoint from '../../../hooks/useBreakpoint';
 
 const Header = () => {
-  const navLinks = [
-    { to: '/', label: 'Головна' },
-    { to: '/stories', label: 'Історії' },
-    { to: '/travelers', label: 'Мандрівники' },
-  ];
-
-  const location = useLocation();
-  const isHome = location.pathname === '/';
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const overlayRef = useRef();
-
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
+
+  const baseNavLinks = [
+    { to: '/', label: 'Головна' },
+    { to: '/stories', label: 'Історії' },
+    { to: '/travellers', label: 'Мандрівники' },
+  ];
+
+  const navLinks = isLoggedIn
+    ? baseNavLinks
+    : baseNavLinks.map((link) => ({ ...link, to: '/auth/login' }));
+
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const overlayRef = useRef();
 
   // handler
   const toggleMenu = () => {
@@ -38,36 +43,21 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 1439px)');
-    const checkIfMobile = () => setIsMobile(mediaQuery.matches);
-
-    checkIfMobile(); //Listen to when start
-
-    mediaQuery.addEventListener('change', checkIfMobile);
-
-    return () => {
-      mediaQuery.removeEventListener('change', checkIfMobile); //remove the listener when dismantling
-    };
-  }, []);
-
-  useEffect(() => {
     const handleEscKey = (e) => {
       if (e.key === 'Escape' && isMenuOpen) {
         setIsMenuOpen(false);
       }
     };
-
     if (isMenuOpen) {
       document.addEventListener('keydown', handleEscKey);
     }
-
     return () => {
       document.removeEventListener('keydown', handleEscKey);
     };
   }, [isMenuOpen]);
 
   useEffect(() => {
-    if (isMobile && isMenuOpen && overlayRef.current) {
+    if ((isMobile || isTablet) && isMenuOpen && overlayRef.current) {
       const timeOutId = setTimeout(() => {
         const firstLink = overlayRef.current.querySelector('a, button');
         if (firstLink) {
@@ -85,90 +75,119 @@ const Header = () => {
     // eslint-disable-next-line
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   // if authorizided
 
   const extendedNavLinks = isLoggedIn
-    ? [
-        ...navLinks,
-        { to: '/profile', label: 'Мій Профіль' },
-        {
-          to: '/publish',
-          label: 'Опублікувати історію ',
-          linkClassName: s.publish,
-        },
-      ]
+    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
     : navLinks;
 
   // JSX
   return (
-    <Container>
-      <header className={s.header}>
-        <NavLink to="/">
-          <Logo
-            className={s.logo}
-            style={{
-              fill:
-                isHome && !isMenuOpen
-                  ? 'var(--color-white)'
-                  : 'var(--color-scheme-1-text)',
-            }}
-          />
-        </NavLink>
+    <>
+      <header>
+        <Container>
+          <div className={s.header}>
+            <NavLink to="/">
+              <Logo
+                aria-label="Логотип"
+                className={s.logo}
+                style={{
+                  fill:
+                    isHome && !isMenuOpen
+                      ? 'var(--color-white)'
+                      : 'var(--color-scheme-1-text)',
+                }}
+              />
+            </NavLink>
+            {/* Desktop */}
+            <>
+              {isDesktop && (
+                <div className={s.linksWrap}>
+                  {isLoggedIn ? (
+                    <>
+                      <Navigation navLinks={extendedNavLinks} />
+                      <div className={s.descktopWrapBtn}>
+                        <AppButton className={s.publish} href="/new-story">
+                          Опублікувати історію
+                        </AppButton>
+                        <UserBar isLoggedIn={isLoggedIn} user={user} />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Navigation navLinks={extendedNavLinks} />
+                      <AuthButtons isHome={isHome} />
+                    </>
+                  )}
+                </div>
+              )}
+            </>
+            {(isMobile || isTablet) && (
+              <div className={s.tabletWrapButn}>
+                {isLoggedIn && !isMobile && (
+                  <AppButton className={s.publish} href="/new-story">
+                    Опублікувати історію
+                  </AppButton>
+                )}
+                <AppButton
+                  className={s.menuButton}
+                  variant={isHome ? 'init' : 'grey'}
+                  onClick={toggleMenu}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-nav"
+                  aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
+                >
+                  {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
+                </AppButton>
+              </div>
+            )}
+          </div>
+        </Container>
+      </header>
 
-        {/* Desktop */}
-        <>
-          {!isMobile && (
-            <div className={s.linksWrap}>
+      {/* Mobile */}
+      {isMenuOpen && (
+        <div
+          className={clsx(s.overlay, isMenuOpen && s.isOpen)}
+          id="mobile-nav"
+          ref={overlayRef}
+          role="dialog"
+          aria-modal="true"
+        >
+          <Container>
+            <div className={s.mobileMenu}>
               {isLoggedIn ? (
                 <>
                   <Navigation navLinks={extendedNavLinks} />
+                  {isMobile && (
+                    <AppButton className={s.publish} href="/new-story">
+                      Опублікувати історію
+                    </AppButton>
+                  )}
                   <UserBar isLoggedIn={isLoggedIn} user={user} />
                 </>
               ) : (
                 <>
                   <Navigation navLinks={extendedNavLinks} />
-                  <AuthButtons isHome={isHome} />
+                  <AuthButtons isHome={isHome} isMenuOpen={isMenuOpen} />
                 </>
               )}
             </div>
-          )}
-        </>
-
-        {isMobile && (
-          <AppButton
-            className={s.menuButton}
-            variant={isHome ? 'init' : 'grey'}
-            onClick={toggleMenu}
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-nav"
-            aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
-          >
-            {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
-          </AppButton>
-        )}
-      </header>
-
-      {/* Mobile */}
-      {isMobile && isMenuOpen && (
-        <div
-          className={clsx(s.overlay, isMenuOpen && s.isOpen)}
-          id="mobile-nav"
-          ref={overlayRef}
-        >
-          {isLoggedIn ? (
-            <>
-              <Navigation navLinks={extendedNavLinks} />
-              <UserBar isLoggedIn={isLoggedIn} user={user} />
-            </>
-          ) : (
-            <>
-              <Navigation navLinks={extendedNavLinks} />
-              <AuthButtons isHome={isHome} isMenuOpen={isMenuOpen} />
-            </>
-          )}
+          </Container>
         </div>
       )}
-    </Container>
+    </>
   );
 };
 

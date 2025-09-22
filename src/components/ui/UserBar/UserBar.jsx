@@ -4,9 +4,16 @@ import { useDispatch } from 'react-redux';
 
 import { authActions } from '../../../redux/auth/slice';
 import Logout from '../../../assets/icons/logout.svg?react';
+import { useNavigate } from 'react-router-dom';
 
 function UserBar({ isLoggedIn, user }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(authActions.logout());
+    navigate('/');
+  };
 
   // JSX
   return (
@@ -24,7 +31,7 @@ function UserBar({ isLoggedIn, user }) {
           <button
             className={s.logoutBtn}
             aria-label="Вихід"
-            onClick={() => dispatch(authActions.logout())}
+            onClick={handleLogout}
           >
             <Logout />
           </button>

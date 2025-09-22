@@ -18,7 +18,8 @@ function AuthButtons({ isHome, isMenuOpen }) {
 
         <AppButton
           href="/auth/register"
-          variant="blue"
+          variant={(isMenuOpen || !isHome) && 'blue'}
+          className={isHome && !isMenuOpen && s.white}
           aria-label="Створити акаунт"
         >
           Реєстрація
