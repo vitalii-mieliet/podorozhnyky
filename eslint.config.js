@@ -24,10 +24,10 @@ export default defineConfig([
         ecmaFeatures: { jsx: true },
       },
     },
-    // plugins: {
-    //   'react-hooks': reactHooks,
-    //   'react-refresh': reactRefresh,
-    // }, //цей плагін блокує підсвічування підказок eslint(правило для eslint вже є в цьому рядку reactHooks.configs["recommended-latest"])
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },

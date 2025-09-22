@@ -78,6 +78,13 @@ const Header = () => {
     }
   }, [isMobile, isMenuOpen]);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+    // eslint-disable-next-line
+  }, [location.pathname]);
+
   // if authorizided
 
   const extendedNavLinks = isLoggedIn
