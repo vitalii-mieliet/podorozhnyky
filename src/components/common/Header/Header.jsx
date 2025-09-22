@@ -29,7 +29,9 @@ const Header = () => {
 
   const navLinks = isLoggedIn
     ? baseNavLinks
-    : baseNavLinks.map((link) => ({ ...link, to: '/auth/login' }));
+    : baseNavLinks.map((link) =>
+        link.to === '/' ? link : { ...link, to: 'auth/login' }
+      );
 
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
   const location = useLocation();
