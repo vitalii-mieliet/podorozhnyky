@@ -1,6 +1,196 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import clsx from 'clsx';
+
+import BurgerMenu from '../../../assets/icons/menu.svg?react';
+import BurgerClose from '../../../assets/icons/close.svg?react';
+import Logo from '../Header/Logo.svg?react';
+
+import Container from '../Container/Container';
+import s from './Header.module.css';
+import AppButton from '../../ui/AppButton/AppButton';
+import Navigation from '../Navigation/Navigation';
+import AuthButtons from '../../AuthButtons/AuthButtons';
+import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
+import UserBar from '../../ui/UserBar/UserBar';
+import useBreakpoint from '../../../hooks/useBreakpoint';
+
 const Header = () => {
-  return <div>Header</div>;
+  //data from Redux
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
+  const baseNavLinks = [
+    { to: '/', label: 'Головна' },
+    { to: '/stories', label: 'Історії' },
+    { to: '/travellers', label: 'Мандрівники' },
+  ];
+
+  const navLinks = isLoggedIn
+    ? baseNavLinks
+    : baseNavLinks.map((link) =>
+        link.to === '/' ? link : { ...link, to: 'auth/login' }
+      );
+
+  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const overlayRef = useRef();
+
+  // handler
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+    if (isMenuOpen) {
+      document.addEventListener('keydown', handleEscKey);
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    if ((isMobile || isTablet) && isMenuOpen && overlayRef.current) {
+      const timeOutId = setTimeout(() => {
+        const firstLink = overlayRef.current.querySelector('a, button');
+        if (firstLink) {
+          firstLink.focus();
+        }
+      }, 0);
+      return () => clearTimeout(timeOutId);
+    }
+  }, [isMobile, isMenuOpen]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+    // eslint-disable-next-line
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
+  // if authorizided
+
+  const extendedNavLinks = isLoggedIn
+    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
+    : navLinks;
+
+  // JSX
+  return (
+    <>
+      <header>
+        <Container>
+          <div className={s.header}>
+            <NavLink to="/">
+              <Logo
+                aria-label="Логотип"
+                className={s.logo}
+                style={{
+                  fill:
+                    isHome && !isMenuOpen
+                      ? 'var(--color-white)'
+                      : 'var(--color-scheme-1-text)',
+                }}
+              />
+            </NavLink>
+            {/* Desktop */}
+            <>
+              {isDesktop && (
+                <div className={s.linksWrap}>
+                  {isLoggedIn ? (
+                    <>
+                      <Navigation navLinks={extendedNavLinks} />
+                      <div className={s.descktopWrapBtn}>
+                        <AppButton className={s.publish} href="/new-story">
+                          Опублікувати історію
+                        </AppButton>
+                        <UserBar isLoggedIn={isLoggedIn} user={user} />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Navigation navLinks={extendedNavLinks} />
+                      <AuthButtons isHome={isHome} />
+                    </>
+                  )}
+                </div>
+              )}
+            </>
+            {(isMobile || isTablet) && (
+              <div className={s.tabletWrapButn}>
+                {isLoggedIn && !isMobile && (
+                  <AppButton className={s.publish} href="/new-story">
+                    Опублікувати історію
+                  </AppButton>
+                )}
+                <AppButton
+                  className={s.menuButton}
+                  variant={isHome ? 'init' : 'grey'}
+                  onClick={toggleMenu}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="mobile-nav"
+                  aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
+                >
+                  {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
+                </AppButton>
+              </div>
+            )}
+          </div>
+        </Container>
+      </header>
+
+      {/* Mobile */}
+      {isMenuOpen && (
+        <div
+          className={clsx(s.overlay, isMenuOpen && s.isOpen)}
+          id="mobile-nav"
+          ref={overlayRef}
+          role="dialog"
+          aria-modal="true"
+        >
+          <Container>
+            <div className={s.mobileMenu}>
+              {isLoggedIn ? (
+                <>
+                  <Navigation navLinks={extendedNavLinks} />
+                  {isMobile && (
+                    <AppButton className={s.publish} href="/new-story">
+                      Опублікувати історію
+                    </AppButton>
+                  )}
+                  <UserBar isLoggedIn={isLoggedIn} user={user} />
+                </>
+              ) : (
+                <>
+                  <Navigation navLinks={extendedNavLinks} />
+                  <AuthButtons isHome={isHome} isMenuOpen={isMenuOpen} />
+                </>
+              )}
+            </div>
+          </Container>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Header;
