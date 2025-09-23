@@ -62,13 +62,14 @@ const AppButton = ({
     ...props,
   };
 
-  if (href?.startsWith('http')) {
+  if (href && /^https?:\/\//.test(href)) {
     commonProps.rel = 'noopener noreferrer';
   }
 
   if (href) {
     return (
       <a
+        role={disabled ? 'button' : undefined}
         href={disabled ? undefined : href}
         aria-disabled={disabled}
         onClick={(e) => {
