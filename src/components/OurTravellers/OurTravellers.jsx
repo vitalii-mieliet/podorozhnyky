@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useBreakpoint from '../../hooks/useBreakpoint.js';
+import Section from '../common/Section/Section.jsx';
 import Container from '../common/Container/Container.jsx';
 import TravellerList from '../common/TravellerList/TravellerList.jsx';
 import AppButton from '../ui/AppButton/AppButton.jsx';
@@ -10,12 +11,12 @@ const OurTravellers = ({
   initialVisibleCount = 4, // кількість карток на сторінці
   loadMoreCount = 3, // кількість карток що підвантажуются при кліку на кнопку
 }) => {
-  const { isMobile, isTablet, isDesktop } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
 
   useEffect(() => {
     setVisibleCount(initialVisibleCount);
-  }, [isMobile, isTablet, isDesktop, initialVisibleCount]);
+  }, [initialVisibleCount]);
 
   const showLoadMoreButton = travelers.length > visibleCount;
 
@@ -24,8 +25,8 @@ const OurTravellers = ({
   };
 
   return (
-    <Container>
-      <section className={styles.ourTravellersSection}>
+    <Section>
+      <Container>
         <h2 className={styles.sectionTitle}>Наші Мандрівники</h2>
         <TravellerList travelers={travelers.slice(0, visibleCount)} />
 
@@ -42,8 +43,8 @@ const OurTravellers = ({
             </AppButton>
           </div>
         )}
-      </section>
-    </Container>
+      </Container>
+    </Section>
   );
 };
 
