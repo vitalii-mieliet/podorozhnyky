@@ -1,0 +1,33 @@
+.storiesGrid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 24px;  
+
+  /* 1 колонка за замовчуванням для вузьких екранів */
+  grid-template-columns: 1fr;
+}
+
+/* 3 колонки на мобільній версії  */
+@media (min-width: 500px) {
+  .storiesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet  4 колонки */
+@media (min-width: var(--bp-tablet)) {
+  .storiesGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+}
+
+/* Desktop  3 колонки */
+@media (min-width: var(--bp-desktop)) {
+  .storiesGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}

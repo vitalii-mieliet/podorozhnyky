@@ -16,6 +16,7 @@ const TravellerPage = lazy(() => import('./pages/TravellerPage/TravellerPage'));
 const TravellersPage = lazy(
   () => import('./pages/TravellersPage/TravellersPage')
 );
+
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage/NotFoundPage'));
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="auth/:authType" element={<AuthPage />} />
             <Route path="stories" element={<StoriesPage />} />
-            <Route path="stories/:storyId" element={<StoryPage />} />
+            <Route path="stories/story/:storyId" element={<StoryPage />} />
             <Route path="travellers" element={<TravellersPage />} />
             <Route path="travellers/:travellerId" element={<TravellerPage />} />
           </Route>
