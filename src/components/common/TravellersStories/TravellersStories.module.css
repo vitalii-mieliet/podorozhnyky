@@ -3,7 +3,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 24px; /* між картками */
+  gap: 24px;  
 
   /* 1 колонка за замовчуванням для вузьких екранів */
   grid-template-columns: 1fr;
