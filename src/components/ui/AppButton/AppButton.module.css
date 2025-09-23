@@ -1,5 +1,4 @@
 /* shared */
-
 .button {
   display: inline-flex;
   justify-content: center;
@@ -28,13 +27,15 @@
   width: 100%;
 }
 
-.button:disabled {
+/* Загальні стилі для disabled */
+.button:disabled,
+a[aria-disabled='true'] {
   opacity: 0.3;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
-/* blue  */
-
+/* blue */
 .blue {
   border: 1px solid var(--color-royal-blue);
   color: var(--color-white);
@@ -45,31 +46,18 @@
     border-color var(--transition-base);
 }
 
-.blue:focus-visible {
-  outline: 2px solid var(--color-royal-blue);
-  outline-offset: 2px;
-}
-.blue:hover {
-  background-color: var(--color-royal-blue-lighter);
-  color: var(--color-scheme-2-text);
-}
-
 .blue:active {
   background-color: var(--color-royal-blue-light);
   color: var(--color-scheme-2-text);
 }
 
-.blue:disabled {
+.blue:disabled,
+a[aria-disabled='true'].blue {
   background-color: var(--color-royal-blue);
-}
-
-.blue:disabled:hover,
-.blue:disabled:focus {
-  cursor: not-allowed;
   color: var(--color-white);
 }
 
-/* grey button*/
+/* grey */
 .grey {
   border: 1px solid var(--color-scheme-2-border);
   color: var(--color-neutral-darkest);
@@ -80,34 +68,30 @@
     border-color var(--transition-base);
 }
 
-.grey:focus-visible {
-  outline: 2px solid var(--color-royal-blue);
-  outline-offset: 2px;
-}
-
-.grey:hover {
-  border: 1px solid var(--opacity-transparent);
-  background-color: var(--color-royal-blue);
-  color: var(--color-white);
-}
-
 .grey:active {
   background-color: var(--color-royal-blue-darker);
 }
 
-.grey:disabled {
+.grey:disabled,
+a[aria-disabled='true'].grey {
   border: 1px solid var(--opacity-transparent);
   background-color: var(--opacity-neutral-darkest-5);
-}
-
-.grey:disabled:hover,
-.grey:disabled:focus {
   color: var(--color-neutral-darkest);
 }
 
-a[aria-disabled='true'].blue,
-a[aria-disabled='true'].grey {
-  opacity: 0.3;
-  cursor: not-allowed;
-  pointer-events: none;
+@media (hover: hover) and (pointer: fine) {
+  .blue:hover,
+  .blue:focus-visible {
+    outline: none;
+    background-color: var(--color-royal-blue-lighter);
+    color: var(--color-scheme-2-text);
+  }
+
+  .grey:hover,
+  .grey:focus-visible {
+    outline: none;
+    border: 1px solid var(--opacity-transparent);
+    background-color: var(--color-royal-blue);
+    color: var(--color-white);
+  }
 }

@@ -24,10 +24,6 @@ export default defineConfig([
         ecmaFeatures: { jsx: true },
       },
     },
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
