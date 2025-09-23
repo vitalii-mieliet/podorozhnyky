@@ -1,113 +1,107 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
-import styles from './ProfilePage.module.css';
-import Container from '../../components/common/Container/Container';
-import Section from '../../components/common/Section/Section';
 import AppTabs from '../../components/ui/AppTabs/AppTabs';
 
-const API_BASE = 'https://plantains-app.onrender.com/api';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../../components/common/AppToastContainer/AppToastContainer';
+
+import styles from './ProfilePage.module.css';
+import { fetchUserInfo } from '../../redux/user/operations';
+import { fetchUserStories } from '../../redux/stories/operations';
+import {
+  selectUser,
+  selectUserError,
+  selectUserLoading,
+} from '../../redux/user/selectors';
+import {
+  selectStories,
+  selectStoriesError,
+  selectStoriesLoading,
+} from '../../redux/stories/selectors';
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+
+  const user = useSelector(selectUser);
+  const isUserLoading = useSelector(selectUserLoading);
+  const userError = useSelector(selectUserError);
+
+  const stories = useSelector(selectStories);
+  const isStoriesLoading = useSelector(selectStoriesLoading);
+  const storiesError = useSelector(selectStoriesError);
+
   const [activeTab, setActiveTab] = useState('saved');
-  const [stories, setStories] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const token = localStorage.getItem('token');
-
-  // Fetch authenticated user info
+  // Fetch user info once on mount
   useEffect(() => {
-    if (!token) {
-      console.warn('No auth token');
-      return;
+    dispatch(fetchUserInfo());
+  }, [dispatch]);
+
+  // Fetch stories on tab chang
+  useEffect(() => {
+    if (user?._id) {
+      dispatch(fetchUserStories(activeTab));
     }
+  }, [dispatch, activeTab, user]);
 
-    fetch(`${API_BASE}/users/info`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        if (data.data) {
-          setUser(data.data);
-        } else {
-          console.error('User data missing from response:', data);
-        }
-      })
-      .catch((err) => console.error('Failed to fetch user', err));
-  }, [token]);
-
-  // Fetch stories based on user and activeTab
+  // Toast notifications for user error
   useEffect(() => {
-    if (!user || !token) return;
+    if (userError) {
+      showErrorToast(`Помилка завантаження профілю: ${userError}`);
+    }
+  }, [userError]);
 
-    const endpoint =
-      activeTab === 'saved'
-        ? `${API_BASE}/users/save-story`
-        : `${API_BASE}/users/created-stories`;
+  // Toast notifications for stories error
+  useEffect(() => {
+    if (storiesError) {
+      showErrorToast(`Помилка завантаження історій: ${storiesError}`);
+    }
+  }, [storiesError]);
 
-    setLoading(true);
+  // Optional success toast
+  useEffect(() => {
+    if (user?._id && !userError) {
+      showSuccessToast(`Профіль успішно завантажено`);
+    }
+  }, [user, userError]);
 
-    fetch(endpoint, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        const storiesArray = Array.isArray(data.data) ? data.data : [];
-        setStories(storiesArray);
-      })
-      .catch((err) => {
-        console.error('Failed to fetch stories', err);
-        setStories([]);
-      })
-      .finally(() => setLoading(false));
-  }, [activeTab, user, token]);
-
-  // Render loading state if user data not loaded yet
-  if (!user) {
+  if (isUserLoading) {
     return <div>Завантаження профілю...</div>;
   }
 
+  if (userError || !user) {
+    return <div>⚠️ Помилка завантаження профілю</div>;
+  }
+
   return (
-    <Container>
-      <Section>
-        <div className={styles.profilePage}>
-          {/* Traveller Info with real user ID */}
-          <TravellerInfo travellerId={user._id} />
+    <>
+      <TravellerInfo user={user} />
 
-          {/* Tabs */}
-          <AppTabs
-            value={activeTab}
-            onChange={setActiveTab}
-            options={[
-              { label: 'Збережені історії', value: 'saved' },
-              { label: 'Мої історії', value: 'my' },
-            ]}
-            variant="contained"
-            className={styles.tabs}
-          />
+      <AppTabs
+        value={activeTab}
+        onChange={setActiveTab}
+        options={[
+          { label: 'Збережені історії', value: 'saved' },
+          { label: 'Мої історії', value: 'my' },
+        ]}
+        variant="contained"
+        className={styles.tabs}
+      />
 
-          {/* Stories */}
-          <div className={styles.storiesSection}>
-            {loading ? (
-              <div className={styles.loading}>Завантаження історій...</div>
-            ) : (
-              <TravellersStories stories={stories} />
-            )}
-          </div>
-        </div>
-      </Section>
-    </Container>
+      <div className={styles.storiesSection}>
+        {isStoriesLoading && (
+          <div className={styles.loading}>Завантаження історій...</div>
+        )}
+        {!isStoriesLoading && !storiesError && (
+          <TravellersStories stories={stories} />
+        )}
+      </div>
+    </>
   );
 };
 

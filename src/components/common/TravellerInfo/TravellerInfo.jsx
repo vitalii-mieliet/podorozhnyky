@@ -24,8 +24,8 @@ const TravellerInfo = ({ user }) => {
   const altText = user.name || 'Traveller avatar';
 
   return (
-    <Section className={travellerSection}>
-      <Container className={travellerContainer}>
+    <Section className={styles.travellerSection}>
+      <Container className={styles.travellerContainer}>
         <div className={styles.travellerInfo}>
           <img className={styles.avatar} src={avatarSrc} alt={altText} />
 
