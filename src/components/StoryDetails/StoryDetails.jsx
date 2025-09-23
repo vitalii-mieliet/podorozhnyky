@@ -7,14 +7,10 @@ const StoryDetails = ({ storyData }) => {
   if (!storyData) {
     return null;
   }
-
-  // Деструктуризуємо дані, включаючи `owner`
+ 
   const { img, category, title, article, owner, date } = storyData;
-
-  // ВИПРАВЛЕНО: Додаємо безпечні перевірки та запасні значення
-  // Якщо owner існує, беремо його аватар, інакше - ставимо плейсхолдер.
-  const authorAvatarUrl = owner?.avatar ? owner.avatar : '/images/placeholder.png';
-  // Якщо owner існує, беремо його ім'я, інакше - пишемо "Невідомий автор".
+ 
+  const authorAvatarUrl = owner?.avatar ? owner.avatar : '/images/placeholder.png'; 
   const authorName = owner?.name || 'Невідомий автор';
 
   return (
@@ -24,11 +20,11 @@ const StoryDetails = ({ storyData }) => {
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.meta}>
           <div className={styles.authorInfo}>
-            {/* Використовуємо безпечні змінні */}
+           
             <img src={authorAvatarUrl} alt={authorName} className={styles.authorAvatar} />
             <div>
               <p className={styles.authorLabel}>Автор статті</p>
-              {/* Використовуємо безпечні змінні */}
+            
               <p className={styles.authorName}>{authorName}</p>
             </div>
           </div>

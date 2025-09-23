@@ -7,12 +7,10 @@ import Section from '../../components/common/Section/Section';
 import Loader from '../../components/common/Loader/Loader';
 
 const StoriesPage = () => {
-  const dispatch = useDispatch();
-  // Отримуємо дані зі сховища Redux
+  const dispatch = useDispatch(); 
   const { items: stories, isLoading, error } = useSelector((state) => state.stories);
 
-  useEffect(() => {
-    // Відправляємо запит на бекенд при завантаженні сторінки
+  useEffect(() => { 
     dispatch(fetchAllStories());
   }, [dispatch]);
 
@@ -23,7 +21,7 @@ const StoriesPage = () => {
 
         {isLoading && <Loader />}
         {error && <p>Виникла помилка: {error}</p>}
-        {/* Передаємо завантажені історії у компонент */}
+         
         {!isLoading && !error && <TravellersStories stories={stories} />}
       </Container>
     </Section>

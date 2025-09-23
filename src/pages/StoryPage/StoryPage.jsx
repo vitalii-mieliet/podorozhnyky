@@ -9,13 +9,11 @@ import Loader from '../../components/common/Loader/Loader';
 const StoryPage = () => {
   const { storyId } = useParams();
   const dispatch = useDispatch();
-  
-  // Отримуємо дані про поточну історію зі сховища Redux
+   
   const { currentStory, isLoading, error } = useSelector((state) => state.stories);
 
   useEffect(() => {
-    if (storyId) {
-      // Відправляємо запит на бекенд, якщо є storyId
+    if (storyId) { 
       dispatch(fetchStoryById(storyId));
     }
   }, [dispatch, storyId]);
@@ -23,8 +21,7 @@ const StoryPage = () => {
   return (
     <Container>
       {isLoading && <Loader />}
-      {error && <p>Помилка: {error}</p>}
-      {/* Передаємо завантажену історію у компонент */}
+      {error && <p>Помилка: {error}</p>} 
       {!isLoading && currentStory && <StoryDetails storyData={currentStory} />}
     </Container>
   );
