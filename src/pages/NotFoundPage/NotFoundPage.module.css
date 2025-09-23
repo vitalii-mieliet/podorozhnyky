@@ -16,7 +16,7 @@
 }
 
 /*  404 */
-.errorNumber .number {
+.number {
   font-weight: 700;
   font-size: 28px; /* mobile */
   line-height: 120%;
@@ -26,14 +26,14 @@
 }
 
 /* текст */
-.errorMessage .title {
+.errorMessageTitle {
   font-weight: 700;
   font-size: 20px;
   line-height: 150%;
   color: var(--color-scheme-1-text);
 }
 
-.errorMessage .description {
+.errorMessageDescription {
   font-size: 18px;
   font-weight: 400;
   color: var(--color-scheme-1-text);
@@ -46,17 +46,16 @@
 }
 
 .notFoundImage {
-  width: auto;
+  width: 100%;
   height: auto;
   display: block;
-  max-width: 100%;
   border-radius: 24px;
   filter: brightness(0.8);
 }
 
 /* адаптивна версія */
 @media screen and (min-width: 768px) {
-  .errorNumber .number {
+  .number {
     font-size: 44px;
   }
 
@@ -70,15 +69,15 @@
     padding-top: 48px;
   }
 
-  .errorNumber .number {
+  .number {
     font-size: 52px;
   }
 
-  .errorMessage .title {
+  .errorMessageTitle {
     font-size: 32px;
   }
 
-  .errorMessage .description {
+  .errorMessageDescription {
     font-size: 20px;
   }
 

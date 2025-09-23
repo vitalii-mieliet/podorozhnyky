@@ -38,13 +38,15 @@ const NotFoundPage = () => {
         </div>
         <div className={styles.contentWrapper}>
           <div className={styles.errorNumber}>
-            <h2 className={styles.number}>404</h2>
+            <h1 className={styles.number}>404</h1>
           </div>
 
           {/* повідомлення про не знайдену сторінку */}
           <div className={styles.errorMessage}>
-            <h3 className={styles.title}>На жаль, сторінка не знайдена :(</h3>
-            <p className={styles.description}>
+            <h2 className={styles.errorMessageTitle}>
+              На жаль, сторінка не знайдена :(
+            </h2>
+            <p className={styles.errorMessageDescription}>
               Поверніться на головну, щоб продовжити подорож
             </p>
           </div>
