@@ -30,31 +30,13 @@
   color: var(--color-neutral-dark);
 }
 
-.button {
-  width: 100%;
-}
-
-@media (min-width: 375px) {
-  .container {
-    width: 335px;
-  }
-  .button {
-    width: auto;
-    padding: 6px 12px;
-  }
-}
-
 @media (min-width: 768px) {
   .container {
     padding: 40px 32px;
-    width: 533px;
   }
 }
 
 @media (min-width: 1440px) {
-  .container {
-    width: 704px;
-  }
   .title {
     font-size: 26px;
   }
