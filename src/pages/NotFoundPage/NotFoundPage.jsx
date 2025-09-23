@@ -37,8 +37,10 @@ const NotFoundPage = () => {
           </AppButton>
         </div>
         <div className={styles.contentWrapper}>
-          <div className={styles.errorNumber}>
-            <h1 className={styles.number}>404</h1>
+          <div>
+            <h1 className={styles.number} aria-label="Помилка 404">
+              404
+            </h1>
           </div>
 
           {/* повідомлення про не знайдену сторінку */}
