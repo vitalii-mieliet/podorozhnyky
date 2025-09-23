@@ -68,7 +68,7 @@ const Header = () => {
       }, 0);
       return () => clearTimeout(timeOutId);
     }
-  }, [isMobile, isMenuOpen]);
+  }, [isMobile, isMenuOpen, isTablet]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -91,7 +91,7 @@ const Header = () => {
   // if authorizided
 
   const extendedNavLinks = isLoggedIn
-    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
+    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
     : navLinks;
 
   // JSX
@@ -121,7 +121,7 @@ const Header = () => {
                       <Navigation navLinks={extendedNavLinks} />
                       <div className={s.descktopWrapBtn}>
                         <AppButton className={s.publish} href="/new-story">
-                          Опублікувати історію
+                          Опублікувати&#160;історію
                         </AppButton>
                         <UserBar isLoggedIn={isLoggedIn} user={user} />
                       </div>
@@ -139,7 +139,7 @@ const Header = () => {
               <div className={s.tabletWrapButn}>
                 {isLoggedIn && !isMobile && (
                   <AppButton className={s.publish} href="/new-story">
-                    Опублікувати історію
+                    Опублікувати&#160;історію
                   </AppButton>
                 )}
                 <AppButton
@@ -174,7 +174,7 @@ const Header = () => {
                   <Navigation navLinks={extendedNavLinks} />
                   {isMobile && (
                     <AppButton className={s.publish} href="/new-story">
-                      Опублікувати історію
+                      Опублікувати&#160;історію
                     </AppButton>
                   )}
                   <UserBar isLoggedIn={isLoggedIn} user={user} />
