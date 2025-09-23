@@ -15,6 +15,7 @@ import AuthButtons from '../../AuthButtons/AuthButtons';
 import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
 import UserBar from '../../ui/UserBar/UserBar';
 import useBreakpoint from '../../../hooks/useBreakpoint';
+import Temp from '../../Temp/temp';
 
 const Header = () => {
   //data from Redux
@@ -90,9 +91,10 @@ const Header = () => {
 
   // if authorizided
 
-  const extendedNavLinks = isLoggedIn
-    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
-    : navLinks;
+  const extendedNavLinks =
+    isLoggedIn && user
+      ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
+      : navLinks;
 
   // JSX
   return (
@@ -112,11 +114,14 @@ const Header = () => {
                 }}
               />
             </NavLink>
+
+            <Temp />
+
             {/* Desktop */}
             <>
               {isDesktop && (
                 <div className={s.linksWrap}>
-                  {isLoggedIn ? (
+                  {isLoggedIn && user ? (
                     <>
                       <Navigation navLinks={extendedNavLinks} />
                       <div className={s.descktopWrapBtn}>
