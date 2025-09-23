@@ -16,6 +16,7 @@ const TravellerPage = lazy(() => import('./pages/TravellerPage/TravellerPage'));
 const TravellersPage = lazy(
   () => import('./pages/TravellersPage/TravellersPage')
 );
+
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage/NotFoundPage'));
 
 function App() {
