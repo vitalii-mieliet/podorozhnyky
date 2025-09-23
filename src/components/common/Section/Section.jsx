@@ -13,10 +13,14 @@
 import css from './Section.module.css';
 import clsx from 'clsx';
 
-const Section = ({ children, className }) => {
+const Section = ({ children, className, ...props }) => {
   const sectionClass = clsx(css.section, className);
 
-  return <section className={sectionClass}>{children}</section>;
+  return (
+    <section className={sectionClass} {...props}>
+      {children}
+    </section>
+  );
 };
 
 export default Section;
