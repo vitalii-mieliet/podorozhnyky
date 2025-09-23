@@ -113,8 +113,6 @@ const Header = () => {
               />
             </NavLink>
 
-            {/* for testing */}
-
             {/* Desktop */}
             <>
               {isDesktop && (
