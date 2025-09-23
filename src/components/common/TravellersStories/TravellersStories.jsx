@@ -2,8 +2,8 @@ import StoryCard from '../StoryCard/StoryCard';
 import styles from './TravellersStories.module.css';
 
 const TravellersStories = ({ stories }) => {
-  // перевірка на випадок, якщо дані порожні
-  if (!stories || stories.length === 0) {
+  // ВИПРАВЛЕНО: Надійна перевірка, що `stories` є масивом
+  if (!Array.isArray(stories) || stories.length === 0) {
     return <p>Наразі немає доступних історій.</p>;
   }
 
