@@ -1,20 +1,33 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-export const instance = axios.create({
-  baseUrl: import.meta.env.VITE_API_BASE_URL,
-});
+import { api } from '../../services/api';
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await instance.post('/auth/login', credentials, {
-        withCredentials: true,
-      });
-      return data;
+      const { data } = await api.post('/auth/login', credentials);
+      return { accessToken: data.accessToken };
     } catch (error) {
-      rejectWithValue(error.response?.data?.message || 'Login failed');
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+
+export const fetchCurrentUser = createAsyncThunk(
+  'auth/fetchCurrentUser',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const token = getState().auth.accessToken;
+
+      const { data } = await api.get('/user/info', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return data.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch user'
+      );
     }
   }
 );
