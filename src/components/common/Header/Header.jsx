@@ -15,7 +15,6 @@ import AuthButtons from '../../AuthButtons/AuthButtons';
 import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
 import UserBar from '../../ui/UserBar/UserBar';
 import useBreakpoint from '../../../hooks/useBreakpoint';
-import Temp from '../../Temp/temp';
 
 const Header = () => {
   //data from Redux
@@ -31,7 +30,7 @@ const Header = () => {
   const navLinks = isLoggedIn
     ? baseNavLinks
     : baseNavLinks.map((link) =>
-        link.to === '/' ? link : { ...link, to: 'auth/login' }
+        link.to === '/' ? link : { ...link, to: '/auth/login' }
       );
 
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
@@ -90,7 +89,6 @@ const Header = () => {
   }, [isMenuOpen]);
 
   // if authorizided
-
   const extendedNavLinks =
     isLoggedIn && user
       ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
@@ -116,13 +114,12 @@ const Header = () => {
             </NavLink>
 
             {/* for testing */}
-            <Temp />
 
             {/* Desktop */}
             <>
               {isDesktop && (
                 <div className={s.linksWrap}>
-                  {isLoggedIn && user ? (
+                  {isLoggedIn ? (
                     <>
                       <Navigation navLinks={extendedNavLinks} />
                       <div className={s.descktopWrapBtn}>
