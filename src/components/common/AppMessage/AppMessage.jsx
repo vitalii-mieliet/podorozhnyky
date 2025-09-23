@@ -1,9 +1,12 @@
 import css from './AppMessage.module.css';
 import { useNavigate } from 'react-router-dom';
 import AppButton from '../../ui/AppButton/AppButton';
+import useBreakpoint from '../../../hooks/useBreakpoint.js';
 
 const AppMessage = ({ title, message, buttonText, route }) => {
   const navigate = useNavigate();
+
+  const { isMobile } = useBreakpoint();
 
   const handleClick = () => {
     if (route) {
@@ -17,7 +20,8 @@ const AppMessage = ({ title, message, buttonText, route }) => {
       {message && <p className={css.message}>{message}</p>}
       {buttonText && route && (
         <AppButton
-          className={css.button}
+          size={isMobile ? 'sm' : 'md'}
+          fullWidth={isMobile}
           variant="blue"
           type="button"
           onClick={handleClick}

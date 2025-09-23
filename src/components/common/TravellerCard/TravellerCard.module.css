@@ -1,0 +1,36 @@
+.travelerInfoCard {
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 310px;
+  background: var(--color-scheme-2-foreground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgPlaceholder {
+  border-radius: 50%;
+  margin-bottom: 24px;
+  margin-right: auto;
+}
+
+.infoBlock {
+  width: 100%;
+  max-width: 262px;
+}
+.name {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 150%;
+}
+
+.job {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
