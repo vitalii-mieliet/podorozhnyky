@@ -1,15 +1,17 @@
 import AppButton from '../../components/ui/AppButton/AppButton';
 import styles from './StoryDetails.module.css';
-import bookmarkIconUrl from '../../assets/icons/bookmark.svg';
-import Section from '../common/Section/Section';  
+import Section from '../common/Section/Section';
+import BookmarkIcon from '../../assets/icons/bookmark.svg?react';
 
 const StoryDetails = ({ storyData }) => {
-  //   якщо дані ще не прийшли
   if (!storyData) {
     return null;
   }
-
+ 
   const { img, category, title, article, owner, date } = storyData;
+ 
+  const authorAvatarUrl = owner?.avatar ? owner.avatar : '/images/placeholder.png'; 
+  const authorName = owner?.name || 'Невідомий автор';
 
   return (
     <article className={styles.container}>
@@ -18,10 +20,12 @@ const StoryDetails = ({ storyData }) => {
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.meta}>
           <div className={styles.authorInfo}>
-            <img src={owner.avatar} alt={owner.name} className={styles.authorAvatar} />
+           
+            <img src={authorAvatarUrl} alt={authorName} className={styles.authorAvatar} />
             <div>
               <p className={styles.authorLabel}>Автор статті</p>
-              <p className={styles.authorName}>{owner.name}</p>
+            
+              <p className={styles.authorName}>{authorName}</p>
             </div>
           </div>
           <div className={styles.dateInfo}>
@@ -40,11 +44,11 @@ const StoryDetails = ({ storyData }) => {
 
       <Section className={styles.saveSection} aria-labelledby="зберегти-історію-заголовок">
         <div className={styles.saveIconWrapper} aria-hidden="true">
-            <img src={bookmarkIconUrl} alt="" className={styles.saveIcon} />
+            <BookmarkIcon className={styles.saveIcon} />
         </div>
         <h3 id="зберегти-історію-заголовок" className={styles.saveTitle}>Збережіть собі історію</h3>
         <p className={styles.saveText}>
-          Вона буде доступна у вашому профілі у розділі "Збережене".
+          Вона буде доступна у Вашому профілі у розділі "Збережене".
         </p>
         <AppButton onClick={() => console.log('Save story clicked!')}>
           Зберегти

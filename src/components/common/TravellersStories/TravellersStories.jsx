@@ -2,8 +2,8 @@ import StoryCard from '../StoryCard/StoryCard';
 import styles from './TravellersStories.module.css';
 
 const TravellersStories = ({ stories }) => {
-  // перевірка на випадок, якщо дані порожні
-  if (!stories || stories.length === 0) {
+   
+  if (!Array.isArray(stories) || stories.length === 0) {
     return <p>Наразі немає доступних історій.</p>;
   }
 
@@ -13,7 +13,7 @@ const TravellersStories = ({ stories }) => {
         <StoryCard
           key={story._id}
           storyInfo={story}
-          isOwner={false} // тут буде логіка визначення власника
+          isOwner={false}  
         />
       ))}
     </ul>
