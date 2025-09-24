@@ -3,6 +3,7 @@ import {
   addStoryController,
   deleteStoryByIdController,
   getAuthorByIdController,
+  getCategoriesController,
   getStoriesAuthorsController,
   getStoriesByAuthorIdController,
   getStoriesController,
@@ -37,5 +38,7 @@ storyRouter.get('/byauthor/:id', isValidId, getStoriesByAuthorIdController);
 storyRouter.get('/authors', getStoriesAuthorsController);
 
 storyRouter.get('/authors/:id', isValidId, getAuthorByIdController);
+
+storyRouter.get('/category', getCategoriesController);
 
 export default storyRouter;
