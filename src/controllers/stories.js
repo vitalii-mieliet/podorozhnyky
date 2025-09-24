@@ -12,6 +12,7 @@ import {
 import {
   AUTHORS_SORT_FILEDS,
   STORIES_SORT_FIELDS,
+  STORY_CATEGORIES,
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
@@ -121,5 +122,15 @@ export const getStoriesByAuthorIdController = async (req, res) => {
     status: 200,
     message: 'Successfully found stories!',
     data,
+  });
+};
+
+export const getCategoriesController = async (req, res) => {
+  const category = await STORY_CATEGORIES;
+
+  res.json({
+    status: 200,
+    message: 'Successfully!',
+    data: category,
   });
 };

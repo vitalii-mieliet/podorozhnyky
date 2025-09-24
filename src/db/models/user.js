@@ -12,7 +12,7 @@ const userSchema = new Schema(
       default:
         'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
     },
-    bio: { type: String, required: false },
+    bio: { type: String, required: false, default: '' },
     onboardingCompleted: { type: Boolean, default: false },
     savedStories: [{ type: Schema.Types.ObjectId, ref: 'stories' }],
     settings: {
