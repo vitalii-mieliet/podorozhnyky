@@ -15,10 +15,10 @@ parameters:
       example: '68cd6707f1827a0dda37ef5e'
 responses:
   '201':
-    $ref: '../../../../components/responces/users/save-story/{id}/200.yaml'
+    $ref: '../../../../components/responses/users/save-story/{id}/201.yaml'
   '400':
-    $ref: ../../../../components/responces/stories/400.yaml
+    $ref: ../../../../components/responses/stories/400.yaml
   '401':
-    $ref: '../../../../components/responces/stories/401.yaml'
+    $ref: '../../../../components/responses/stories/401.yaml'
   '404':
-    $ref: '../../../../components/responces/stories/story/{id}/404.yaml'
+    $ref: '../../../../components/responses/stories/story/{id}/404.yaml'

@@ -14,8 +14,8 @@ parameters:
       example: 'refreshToken=your-refresh-tiken; sessionId=your-session-id'
 responses:
   '200':
-    $ref: '../../components/responces/auth/refresh/200.yaml'
+    $ref: '../../components/responses/auth/refresh/200.yaml'
   '401':
-    $ref: '../../components/responces/auth/refresh/401.yaml'
+    $ref: '../../components/responses/auth/refresh/401.yaml'
   '404':
-    $ref: '../../components/responces/auth/refresh/404.yaml'
+    $ref: '../../components/responses/auth/refresh/404.yaml'

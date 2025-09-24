@@ -42,8 +42,8 @@ requestBody:
             example: 'Америка'
 responses:
   '201':
-    $ref: '../../components/responces/stories/201.yaml'
+    $ref: '../../components/responses/stories/201.yaml'
   '400':
-    $ref: '../../components/responces/stories/400.yaml'
+    $ref: '../../components/responses/stories/400.yaml'
   '401':
-    $ref: '../../components/responces/stories/401.yaml'
+    $ref: '../../components/responses/stories/401.yaml'

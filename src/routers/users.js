@@ -25,7 +25,7 @@ userRouter.post('/save-story/:id', authenticate, saveUserArticleController);
 
 userRouter.delete('/save-story/:id', authenticate, deleteUserArticleController);
 
-userRouter.get('/save-story', authenticate, getUserAllSavedArticle);
+userRouter.get('/saved-stories', authenticate, getUserAllSavedArticle);
 
 userRouter.get(
   '/created-stories',

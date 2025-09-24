@@ -14,6 +14,6 @@ parameters:
       example: '68cb1a7465ec501c0ff95094'
 responses:
   '200':
-    $ref: ../../../../components/responces/stories/authors/{id}/200.yaml
+    $ref: ../../../../components/responses/stories/authors/{id}/200.yaml
   '404':
-    $ref: ../../../../components/responces/stories/authors/{id}/404.yaml
+    $ref: ../../../../components/responses/stories/authors/{id}/404.yaml

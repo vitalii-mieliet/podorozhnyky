@@ -57,9 +57,9 @@ paths:
   /users/info:
     get:
       $ref: '../swagger/paths/users/info/get.yaml'
-  /users/save-story:
+  /users/saved-stories:
     get:
-      $ref: '../swagger/paths/users/save-story/get.yaml'
+      $ref: '../swagger/paths/users/saved-stories/get.yaml'
   /users/created-stories:
     get:
       $ref: '../swagger/paths/users/created-stories/get.yaml'
