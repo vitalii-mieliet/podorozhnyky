@@ -16,6 +16,10 @@ const storiesSchema = new Schema(
       type: String,
       required: true,
     },
+    fullText: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       enum: STORY_CATEGORIES,
