@@ -1,29 +1,44 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-//Fetch authenticated user info
+import { api } from '../../services/api';
 
 export const fetchUserInfo = createAsyncThunk(
   'user/fetchUserInfo',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      console.log('Token used in fetchUserInfo:', token);
-
-      const res = await axios.get(
-        'https://plantains-app.onrender.com/api/users/info',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const res = await api.get('/users/info');
       return res.data.data;
     } catch (err) {
-      console.error('fetchUserInfo error:', err.response || err.message);
       return rejectWithValue(
         err.response?.data?.message || 'Не вдалося завантажити профіль'
+      );
+    }
+  }
+);
+
+export const fetchSavedStories = createAsyncThunk(
+  'user/fetchSavedStories',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/users/save-story');
+      return res.data.data || [];
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message ||
+          'Не вдалося завантажити збережені історії'
+      );
+    }
+  }
+);
+
+export const fetchCreatedStories = createAsyncThunk(
+  'user/fetchCreatedStories',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get('/users/created-stories');
+      return res.data.data || [];
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || 'Не вдалося завантажити створені історії'
       );
     }
   }

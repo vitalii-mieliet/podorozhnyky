@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  fetchAllStories,
-  fetchStoryById,
-  fetchUserStories,
-} from './operations';
+import { fetchAllStories, fetchStoryById } from './operations';
 
 const initialState = {
   items: [],
@@ -46,21 +42,6 @@ const storiesSlice = createSlice({
       .addCase(fetchStoryById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
-      // User Stories (saved or created)
-      .addCase(fetchUserStories.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.items = [];
-      })
-      .addCase(fetchUserStories.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.items = action.payload;
-      })
-      .addCase(fetchUserStories.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error =
-          action.payload || 'Помилка при завантаженні історій користувача';
       });
   },
 });

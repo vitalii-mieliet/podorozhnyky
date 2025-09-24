@@ -24,22 +24,3 @@ export const fetchStoryById = createAsyncThunk(
     }
   }
 );
-
-//Fetch user-specific stories (saved or created)
-
-export const fetchUserStories = createAsyncThunk(
-  'stories/fetchUserStories',
-  async (tab, thunkAPI) => {
-    try {
-      const endpoint =
-        tab === 'saved' ? '/users/save-story' : '/users/created-stories';
-      const response = await api.get(endpoint);
-      return response.data.data || [];
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message ||
-          'Не вдалося завантажити історії користувача'
-      );
-    }
-  }
-);

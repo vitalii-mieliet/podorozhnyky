@@ -4,7 +4,7 @@ import Section from '../Section/Section';
 import Container from '../Container/Container';
 import styles from './TravellerInfo.module.css';
 
-import placeholderAvatar from '../../../assets/images/TravellerInfo-img/Travellerplaceholder.webp';
+import placeholderAvatar from '../../../assets/images/TravellerInfo-img/TravellerInfo.webp';
 
 /**
  * Компонент TravellerInfo — відображає інформацію про мандрівника.

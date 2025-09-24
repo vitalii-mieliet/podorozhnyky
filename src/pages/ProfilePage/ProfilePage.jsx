@@ -4,71 +4,55 @@ import { useDispatch, useSelector } from 'react-redux';
 import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import AppTabs from '../../components/ui/AppTabs/AppTabs';
-
-import {
-  showErrorToast,
-  showSuccessToast,
-} from '../../components/common/AppToastContainer/AppToastContainer';
+import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 
 import styles from './ProfilePage.module.css';
-import { fetchUserInfo } from '../../redux/user/operations';
-import { fetchUserStories } from '../../redux/stories/operations';
+
 import {
-  selectUser,
+  fetchUserInfo,
+  fetchSavedStories,
+  fetchCreatedStories,
+} from '../../redux/user/operations';
+
+import {
+  selectUserProfile,
   selectUserError,
   selectUserLoading,
-} from '../../redux/user/selectors';
-import {
-  selectStories,
-  selectStoriesError,
+  selectSavedStories,
+  selectCreatedStories,
   selectStoriesLoading,
-} from '../../redux/stories/selectors';
+  selectStoriesError,
+} from '../../redux/user/selectors';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUserProfile);
   const isUserLoading = useSelector(selectUserLoading);
   const userError = useSelector(selectUserError);
 
-  const stories = useSelector(selectStories);
+  const savedStories = useSelector(selectSavedStories);
+  const createdStories = useSelector(selectCreatedStories);
   const isStoriesLoading = useSelector(selectStoriesLoading);
   const storiesError = useSelector(selectStoriesError);
 
   const [activeTab, setActiveTab] = useState('saved');
 
-  // Fetch user info once on mount
+  // Fetch user info on mount
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, [dispatch]);
 
-  // Fetch stories on tab chang
+  // Fetch stories depending on active tab
   useEffect(() => {
-    if (user?._id) {
-      dispatch(fetchUserStories(activeTab));
+    if (!user?._id) return;
+
+    if (activeTab === 'saved') {
+      dispatch(fetchSavedStories());
+    } else {
+      dispatch(fetchCreatedStories());
     }
   }, [dispatch, activeTab, user]);
-
-  // Toast notifications for user error
-  useEffect(() => {
-    if (userError) {
-      showErrorToast(`Помилка завантаження профілю: ${userError}`);
-    }
-  }, [userError]);
-
-  // Toast notifications for stories error
-  useEffect(() => {
-    if (storiesError) {
-      showErrorToast(`Помилка завантаження історій: ${storiesError}`);
-    }
-  }, [storiesError]);
-
-  // Optional success toast
-  useEffect(() => {
-    if (user?._id && !userError) {
-      showSuccessToast(`Профіль успішно завантажено`);
-    }
-  }, [user, userError]);
 
   if (isUserLoading) {
     return <div>Завантаження профілю...</div>;
@@ -77,6 +61,10 @@ const ProfilePage = () => {
   if (userError || !user) {
     return <div>⚠️ Помилка завантаження профілю</div>;
   }
+
+  const currentStories = activeTab === 'saved' ? savedStories : createdStories;
+
+  const hasStories = currentStories && currentStories.length > 0;
 
   return (
     <>
@@ -97,8 +85,17 @@ const ProfilePage = () => {
         {isStoriesLoading && (
           <div className={styles.loading}>Завантаження історій...</div>
         )}
-        {!isStoriesLoading && !storiesError && (
-          <TravellersStories stories={stories} />
+
+        {!isStoriesLoading && hasStories && (
+          <TravellersStories stories={currentStories} />
+        )}
+
+        {!isStoriesLoading && !hasStories && storiesError && (
+          <MessageNoStories
+            text="Цей користувач ще не публікував історій"
+            buttonText="Назад до історій"
+            route="/stories"
+          />
         )}
       </div>
     </>
