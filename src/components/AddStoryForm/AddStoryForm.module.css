@@ -1,0 +1,87 @@
+.formBoxDesktop {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.inputBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.appButtonBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tittle {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #000;
+  padding-bottom: 32px;
+}
+
+.label {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.photo {
+  border-radius: 16px;
+  max-width: 335px;
+  max-height: 223px;
+  object-fit: cover;
+  object-position: center;
+  margin-bottom: 24px;
+  margin-top: 8px;
+}
+
+.uploadInput {
+  display: none;
+}
+
+.symbol {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000;
+}
+
+.textArea {
+  height: 120px;
+}
+
+@media screen and (min-width: 767px) {
+  .photo {
+    max-width: 704px;
+    max-height: 469px;
+  }
+  .appButtonBox {
+    margin-top: 24px;
+  }
+}
+
+@media screen and (min-width: 1439px) {
+  .photo {
+    max-width: 865px;
+    max-height: 576px;
+  }
+  .formBox {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+  }
+
+  .appButtonBox {
+    width: 423px;
+    margin-top: 36px;
+  }
+
+  .inputBox {
+    max-width: 865px;
+  }
+}
