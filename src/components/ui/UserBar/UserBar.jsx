@@ -2,7 +2,7 @@ import React from 'react';
 import s from './UserBar.module.css';
 import { useDispatch } from 'react-redux';
 
-import { authActions } from '../../../redux/auth/slice';
+import { logout } from '../../../redux/auth/slice';
 import Logout from '../../../assets/icons/logout.svg?react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,14 +11,14 @@ function UserBar({ isLoggedIn, user }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(authActions.logout());
+    dispatch(logout());
     navigate('/');
   };
 
   // JSX
   return (
     <div className={s.userBar}>
-      {isLoggedIn && (
+      {isLoggedIn && user && (
         <>
           <div className={s.avatar}>
             {user.avatar ? (
