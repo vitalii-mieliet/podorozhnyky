@@ -4,7 +4,6 @@ import clsx from 'clsx';
  
 import BookmarkIcon from '../../../assets/icons/bookmark.svg?react';
 import EditIcon from '../../../assets/icons/edit.svg?react';
-  
  
 const formatDate = (dateString) => {
   const date = new Date(dateString); 
@@ -24,7 +23,7 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
   const { _id, img, category, title, article, owner, date, rate } = storyInfo;
 
   const imageUrl = img || '/images/placeholder.png';
-  const authorAvatarUrl = owner?.avatar || '/images/placeholder.svg'; // SVG-заглушка для аватара
+  const authorAvatarUrl = owner?.avatar || '/images/placeholder.svg';
 
   return (
     <li className={styles.card}>
@@ -55,16 +54,15 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
         </div>
 
         <div className={styles.actions}>
-          <AppButton href={`/stories/story/${_id}`} variant="grey" className={styles.viewButton}>
+          {/* --- ВИПРАВЛЕНЕ ПОСИЛАННЯ --- */}
+          <AppButton href={`/stories/${_id}`} variant="grey" className={styles.viewButton}>
             Переглянути статтю
           </AppButton>
           
           <AppButton
             aria-label={variant === 'own' ? 'Редагувати історію' : 'Додати в збережені'}
             className={clsx(styles.iconButton, styles[variant])}
-            //  `href` для 'own' варіанту, щоб це було посилання
             href={variant === 'own' ? `/edit-story/${_id}` : undefined}
-            //  `onClick` для 'saved' і 'normal'
             onClick={variant !== 'own' ? () => console.log('Bookmark clicked!') : undefined}
           >
             {variant === 'own' ? <EditIcon /> : <BookmarkIcon />}
