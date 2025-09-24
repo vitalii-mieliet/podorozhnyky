@@ -17,8 +17,8 @@ responses:
   '204':
     description: 'No Content - Story successfully deleted'
   '400':
-    $ref: '../../../components/responces/stories/400.yaml'
+    $ref: '../../../components/responses/stories/400.yaml'
   '401':
-    $ref: '../../../components/responces/stories/401.yaml'
+    $ref: '../../../components/responses/stories/401.yaml'
   '404':
-    $ref: '../../../components/responces/stories/story/{id}/404.yaml'
+    $ref: '../../../components/responses/stories/story/{id}/404.yaml'

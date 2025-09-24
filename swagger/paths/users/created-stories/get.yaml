@@ -42,8 +42,8 @@ parameters:
       example: 'desc'
 responses:
   '200':
-    $ref: '../../../components/responces/users/save-story/200.yaml'
+    $ref: '../../../components/responses/users/save-story/200.yaml'
   '401':
-    $ref: '../../../components/responces/stories/401.yaml'
+    $ref: '../../../components/responses/stories/401.yaml'
   '404':
-    $ref: '../../../components/responces/users/save-story/404.yaml'
+    $ref: '../../../components/responses/users/save-story/404.yaml'

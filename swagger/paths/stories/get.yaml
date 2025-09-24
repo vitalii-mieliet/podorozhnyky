@@ -46,6 +46,6 @@ parameters:
     description: 'Order to sort the stories (ascending or descending)'
 responses:
   '200':
-    $ref: '../../components/responces/stories/200.yaml'
+    $ref: '../../components/responses/stories/200.yaml'
   '400':
     description: Invalid parameters in the request

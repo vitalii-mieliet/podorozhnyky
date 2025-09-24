@@ -36,7 +36,7 @@ parameters:
     example: 'asc'
 responses:
   '200':
-    $ref: '../../../components/responces/stories/authors/200.yaml'
+    $ref: '../../../components/responses/stories/authors/200.yaml'
   '400':
     description: 'Invalid parameters in the request.'
   '404':

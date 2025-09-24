@@ -21,6 +21,6 @@ requestBody:
             example: 'appleCompany1'
 responses:
   '200':
-    $ref: '../../components/responces/auth/login/200.yaml'
+    $ref: '../../components/responses/auth/login/200.yaml'
   '401':
-    $ref: '../../components/responces/auth/login/401.yaml'
+    $ref: '../../components/responses/auth/login/401.yaml'

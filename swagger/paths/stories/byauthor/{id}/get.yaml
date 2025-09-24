@@ -52,6 +52,6 @@ parameters:
       example: 'asc'
 responses:
   '200':
-    $ref: ../../../../components/responces/stories/byauthor/{id}/200.yaml
+    $ref: ../../../../components/responses/stories/byauthor/{id}/200.yaml
   '404':
-    $ref: '../../../../components/responces/stories/byauthor/{id}/404.yaml'
+    $ref: '../../../../components/responses/stories/byauthor/{id}/404.yaml'
