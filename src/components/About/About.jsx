@@ -7,8 +7,8 @@ import css from './About.module.css';
 
 const About = () => {
   return (
-    <Container>
-      <Section>
+    <Section>
+      <Container>
         <div className={css.firstWrapper}>
           <h2 className={css.title}>
             Проєкт, створений для тих, хто живе подорожами
@@ -51,8 +51,8 @@ const About = () => {
             </p>
           </li>
         </ul>
-      </Section>
-    </Container>
+      </Container>
+    </Section>
   );
 };
 
