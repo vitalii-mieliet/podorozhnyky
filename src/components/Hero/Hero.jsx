@@ -16,7 +16,7 @@ const Hero = () => {
           для себе нові місця та знайдіть однодумців!
         </p>
 
-        <AppButton href="#join" variant="blue" fullWidth={isMobile}>
+        <AppButton href="#join-section" variant="blue" fullWidth={isMobile}>
           Доєднатись
         </AppButton>
       </Container>
