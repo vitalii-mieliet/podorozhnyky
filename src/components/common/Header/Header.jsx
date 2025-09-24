@@ -30,7 +30,7 @@ const Header = () => {
   const navLinks = isLoggedIn
     ? baseNavLinks
     : baseNavLinks.map((link) =>
-        link.to === '/' ? link : { ...link, to: 'auth/login' }
+        link.to === '/' ? link : { ...link, to: '/auth/login' }
       );
 
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
@@ -68,7 +68,7 @@ const Header = () => {
       }, 0);
       return () => clearTimeout(timeOutId);
     }
-  }, [isMobile, isMenuOpen]);
+  }, [isMobile, isMenuOpen, isTablet]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -89,10 +89,10 @@ const Header = () => {
   }, [isMenuOpen]);
 
   // if authorizided
-
-  const extendedNavLinks = isLoggedIn
-    ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
-    : navLinks;
+  const extendedNavLinks =
+    isLoggedIn && user
+      ? [...navLinks, { to: '/profile', label: 'Мій Профіль' }]
+      : navLinks;
 
   // JSX
   return (
@@ -112,6 +112,7 @@ const Header = () => {
                 }}
               />
             </NavLink>
+
             {/* Desktop */}
             <>
               {isDesktop && (
@@ -121,7 +122,7 @@ const Header = () => {
                       <Navigation navLinks={extendedNavLinks} />
                       <div className={s.descktopWrapBtn}>
                         <AppButton className={s.publish} href="/new-story">
-                          Опублікувати історію
+                          Опублікувати&#160;історію
                         </AppButton>
                         <UserBar isLoggedIn={isLoggedIn} user={user} />
                       </div>
@@ -139,7 +140,7 @@ const Header = () => {
               <div className={s.tabletWrapButn}>
                 {isLoggedIn && !isMobile && (
                   <AppButton className={s.publish} href="/new-story">
-                    Опублікувати історію
+                    Опублікувати&#160;історію
                   </AppButton>
                 )}
                 <AppButton
@@ -174,7 +175,7 @@ const Header = () => {
                   <Navigation navLinks={extendedNavLinks} />
                   {isMobile && (
                     <AppButton className={s.publish} href="/new-story">
-                      Опублікувати історію
+                      Опублікувати&#160;історію
                     </AppButton>
                   )}
                   <UserBar isLoggedIn={isLoggedIn} user={user} />
