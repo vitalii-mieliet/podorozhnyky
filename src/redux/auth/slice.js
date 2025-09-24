@@ -18,7 +18,6 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.isLoggedIn = false;
       state.error = null;
-      localStorage.removeItem('accessToken');
     },
     clearError: (state) => {
       state.error = null;
@@ -52,7 +51,6 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.isLoggedIn = true;
         state.error = null;
-        localStorage.setItem('accessToken', action.payload.accessToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
