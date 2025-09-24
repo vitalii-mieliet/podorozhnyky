@@ -11,8 +11,7 @@ const AppSelect = ({
   error,
   errorMessage,
   onChange,
-  'aria-label': ariaLabel,
-  ...props
+  ariaLabel,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
