@@ -19,7 +19,9 @@ const Footer = () => {
         <div className={styles.topSection}>
           <div className={styles.logoSocials}>
             <Logo link={'/'} />
-            <Socials />
+            <div className={styles.socialList}>
+              <Socials />
+            </div>
           </div>
           <Navigation navLinks={navLinks} />
         </div>

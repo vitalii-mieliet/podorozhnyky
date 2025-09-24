@@ -7,7 +7,6 @@ const AppTextInput = ({
   error,
   errorMessage,
   className,
-  type = 'text',
   onChange,
   ...props
 }) => {
@@ -22,7 +21,6 @@ const AppTextInput = ({
   return (
     <div className={styles.inputWrapper}>
       <input
-        type="text"
         className={inputClasses}
         placeholder={placeholder}
         value={value}

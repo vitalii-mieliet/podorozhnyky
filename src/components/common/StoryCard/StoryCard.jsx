@@ -54,7 +54,7 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
         </div>
 
         <div className={styles.actions}>
-          {/* --- ВИПРАВЛЕНЕ ПОСИЛАННЯ --- */}
+          
           <AppButton href={`/stories/${_id}`} variant="grey" className={styles.viewButton}>
             Переглянути статтю
           </AppButton>
