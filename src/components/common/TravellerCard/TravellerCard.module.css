@@ -1,0 +1,45 @@
+.travelerInfoCard {
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%; /* убираем фиксированную ширину */
+  height: 100%; /* карточка занимает всю высоту сетки */
+  min-width: 250px;
+  background: var(--color-scheme-2-foreground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box; /* чтобы padding учитывался в ширине */
+}
+
+.imgPlaceholder {
+  border-radius: 50%;
+  margin-bottom: 24px;
+  margin-right: auto;
+}
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* растягиваем блок по высоте */
+  width: 100%;
+  max-width: 287px;
+}
+.name {
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 150%;
+}
+
+.job {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  margin-top: auto;
+}

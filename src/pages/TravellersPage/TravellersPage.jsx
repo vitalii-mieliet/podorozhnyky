@@ -1,10 +1,16 @@
+import TravellerList from '../../components/common/TravellerList/TravellerList';
+import AppButton from '../../components/ui/AppButton/AppButton';
+import css from './TravellersPage.module.css';
 const TravellersPage = () => {
   return (
-    <div>
-      <h1>Header</h1>
-      <h1>Мандрівники</h1>
-
-      <h1>Footer</h1>
+    <div className={css.travellersPage}>
+      <div className={css.container}>
+        <h1 className={css.tittle}>Мандрівники</h1>
+        <TravellerList />
+        <div className={css.btn}>
+          <AppButton fullWidth={true}>Показати ще</AppButton>
+        </div>
+      </div>
     </div>
   );
 };
