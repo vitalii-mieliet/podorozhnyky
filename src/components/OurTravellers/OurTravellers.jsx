@@ -9,7 +9,7 @@ import styles from './OurTravellers.module.css';
 const OurTravellers = ({
   travelers = [],
   initialVisibleCount = 4, // кількість карток на сторінці
-  loadMoreCount = 3, // кількість карток що підвантажуются при кліку на кнопку
+  loadMoreCount = 4, // кількість карток що підвантажуются при кліку на кнопку
 }) => {
   const { isMobile } = useBreakpoint();
   const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
