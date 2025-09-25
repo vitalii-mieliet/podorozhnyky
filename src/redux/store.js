@@ -4,11 +4,13 @@ import userReduser from './user/slice';
 import storiesReduser from './stories/slice';
 import travelersReduser from './travelers/slice';
 import filterReduser from './filter/slice';
+import storiesPopularReducer from "./popularStories/slice"
 
 const rootReduser = combineReducers({
   auth: authReduser,
   user: userReduser,
   stories: storiesReduser,
+  popularStories: storiesPopularReducer, // редьюсер для популярних історій
   travelers: travelersReduser,
   filter: filterReduser,
 });

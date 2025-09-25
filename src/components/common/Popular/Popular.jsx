@@ -1,7 +1,67 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectPopularStories } from '../../../redux/popularStories/selectors.js';
+import useResponsivePagination from '../../../hooks/useResponsivePagination.js';
+import useBreakpoint from '../../../hooks/useBreakpoint.js';
+import { fetchPopularStories } from '../../../redux/popularStories/operations.js';
+import Section from '../Section/Section.jsx';
+import Container from '../Container/Container.jsx';
+import TravellersStories from '../TravellersStories/TravellersStories.jsx';
+import AppButton from '../../ui/AppButton/AppButton.jsx';
+import styles from './Popular.module.css';
 
 const Popular = () => {
-  return <div>Popular</div>;
+  const dispatch = useDispatch();
+  const stories = useSelector(selectPopularStories) || [];
+
+  // хук для пагінації
+  const limit = useResponsivePagination({
+    mobile: 3,
+    tablet: 4,
+    desktop: 3,
+  });
+
+  const { isMobile } = useBreakpoint();
+
+  const [visibleCount, setVisibleCount] = useState(limit);
+
+  useEffect(() => {
+    setVisibleCount(limit);
+  }, [limit]);
+
+  // завантажуєм історії
+  useEffect(() => {
+    dispatch(fetchPopularStories());
+  }, [dispatch]);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => prevCount + limit);
+  };
+
+  const visibleStories = stories.slice(0, visibleCount);
+  const showLoadMoreButton = stories.length > visibleCount;
+
+  return (
+    <Section>
+      <Container>
+        <h2 className={styles.sectionTitle}>Популярні історії</h2>
+        <TravellersStories stories={visibleStories} />
+        {showLoadMoreButton && (
+          <div className={styles.actions}>
+            <AppButton
+              onClick={handleLoadMore}
+              variant="blue"
+              type="button"
+              size={isMobile ? 'sm' : 'md'}
+              aria-label="Показати більше історій"
+            >
+              Переглянути всі
+            </AppButton>
+          </div>
+        )}
+      </Container>
+    </Section>
+  );
 };
 
 export default Popular;
-
