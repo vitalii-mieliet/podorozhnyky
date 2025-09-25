@@ -5,6 +5,7 @@ import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import AppTabs from '../../components/ui/AppTabs/AppTabs';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
+import Loader from '../../components/common/Loader/Loader';
 
 import styles from './ProfilePage.module.css';
 
@@ -17,18 +18,18 @@ import {
 import {
   selectUserProfile,
   selectUserError,
-  selectUserLoading,
   selectSavedStories,
   selectCreatedStories,
   selectStoriesLoading,
   selectStoriesError,
+  selectIsUserLoading,
 } from '../../redux/user/selectors';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUserProfile);
-  const isUserLoading = useSelector(selectUserLoading);
+  const isUserLoading = useSelector(selectIsUserLoading);
   const userError = useSelector(selectUserError);
 
   const savedStories = useSelector(selectSavedStories);
@@ -38,7 +39,7 @@ const ProfilePage = () => {
 
   const [activeTab, setActiveTab] = useState('saved');
 
-  // Fetch user info on mount
+  // Fetch user info
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, [dispatch]);
@@ -55,7 +56,7 @@ const ProfilePage = () => {
   }, [dispatch, activeTab, user]);
 
   if (isUserLoading) {
-    return <div>Завантаження профілю...</div>;
+    return <Loader />;
   }
 
   if (userError || !user) {
@@ -63,8 +64,12 @@ const ProfilePage = () => {
   }
 
   const currentStories = activeTab === 'saved' ? savedStories : createdStories;
-
   const hasStories = currentStories && currentStories.length > 0;
+
+  const noStoriesText =
+    activeTab === 'saved'
+      ? 'У вас ще немає збережених історій'
+      : 'Ви ще не створювали жодної історії';
 
   return (
     <>
@@ -82,20 +87,22 @@ const ProfilePage = () => {
       />
 
       <div className={styles.storiesSection}>
-        {isStoriesLoading && (
-          <div className={styles.loading}>Завантаження історій...</div>
-        )}
+        {isStoriesLoading && <Loader />}
 
         {!isStoriesLoading && hasStories && (
           <TravellersStories stories={currentStories} />
         )}
 
-        {!isStoriesLoading && !hasStories && storiesError && (
+        {!isStoriesLoading && !hasStories && (
           <MessageNoStories
-            text="Цей користувач ще не публікував історій"
+            text={noStoriesText}
             buttonText="Назад до історій"
             route="/stories"
           />
+        )}
+
+        {!isStoriesLoading && storiesError && (
+          <div className={styles.error}>{storiesError}</div>
         )}
       </div>
     </>

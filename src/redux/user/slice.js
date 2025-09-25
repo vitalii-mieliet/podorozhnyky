@@ -6,7 +6,7 @@ import {
 } from './operations';
 
 const initialState = {
-  data: null,
+  userData: null,
   isLoading: false,
   error: null,
   savedStories: [],
@@ -43,8 +43,6 @@ const userSlice = createSlice({
       .addCase(fetchSavedStories.pending, (state) => {
         state.storiesLoading = true;
         state.storiesError = null;
-        // optionally clear previous
-        state.savedStories = [];
       })
       .addCase(fetchSavedStories.fulfilled, (state, action) => {
         state.storiesLoading = false;
@@ -60,7 +58,6 @@ const userSlice = createSlice({
       .addCase(fetchCreatedStories.pending, (state) => {
         state.storiesLoading = true;
         state.storiesError = null;
-        state.createdStories = [];
       })
       .addCase(fetchCreatedStories.fulfilled, (state, action) => {
         state.storiesLoading = false;
@@ -78,4 +75,4 @@ export const { resetUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
-export const authActions = userSlice.actions;
+export const userActions = userSlice.actions;

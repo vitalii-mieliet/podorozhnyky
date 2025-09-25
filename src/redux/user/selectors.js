@@ -1,5 +1,5 @@
 export const selectUserProfile = (state) => state.user.userData;
-export const selectUserLoading = (state) => state.user.isLoading;
+export const selectIsUserLoading = (state) => state.user.isLoading;
 export const selectUserError = (state) => state.user.error;
 
 export const selectSavedStories = (state) => state.user.savedStories;

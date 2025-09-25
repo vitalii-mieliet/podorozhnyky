@@ -19,7 +19,7 @@ export const fetchSavedStories = createAsyncThunk(
   'user/fetchSavedStories',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await api.get('/users/save-story');
+      const res = await api.get('/users/saved-stories');
       return res.data.data || [];
     } catch (err) {
       return rejectWithValue(
