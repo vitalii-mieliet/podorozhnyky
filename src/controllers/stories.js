@@ -8,6 +8,7 @@ import {
   getStoriesByAuthorId,
   addStory,
   deleteStoryById,
+  updateStories,
 } from '../services/stories.js';
 import {
   AUTHORS_SORT_FILEDS,
@@ -16,6 +17,7 @@ import {
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
+import { StoriesCollection } from '../db/models/story.js';
 
 export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -132,5 +134,20 @@ export const getCategoriesController = async (req, res) => {
     status: 200,
     message: 'Successfully!',
     data: category,
+  });
+};
+
+export const categoriesEditController = async (req, res) => {
+  const { id: storyId } = req.params;
+  const userId = req.user._id;
+  const payload = req.body;
+  const photo = req.file;
+
+  const newData = await updateStories(storyId, userId, payload, photo);
+
+  res.json({
+    status: 200,
+    message: 'Successfully updated story!',
+    data: newData,
   });
 };

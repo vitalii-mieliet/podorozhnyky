@@ -22,6 +22,10 @@ properties:
     description: 'Content of the story'
     type: string
     example: 'Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф...'
+  fullText:
+    description: 'Content of the story'
+    type: string
+    example: 'Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф...'
   category:
     description: 'Story category'
     type: string
@@ -42,7 +46,7 @@ properties:
     type: string
     format: date
     example: '2025-06-17'
-  owner:
+  ownerId:
     description: 'Author of the story'
     type: object
     required:
