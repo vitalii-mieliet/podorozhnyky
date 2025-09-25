@@ -1,11 +1,20 @@
 /* #region Mobile */
 
+.headerContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
 .header {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000;
+  max-width: 375px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .logo {
@@ -74,6 +83,10 @@
 
 /* #region tablet */
 @media screen and (min-width: 768px) {
+  .header {
+    max-width: 768px;
+  }
+
   .overlay nav ul {
     flex-direction: column;
   }
@@ -99,6 +112,10 @@
 /* #region Desktop */
 
 @media screen and (min-width: 1440px) {
+  .header {
+    max-width: 1440px;
+  }
+
   .header nav ul {
     padding: 0;
   }
@@ -119,6 +136,10 @@
     width: 100%;
     max-width: 202px;
     height: 35px;
+  }
+
+  .linksWrap .white {
+    color: var(--color-scheme-1-background);
   }
 }
 
