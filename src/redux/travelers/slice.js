@@ -1,20 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { api } from '../../services/api'; // твой axios instance
-
-export const fetchTravellers = createAsyncThunk(
-  'travelers/fetchTravellers',
-  async ({ page = 1, perPage = 10 } = {}, thunkAPI) => {
-    try {
-      const response = await api.get('/stories/travelers', {
-        params: { page, perPage, sortBy: 'name', sortOrder: 'asc' },
-      });
-      // response.data.data — объект с data, page, totalPages и тд
-      return response.data.data || {}; // безопасно
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response?.data || 'Server error');
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchTravellers } from './operations';
 
 const travelersSlice = createSlice({
   name: 'travelers',
@@ -39,7 +24,14 @@ const travelersSlice = createSlice({
       .addCase(fetchTravellers.fulfilled, (state, action) => {
         state.loading = false;
         const payload = action.payload || {};
-        state.list = payload.data || [];
+        const newData = payload.data || [];
+
+        if (payload.page > 1) {
+          state.list = [...state.list, ...newData];
+        } else {
+          state.list = newData;
+        }
+
         state.page = payload.page || 1;
         state.perPage = payload.perPage || 10;
         state.totalItems = payload.totalItems || 0;

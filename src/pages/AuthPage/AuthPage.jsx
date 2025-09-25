@@ -1,35 +1,45 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import AppNavLink from '../../components/ui/AppNavLink/AppNavLink.jsx';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm.jsx';
 import LoginForm from '../../components/LoginForm/LoginForm.jsx';
+import Section from '../../components/common/Section/Section.jsx';
+import Container from '../../components/common/Container/Container.jsx';
 import css from './AuthPage.module.css';
-// лайаут футер хедер
 
 const AuthPage = () => {
+  const { authType } = useParams();
+
+  if (authType !== 'login' && authType !== 'register') {
+    return <Navigate to="/auth/login" replace />;
+  }
+
   return (
-    <div className={css.wrapper}>
-      <nav className={css.nav}>
-        <AppNavLink
-          to="/auth/register"
-          label="Реєстрація"
-          className={css.tab}
-          activeClassName={css.active}
-        />
-        <AppNavLink
-          to="/auth/login"
-          label="Вхід"
-          className={css.tab}
-          activeClassName={css.active}
-        />
-      </nav>
-      <div className={css.content}>
-        <Routes>
-          <Route path="register" element={<RegistrationForm />} />
-          <Route path="login" element={<LoginForm />} />
-          <Route index element={<Navigate to="/auth/register" replace />} />
-        </Routes>
-      </div>
-    </div>
+    <Section className={css.wrapper}>
+      <Container className={css.Container}>
+        <div className={css.content}>
+          <ul className={css.nav}>
+            <li>
+              <AppNavLink
+                to="/auth/register"
+                label="Реєстрація"
+                className={css.tab}
+                activeClassName={css.active}
+              />
+            </li>
+            <li>
+              <AppNavLink
+                to="/auth/login"
+                label="Вхід"
+                className={css.tab}
+                activeClassName={css.active}
+              />
+            </li>
+          </ul>
+          {authType === 'register' ? <RegistrationForm /> : <LoginForm />}
+        </div>
+      </Container>
+    </Section>
   );
 };
+
 export default AuthPage;
