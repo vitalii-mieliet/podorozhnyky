@@ -1,21 +1,36 @@
-import css from './LoginForm.module.css';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginFormSchema } from '../../validation/authFormsValidation.js';
+import { LoginFormConfig } from '../../constants/formFields.js';
 import AuthForm from '../AuthForm/AuthForm.jsx';
-import { loginValidation } from '../../validation.js';
-import { loginFormFields } from '../../constants/formFields.js';
-
-// тостер лоадер
+import css from './LoginForm.module.css';
+import { loginUser } from '../../redux/auth/operations.js';
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { title, subtitle } = LoginFormConfig;
+
+  const handleRegister = async (credentials, actions) => {
+    try {
+      dispatch(loginUser(credentials));
+
+      navigate('/');
+    } catch {
+      console.error('Помилка при реєстрації'); // замінити на тост
+    } finally {
+      actions.setSubmitting(false);
+    }
+  };
   return (
     <div className={css.container}>
-      <h1 className={css.title}>Вхід</h1>
-      <p className={css.text}>Вітаємо знову у спільноті мандрівників!</p>
+      <h1 className={css.title}>{title}</h1>
+      <p className={css.text}>{subtitle}</p>
 
       <AuthForm
-        fields={loginFormFields}
-        initialValues={{ email: '', password: '' }}
-        validationSchema={loginValidation}
-        submitText="Увійти"
+        {...LoginFormConfig}
+        validationSchema={loginFormSchema}
+        onSubmitAction={handleRegister}
       />
     </div>
   );

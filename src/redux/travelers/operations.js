@@ -12,7 +12,7 @@ export const fetchTravellers = createAsyncThunk(
         params: { page, perPage, sortBy, sortOrder },
       });
 
-      return response.data.data;
+      return response.data.data; // повертає { data, page, totalPages ... }
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
