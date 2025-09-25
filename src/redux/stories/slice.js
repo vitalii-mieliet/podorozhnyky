@@ -1,9 +1,10 @@
 // src/redux/stories/slice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchStories, fetchStoryById } from './operations';
+import { fetchStories, fetchCategories, fetchStoryById } from './operations';
 
 const initialState = {
   items: [],
+  category: [],
   currentStory: null,
   // --- ИЗМЕНЕНО: Разделяем статусы ---
   itemsStatus: 'idle',
@@ -58,6 +59,17 @@ const storiesSlice = createSlice({
       })
       .addCase(fetchStoryById.rejected, (state, action) => {
         state.currentStoryStatus = 'failed'; // Используем currentStoryStatus
+        state.error = action.payload;
+      })
+      .addCase(fetchCategories.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.category = action.payload.data;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

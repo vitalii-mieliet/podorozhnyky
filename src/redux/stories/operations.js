@@ -33,3 +33,43 @@ export const fetchStoryById = createAsyncThunk(
     }
   }
 );
+
+export const fetchCategories = createAsyncThunk(
+  'stories/categories',
+  async (_, thunkAPI) => {
+    try {
+      const response = await api.get('/stories/category');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCreateStories = createAsyncThunk(
+  'stories/addStory',
+  async (values, thunkAPI) => {
+    try {
+      const formData = new FormData();
+
+      formData.append('title', values.title);
+      formData.append('category', values.category);
+      formData.append('article', values.article);
+      formData.append('fullText', values.fullText);
+
+      if (values.img) {
+        formData.append('photo', values.img);
+      }
+
+      const response = await api.post('/stories', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
