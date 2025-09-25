@@ -66,6 +66,17 @@
   margin-bottom: 40px;
 }
 
+.wrapBtn {
+  margin-top: 40px;
+}
+
+.wrapBtn .showMoreBtn {
+  align-items: center;
+
+  width: 100%;
+  height: 48px;
+}
+
 /* #endregion mobile */
 
 /* #region tablet */
@@ -87,6 +98,12 @@
 
   .messageWrap {
     max-width: 533px;
+  }
+
+  .wrapBtn {
+    max-width: 123px;
+    margin: 0 auto;
+    margin-top: 40px;
   }
 }
 
