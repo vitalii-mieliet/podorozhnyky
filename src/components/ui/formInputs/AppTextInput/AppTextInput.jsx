@@ -23,7 +23,7 @@ const AppTextInput = ({
       <input
         className={inputClasses}
         placeholder={placeholder}
-        value={value}
+        value={value ?? ''}
         onChange={onChange}
         {...props}
       />
