@@ -2,6 +2,7 @@ import css from './RegistrationForm.module.css';
 import AuthForm from '../AuthForm/AuthForm.jsx';
 import { registerValidation } from '../../validation.js';
 import { registerFormFields } from '../../constants/formFields.js';
+// тостер лоадер
 
 const RegistrationForm = () => {
   return (
