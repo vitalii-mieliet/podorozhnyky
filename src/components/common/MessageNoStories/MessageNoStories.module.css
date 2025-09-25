@@ -43,5 +43,6 @@
 @media (min-width: 1440px) {
   .text {
     font-size: 26px;
+    max-width: 363px;
   }
 }
