@@ -140,3 +140,34 @@ export const getStoriesByAuthorId = async (
 
   return { data: modifiedStories, ...paginationData };
 };
+
+export const updateStories = async (storyId, userId, payload, photo) => {
+  const story = await StoriesCollection.findById(storyId);
+  if (!story) {
+    throw createHttpError(404, 'Story not found');
+  }
+
+  if (story.ownerId.toString() !== userId.toString()) {
+    throw createHttpError(403, 'You are not allowed to edit this story');
+  }
+
+  let photoUrl = story.img;
+  if (photo) {
+    try {
+      photoUrl = await saveFileToCloudinary(photo);
+    } catch (err) {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
+    }
+  }
+
+  const updateStory = await StoriesCollection.findByIdAndUpdate(
+    storyId,
+    {
+      ...payload,
+      img: photoUrl,
+    },
+    { new: true, runValidators: true },
+  );
+
+  return updateStory;
+};

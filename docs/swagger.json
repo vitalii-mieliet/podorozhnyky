@@ -665,6 +665,81 @@
         }
       }
     },
+    "/stories/category-update/{id}": {
+      "patch": {
+        "tags": [
+          "Stories"
+        ],
+        "summary": "Update a story",
+        "description": "Updates an existing story. Only the user who created the story (`ownerId`) can edit it.\n",
+        "operationId": "updateStory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the story to update",
+            "schema": {
+              "type": "string",
+              "example": "66fb54e3a4c3f9410e2cba6b"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The data to update the story",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "My Updated Journey"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "travel"
+                  },
+                  "article": {
+                    "type": "string",
+                    "example": "Updated short description of the story"
+                  },
+                  "fullText": {
+                    "type": "string",
+                    "example": "Full updated story text with all the details"
+                  },
+                  "img": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://res.cloudinary.com/demo/image/upload/v169523/image.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-6"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
+      }
+    },
     "/users/info": {
       "get": {
         "tags": [
@@ -1085,6 +1160,26 @@
                       "example": "User not found / Unauthorized"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "User is not allowed to edit this story",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 403
+                },
+                "message": {
+                  "type": "string",
+                  "example": "You are not allowed to edit this story"
                 }
               }
             }
@@ -2148,6 +2243,11 @@
             "type": "string",
             "example": "Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф..."
           },
+          "fullText": {
+            "description": "Content of the story",
+            "type": "string",
+            "example": "Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф..."
+          },
           "category": {
             "description": "Story category",
             "type": "string",
@@ -2172,7 +2272,7 @@
             "format": "date",
             "example": "2025-06-17"
           },
-          "owner": {
+          "ownerId": {
             "description": "Author of the story",
             "type": "object",
             "required": [

@@ -54,6 +54,9 @@ paths:
   /stories/byauthor/{id}:
     get:
       $ref: '../swagger/paths/stories/byauthor/{id}/get.yaml'
+  /stories/category-update/{id}:
+    patch:
+      $ref: '../swagger/paths/stories/story/{id}/patch.yaml'
   /users/info:
     get:
       $ref: '../swagger/paths/users/info/get.yaml'

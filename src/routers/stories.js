@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   addStoryController,
+  categoriesEditController,
   deleteStoryByIdController,
   getAuthorByIdController,
   getCategoriesController,
@@ -9,7 +10,10 @@ import {
   getStoriesController,
   getStoryById,
 } from '../controllers/stories.js';
-import { createStorySchema } from '../validation/stories.js';
+import {
+  createStorySchema,
+  updateStoriesSchema,
+} from '../validation/stories.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
@@ -40,5 +44,14 @@ storyRouter.get('/authors', getStoriesAuthorsController);
 storyRouter.get('/authors/:id', isValidId, getAuthorByIdController);
 
 storyRouter.get('/category', getCategoriesController);
+
+storyRouter.patch(
+  '/category-update/:id',
+  authenticate,
+  isValidId,
+  upload.single('photo'),
+  validateBody(updateStoriesSchema),
+  categoriesEditController,
+);
 
 export default storyRouter;
