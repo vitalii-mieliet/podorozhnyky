@@ -3,53 +3,48 @@ import avatarPlaceHolder from '../../assets/icons/AvatarImage.svg';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 
 import s from './TravellerPage.module.css';
-import { useEffect } from 'react';
-import { fetchAllStories } from '../../redux/stories/operations';
+import { useEffect, useState } from 'react';
+import { fetchStories } from '../../redux/stories/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import useBreakpoint from '../../hooks/useBreakpoint.js';
 import AppButton from '../../components/ui/AppButton/AppButton.jsx';
 
 const TravellerPage = () => {
-  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const dispatch = useDispatch();
   const { isDesktop } = useBreakpoint();
   const perPage = isDesktop ? 6 : 4;
 
-  const { items } = useSelector((state) => state.stories);
-  const nextPage = useSelector((state) => state.stories.nextPage);
-  const pageCount = Math.ceil(items.length / perPage) || 1;
-  const displayedItems = items.slice(0, pageCount * perPage);
-  // const prevPage = useSelector((state) => state.stories.prevPage);
-  // const totalItems = useSelector((state) => state.stories.totalItems);
-  // const totalPages = useSelector((state) => state.stories.totalPages);
+  const { items, hasNextPage } = useSelector((state) => state.stories);
+  console.log(items);
 
-  // useEffect(() => {
-  //   const newPage = Math.ceil(items.length / perPage);
-  //   setPage(newPage || 1);
-  // }, [perPage, items.length]);
+  const displayedItems = items.slice(0, perPage * currentPage);
 
   useEffect(() => {
     const loadStories = async () => {
       try {
         if (items.length === 0) {
-          await dispatch(fetchAllStories({ page: 1, perPage })).unwrap();
+          await dispatch(fetchStories({ page: 1, perPage })).unwrap();
+        }
+        if (items.length < perPage * currentPage && hasNextPage) {
+          await dispatch(fetchStories({ page: currentPage, perPage })).unwrap();
         }
       } catch (error) {
         console.log(error);
       }
     };
     loadStories();
-    // eslint-disable-next-line
-  }, [dispatch, perPage]);
+  }, [dispatch, currentPage, perPage, hasNextPage, items.length]);
 
   // handler
   const handleClick = async () => {
-    if (!nextPage) return;
+    if (!hasNextPage) return;
     try {
-      await dispatch(
-        fetchAllStories({ page: pageCount + 1, perPage })
-      ).unwrap();
+      const nextPage = currentPage + 1;
+      await dispatch(fetchStories({ page: nextPage, perPage })).unwrap();
+      setCurrentPage(nextPage);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +80,7 @@ const TravellerPage = () => {
         <div className={s.historySection}>
           <h1 className={s.title}>Історії Мандрівника</h1>
 
-          {items ? (
+          {items.length > 0 ? (
             <TravellersStories stories={displayedItems} />
           ) : (
             <div className={s.messageWrap}>
@@ -94,13 +89,15 @@ const TravellerPage = () => {
           )}
 
           <div className={s.wrapBtn}>
-            <AppButton
-              onClick={handleClick}
-              size="sm"
-              className={s.showMoreBtn}
-            >
-              Показати ще
-            </AppButton>
+            {hasNextPage && (
+              <AppButton
+                onClick={handleClick}
+                size="sm"
+                className={s.showMoreBtn}
+              >
+                Показати ще
+              </AppButton>
+            )}
           </div>
         </div>
       </Container>

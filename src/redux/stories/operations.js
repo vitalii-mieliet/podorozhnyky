@@ -5,11 +5,11 @@ import { api } from '../../services/api';
 
 export const fetchStories = createAsyncThunk(
   'stories/fetch',
-  async ({ page = 1, limit = 9 }, thunkAPI) => {
+  async ({ page = 1, perPage = 9 }, thunkAPI) => {
     // Увеличим лимит по умолчанию
     try {
       const response = await api.get('/stories', {
-        params: { page, limit },
+        params: { page, perPage },
       });
       // --- ИСПРАВЛЕНО ---
       // Возвращаем данные из более глубокого уровня вложенности
