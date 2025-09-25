@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react';
 import SharedLayout from './components/Layouts/SharedLayout';
 import PublicLayout from './components/Layouts/PublicLayout';
 import PrivateLayout from './components/Layouts/PrivateLayout';
+import TravellerCard from './components/common/TravellerCard/TravellerCard';
 
 const AddStory = lazy(() => import('./pages/AddStory/AddStory'));
 const PersonalPage = lazy(() => import('./pages/PersonalPage/PersonalPage'));
@@ -29,7 +30,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="auth/:authType" element={<AuthPage />} />
             <Route path="stories" element={<StoriesPage />} />
-            <Route path="stories/story/:storyId" element={<StoryPage />} />
+            <Route path="stories/:storyId" element={<StoryPage />} />
             <Route path="travellers" element={<TravellersPage />} />
             <Route path="travellers/:travellerId" element={<TravellerPage />} />
           </Route>
