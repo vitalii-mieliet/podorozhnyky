@@ -1,0 +1,70 @@
+.tittle {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 56px;
+  line-height: 110%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--color-scheme-1-text);
+  margin-bottom: 24px;
+}
+@media (max-width: 768px) {
+  .tittle {
+    font-size: 32px;
+  }
+}
+@media (min-width: 769px) and (max-width: 1240px) {
+  .tittle {
+    font-size: 48px;
+  }
+}
+
+.travellersPage {
+  padding: 48px 64px 72px;
+  width: 100%;
+  height: auto;
+  background: var(--color-scheme-2-background);
+}
+.container {
+  width: 100%;
+  height: auto;
+  max-width: 1312px;
+}
+
+@media (max-width: 768px) {
+  .travellersPage {
+    padding: 32px 32px 64px;
+  }
+}
+@media (min-width: 769px) {
+  .travellersPage {
+    padding: 48px 80px 72px;
+  }
+}
+.btn {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 768px) {
+  .btn {
+    margin-top: 24px;
+    max-width: 140px;
+  }
+}
+@media (min-width: 1240px) {
+  .btn {
+    margin-top: 40px;
+    max-width: 140px;
+  }
+}
+@media (min-width: 1500px) {
+  .container {
+    width: 100%;
+    height: auto;
+    max-width: 2500px;
+  }
+}
