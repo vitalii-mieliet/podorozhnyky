@@ -21,17 +21,11 @@ const Header = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
 
-  const baseNavLinks = [
+  const navLinks = [
     { to: '/', label: 'Головна' },
     { to: '/stories', label: 'Історії' },
     { to: '/travellers', label: 'Мандрівники' },
   ];
-
-  const navLinks = isLoggedIn
-    ? baseNavLinks
-    : baseNavLinks.map((link) =>
-        link.to === '/' ? link : { ...link, to: '/auth/login' }
-      );
 
   const { isMobile, isTablet, isDesktop } = useBreakpoint();
   const location = useLocation();
@@ -97,7 +91,7 @@ const Header = () => {
   // JSX
   return (
     <>
-      <header>
+      <header className={s.headerContainer}>
         <Container>
           <div className={s.header}>
             <NavLink to="/">
@@ -119,7 +113,10 @@ const Header = () => {
                 <div className={s.linksWrap}>
                   {isLoggedIn ? (
                     <>
-                      <Navigation navLinks={extendedNavLinks} />
+                      <Navigation
+                        linkClassName={isHome && s.white}
+                        navLinks={extendedNavLinks}
+                      />
                       <div className={s.descktopWrapBtn}>
                         <AppButton className={s.publish} href="/new-story">
                           Опублікувати&#160;історію
@@ -129,7 +126,10 @@ const Header = () => {
                     </>
                   ) : (
                     <>
-                      <Navigation navLinks={extendedNavLinks} />
+                      <Navigation
+                        linkClassName={isHome && s.white}
+                        navLinks={extendedNavLinks}
+                      />
                       <AuthButtons isHome={isHome} />
                     </>
                   )}
@@ -160,7 +160,7 @@ const Header = () => {
       </header>
 
       {/* Mobile */}
-      {isMenuOpen && (
+      {isMenuOpen && !isDesktop && (
         <div
           className={clsx(s.overlay, isMenuOpen && s.isOpen)}
           id="mobile-nav"
