@@ -3,6 +3,8 @@ import AuthForm from '../AuthForm/AuthForm.jsx';
 import { loginValidation } from '../../validation.js';
 import { loginFormFields } from '../../constants/formFields.js';
 
+// тостер лоадер
+
 const LoginForm = () => {
   return (
     <div className={css.container}>

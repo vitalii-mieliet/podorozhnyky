@@ -3,6 +3,7 @@ import { Formik, Form, useField } from 'formik';
 import AppTextInput from '../ui/formInputs/AppTextInput/AppTextInput.jsx';
 import AppButton from '../ui/AppButton/AppButton.jsx';
 import { useBreakpoint } from '../../../hooks/useBreakpoint.js';
+import { useNavigate } from 'react-router-dom';
 
 const FormikTextInput = ({ id, name, type = 'text', placeholder }) => {
   const [field, meta] = useField(name);
@@ -27,13 +28,28 @@ const FormFields = ({
   validationSchema,
   onSubmitAction,
 }) => {
+  const navigate = useNavigate();
+  // заглушка. формик вызывает фцию при сабмит
+  const handleSubmit = async (values, actions) => {
+    try {
+      // запит до апи?
+      // після чого редирект на голову /
+      navigate('/');
+    } catch (err) {
+      console.error('Error:', err);
+    } finally {
+      // одблок кнопки
+      actions.setSubmitting(false);
+    }
+  };
+
   const { isMobile } = useBreakpoint();
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmitAction}
+      onSubmit={handleSubmit}
       validateOnChange={false}
       validateOnBlur={false}
     >
@@ -62,7 +78,7 @@ const FormFields = ({
             ))}
             <AppButton
               size={isMobile ? 'sm' : 'md'}
-              fullWidth={isMobile}
+              fullWidth
               variant="blue"
               type="submit"
               disabled={isSubmitting}

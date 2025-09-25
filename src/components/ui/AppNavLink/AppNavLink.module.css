@@ -21,12 +21,12 @@
     border-color var(--transition-base);
 }
 
-@media (pointer: fine) and (hover: hover) {
+/* @media (pointer: fine) and (hover: hover) {
   .navLink:hover .label,
   .navLink:focus-visible .label {
     border: 1px solid var(--color-scheme-1-text);
   }
-}
+} */
 
 .navLink:active .label {
   border-color: var(--color-scheme-1-text);
