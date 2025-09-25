@@ -17,3 +17,8 @@
   color: var(--color-neutral-darkest);
   margin-bottom: 8px;
 }
+@media (min-width: 1440px) {
+  .label {
+    font-size: 18px;
+  }
+}
