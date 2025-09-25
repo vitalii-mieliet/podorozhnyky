@@ -5,7 +5,8 @@ import { api } from '../../services/api';
 
 export const fetchStories = createAsyncThunk(
   'stories/fetch',
-  async ({ page = 1, limit = 9 }, thunkAPI) => { // Увеличим лимит по умолчанию
+  async ({ page = 1, limit = 9 }, thunkAPI) => {
+    // Увеличим лимит по умолчанию
     try {
       const response = await api.get('/stories', {
         params: { page, limit },
@@ -26,10 +27,9 @@ export const fetchStoryById = createAsyncThunk(
       const response = await api.get(`/stories/story/${storyId}`);
       // --- ИСПРАВЛЕНО ---
       // Возвращаем сам объект истории, а не весь ответ
-      return response.data.data; 
+      return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
-}
+    }
   }
-  
 );

@@ -6,7 +6,7 @@ const initialState = {
   items: [],
   currentStory: null,
   // --- ИЗМЕНЕНО: Разделяем статусы ---
-  itemsStatus: 'idle', 
+  itemsStatus: 'idle',
   currentStoryStatus: 'idle',
   isLoadingMore: false,
   error: null,
@@ -21,7 +21,7 @@ const storiesSlice = createSlice({
     resetCurrentStory: (state) => {
       state.currentStory = null;
       state.currentStoryStatus = 'idle';
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
