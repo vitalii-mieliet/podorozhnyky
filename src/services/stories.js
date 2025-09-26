@@ -84,7 +84,7 @@ export const getAuthors = async (
 ) => {
   const skip = (page - 1) * perPage;
 
-  const authorsQuery = await UserCollection.find({}, 'name avatar')
+  const authorsQuery = await UserCollection.find({}, 'name avatar bio')
     .skip(skip)
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
@@ -98,7 +98,7 @@ export const getAuthors = async (
 };
 
 export const getAuthor = async (id) => {
-  return UserCollection.findById(id, 'name avatar');
+  return UserCollection.findById(id, 'name avatar bio');
 };
 
 export const getStoriesByAuthorId = async (
