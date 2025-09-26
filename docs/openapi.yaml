@@ -39,23 +39,22 @@ paths:
       $ref: '../swagger/paths/stories/get.yaml'
     post:
       $ref: '../swagger/paths/stories/post.yaml'
-  /stories/{id}:
-    delete:
-      $ref: '../swagger/paths/stories/{id}/delete.yaml'
+  /stories/byauthor/{id}:
+    get:
+      $ref: '../swagger/paths/stories/byauthor/{id}/get.yaml'
   /stories/story/{id}:
     get:
       $ref: '../swagger/paths/stories/story/{id}/get.yaml'
     patch:
       $ref: '../swagger/paths/stories/story/{id}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/stories/story/{id}/delete.yaml'
   /stories/authors:
     get:
       $ref: '../swagger/paths/stories/authors/get.yaml'
   /stories/authors/{id}:
     get:
       $ref: '../swagger/paths/stories/authors/{id}/get.yaml'
-  /stories/byauthor/{id}:
-    get:
-      $ref: '../swagger/paths/stories/byauthor/{id}/get.yaml'
   /users/info:
     get:
       $ref: '../swagger/paths/users/info/get.yaml'
