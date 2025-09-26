@@ -12,14 +12,15 @@ import s from './Header.module.css';
 import AppButton from '../../ui/AppButton/AppButton';
 import Navigation from '../Navigation/Navigation';
 import AuthButtons from '../../AuthButtons/AuthButtons';
-import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
+import { selectIsLoggedIn } from '../../../redux/auth/selectors';
 import UserBar from '../../ui/UserBar/UserBar';
 import useBreakpoint from '../../../hooks/useBreakpoint';
+import { selectUserProfile } from '../../../redux/user/selectors';
 
 const Header = () => {
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUserProfile);
 
   const navLinks = [
     { to: '/', label: 'Головна' },
@@ -32,6 +33,9 @@ const Header = () => {
   const isHome = location.pathname === '/';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const overlayRef = useRef();
+
+  //  no allowed path
+  const noAllowed = ['/auth/login', '/auth/register', '/edit'];
 
   // handler
   const toggleMenu = () => {
@@ -109,7 +113,7 @@ const Header = () => {
 
             {/* Desktop */}
             <>
-              {isDesktop && (
+              {isDesktop && !noAllowed.includes(location.pathname) && (
                 <div className={s.linksWrap}>
                   {isLoggedIn ? (
                     <>
@@ -136,25 +140,33 @@ const Header = () => {
                 </div>
               )}
             </>
-            {(isMobile || isTablet) && (
-              <div className={s.tabletWrapButn}>
-                {isLoggedIn && !isMobile && (
-                  <AppButton className={s.publish} href="/new-story">
-                    Опублікувати&#160;історію
+
+            {(isMobile || isTablet) &&
+              !noAllowed.includes(location.pathname) && (
+                <div className={s.tabletWrapButn}>
+                  {isLoggedIn && !isMobile && (
+                    <AppButton className={s.publish} href="/new-story">
+                      Опублікувати&#160;історію
+                    </AppButton>
+                  )}
+                  <AppButton
+                    className={isHome ? s.init : s.menuButton}
+                    variant="grey"
+                    onClick={toggleMenu}
+                    aria-expanded={isMenuOpen}
+                    aria-controls="mobile-nav"
+                    aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
+                  >
+                    {isMenuOpen ? (
+                      <BurgerClose />
+                    ) : (
+                      <BurgerMenu
+                        className={isHome ? s.menuWhite : s.menuBlack}
+                      />
+                    )}
                   </AppButton>
-                )}
-                <AppButton
-                  className={s.menuButton}
-                  variant={isHome ? 'init' : 'grey'}
-                  onClick={toggleMenu}
-                  aria-expanded={isMenuOpen}
-                  aria-controls="mobile-nav"
-                  aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
-                >
-                  {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
-                </AppButton>
-              </div>
-            )}
+                </div>
+              )}
           </div>
         </Container>
       </header>

@@ -10,9 +10,9 @@ import Loader from '../../components/common/Loader/Loader';
 import styles from './ProfilePage.module.css';
 
 import {
-  fetchUserInfo,
   fetchSavedStories,
   fetchCreatedStories,
+  fetchCurrentUser,
 } from '../../redux/user/operations';
 
 import {
@@ -41,7 +41,7 @@ const ProfilePage = () => {
 
   // Fetch user info
   useEffect(() => {
-    dispatch(fetchUserInfo());
+    dispatch(fetchCurrentUser);
   }, [dispatch]);
 
   // Fetch stories depending on active tab

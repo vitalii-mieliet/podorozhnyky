@@ -26,7 +26,7 @@ const validationSchema = Yup.object({
   category: Yup.string().required('Виберіть категорію'),
   article: Yup.string()
     .required('Опис обовʼязковий')
-    .max(120, 'Максимум 120 символів'),
+    .max(150, 'Максимум 150 символів'),
   fullText: Yup.string()
     .required('Текст історії обовʼязковий')
     .min(10, 'Мінімум 10 символів'),
@@ -40,7 +40,7 @@ const AddStoryForm = () => {
   const categories = useSelector(selectCategories);
 
   const formattedCategories = categories.map((cat) => ({
-    value: cat.toLowerCase(),
+    value: cat,
     label: cat,
   }));
 
@@ -48,7 +48,7 @@ const AddStoryForm = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const maxLength = 120;
+  const maxLength = 150;
 
   const initialValues = {
     title: '',

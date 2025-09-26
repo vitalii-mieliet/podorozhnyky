@@ -9,5 +9,9 @@ export const setAccessToken = (token) => {
 };
 
 export const clearAccessToken = () => {
-  delete api.defaults.headers.common['Authorization'];
+  delete api.defaults.headers.common.Authorization;
+};
+
+export const getAccessToken = () => {
+  return api.defaults.headers.common.Authorization;
 };

@@ -1,6 +1,11 @@
 // src/redux/stories/slice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchStories, fetchCategories, fetchStoryById } from './operations';
+import {
+  fetchCategories,
+  fetchCreateStories,
+  fetchStories,
+  fetchStoryById,
+} from './operations';
 
 const initialState = {
   items: [],
@@ -12,6 +17,14 @@ const initialState = {
   isLoadingMore: false,
   error: null,
   hasNextPage: false,
+
+  author: {
+    name: null,
+    avatar: null,
+    status: 'idle',
+    error: null,
+    bio: null,
+  },
 };
 
 const storiesSlice = createSlice({
@@ -69,6 +82,20 @@ const storiesSlice = createSlice({
         state.category = action.payload.data;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchCreateStories.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(fetchCreateStories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items.push(action.payload.data);
+      })
+      .addCase(fetchCreateStories.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
