@@ -6,7 +6,7 @@ const travelersSlice = createSlice({
   initialState: {
     list: [],
     page: 1,
-    perPage: 10,
+    perPage: 8,
     totalItems: 0,
     totalPages: 0,
     hasNextPage: false,
@@ -47,3 +47,5 @@ const travelersSlice = createSlice({
 });
 
 export default travelersSlice.reducer;
+// mobil tablet 8 cart
+//desktop 12 cart check in component Popular
