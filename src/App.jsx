@@ -4,21 +4,18 @@ import { Suspense, lazy } from 'react';
 import SharedLayout from './components/Layouts/SharedLayout';
 import PublicLayout from './components/Layouts/PublicLayout';
 import PrivateLayout from './components/Layouts/PrivateLayout';
-import TravellerCard from './components/common/TravellerCard/TravellerCard';
-
-const AddStory = lazy(() => import('./pages/AddStory/AddStory'));
-const PersonalPage = lazy(() => import('./pages/PersonalPage/PersonalPage'));
-const ProfilePage = lazy(() => import('./pages/ProfilePage/ProfilePage'));
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
-const AuthPage = lazy(() => import('./pages/AuthPage/AuthPage'));
-const StoriesPage = lazy(() => import('./pages/StoriesPage/StoriesPage'));
-const StoryPage = lazy(() => import('./pages/StoryPage/StoryPage'));
-const TravellerPage = lazy(() => import('./pages/TravellerPage/TravellerPage'));
-const TravellersPage = lazy(
-  () => import('./pages/TravellersPage/TravellersPage')
-);
-
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage/NotFoundPage'));
+import {
+  HomePage,
+  AddStory,
+  PersonalPage,
+  ProfilePage,
+  AuthPage,
+  StoriesPage,
+  StoryPage,
+  TravellerPage,
+  TravellersPage,
+  NotFoundPage,
+} from './routes/lazyPages';
 
 function App() {
   return (
