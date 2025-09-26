@@ -46,13 +46,6 @@ export const refreshUser = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Refresh failed');
     }
-  },
-  {
-    condition: (_, { getState }) => {
-      const { isLoggedIn } = getState().auth;
-
-      return isLoggedIn;
-    },
   }
 );
 
