@@ -49,3 +49,27 @@ export const fetchCreatedStories = createAsyncThunk(
     }
   }
 );
+
+export const saveStory = createAsyncThunk(
+  'user/saveStory',
+  async (storyId, { rejectWithValue }) => {
+    try {
+      await api.post(`/users/save-story/${storyId}`);
+      return storyId; 
+    } catch (err) {  
+      return rejectWithValue(err.response?.data?.message || 'Не вдалося зберегти');
+    }
+  }
+);
+ 
+export const unsaveStory = createAsyncThunk(
+  'user/unsaveStory',
+  async (storyId, { rejectWithValue }) => {
+    try {
+      await api.delete(`/users/save-story/${storyId}`);
+      return storyId;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Не вдалося видалити');
+    }
+  }
+);

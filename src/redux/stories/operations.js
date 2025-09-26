@@ -1,19 +1,22 @@
-// src/redux/stories/operations.js
-
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../services/api';
 
 export const fetchStories = createAsyncThunk(
   'stories/fetch',
-  async ({ page = 1, perPage = 9 }, thunkAPI) => {
-    // Увеличим лимит по умолчанию
+
+  async ({ page = 1, perPage = 9, category = '' }, thunkAPI) => {
     try {
       const response = await api.get('/stories', {
-        params: { page, perPage },
+        params: { page, perPage, category },
       });
-      // --- ИСПРАВЛЕНО ---
-      // Возвращаем данные из более глубокого уровня вложенности
-      return response.data.data;
+
+      const payload = response.data.data;
+
+      if (Array.isArray(payload.data)) {
+        payload.data = payload.data.slice(0, perPage);
+      }
+
+      return payload;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -25,8 +28,18 @@ export const fetchStoryById = createAsyncThunk(
   async (storyId, thunkAPI) => {
     try {
       const response = await api.get(`/stories/story/${storyId}`);
-      // --- ИСПРАВЛЕНО ---
-      // Возвращаем сам объект истории, а не весь ответ
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAllStories = createAsyncThunk(
+  'stories/fetchAll',
+  async (_, thunkAPI) => {
+    try {
+      const response = await api.get('/stories?perPage=1000');
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -8,7 +8,7 @@ export const fetchTravellers = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await api.get('/stories/travelers', {
+      const response = await api.get('/stories/authors', {
         params: { page, perPage, sortBy, sortOrder },
       });
 
