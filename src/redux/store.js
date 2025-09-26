@@ -1,20 +1,23 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authReduser from './auth/slice';
-import userReduser from './user/slice';
-import storiesReduser from './stories/slice';
-import travelersReduser from './travelers/slice';
-import filterReduser from './filter/slice';
-import storiesPopularReducer from "./popularStories/slice"
+import authReducer from './auth/slice';
+import userReducer from './user/slice';
+import storiesReducer from './stories/slice';
+import travelersReducer from './travelers/slice';
+import filterReducer from './filter/slice';
+import storiesPopularReducer from './popularStories/slice';
+import listenerMiddleware from './listenerMiddleware';
 
-const rootReduser = combineReducers({
-  auth: authReduser,
-  user: userReduser,
-  stories: storiesReduser,
+const rootReducer = combineReducers({
+  auth: authReducer,
+  user: userReducer,
+  stories: storiesReducer,
   popularStories: storiesPopularReducer, // редьюсер для популярних історій
-  travelers: travelersReduser,
-  filter: filterReduser,
+  travelers: travelersReducer,
+  filter: filterReducer,
 });
 
 export const store = configureStore({
-  reducer: rootReduser,
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(listenerMiddleware.middleware),
 });
