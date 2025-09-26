@@ -1,10 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../services/api';
+import { getAccessToken } from '../../services/api/tokenStore';
 
-export const fetchUserInfo = createAsyncThunk(
+export const fetchCurrentUser = createAsyncThunk(
   'user/fetchUserInfo',
   async (_, { rejectWithValue }) => {
     try {
+      const token = getAccessToken();
+      if (!token) {
+        return rejectWithValue('No access token');
+      }
+
       const res = await api.get('/users/info');
       return res.data.data;
     } catch (err) {

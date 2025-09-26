@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchCreatedStories,
   fetchSavedStories,
-  fetchUserInfo,
-  saveStory,      
+  fetchCurrentUser,
+  saveStory,
   unsaveStory,
 } from './operations';
 
@@ -28,16 +28,16 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // user info
-      .addCase(fetchUserInfo.pending, (state) => {
+      .addCase(fetchCurrentUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
         state.savedStories = action.payload.savedStories || [];
       })
-      .addCase(fetchUserInfo.rejected, (state, action) => {
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || 'Щось пішло не так';
       })
@@ -70,7 +70,7 @@ const userSlice = createSlice({
         state.storiesError =
           action.payload || 'Не вдалося завантажити створені історії';
       })
-       .addCase(saveStory.fulfilled, (state, action) => {
+      .addCase(saveStory.fulfilled, (state, action) => {
         state.savedStories.push(action.payload);
       })
       .addCase(unsaveStory.fulfilled, (state, action) => {
