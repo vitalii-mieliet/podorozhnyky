@@ -3,6 +3,8 @@ import {
   fetchCreatedStories,
   fetchSavedStories,
   fetchUserInfo,
+  saveStory,      
+  unsaveStory,
 } from './operations';
 
 const initialState = {
@@ -33,6 +35,7 @@ const userSlice = createSlice({
       .addCase(fetchUserInfo.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
+        state.savedStories = action.payload.savedStories || [];
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.isLoading = false;
@@ -54,7 +57,6 @@ const userSlice = createSlice({
           action.payload || 'Не вдалося завантажити збережені історії';
       })
 
-      // created stories
       .addCase(fetchCreatedStories.pending, (state) => {
         state.storiesLoading = true;
         state.storiesError = null;
@@ -67,6 +69,14 @@ const userSlice = createSlice({
         state.storiesLoading = false;
         state.storiesError =
           action.payload || 'Не вдалося завантажити створені історії';
+      })
+       .addCase(saveStory.fulfilled, (state, action) => {
+        state.savedStories.push(action.payload);
+      })
+      .addCase(unsaveStory.fulfilled, (state, action) => {
+        state.savedStories = state.savedStories.filter(
+          (id) => id !== action.payload
+        );
       });
   },
 });

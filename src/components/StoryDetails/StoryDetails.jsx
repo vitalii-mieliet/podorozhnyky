@@ -1,15 +1,29 @@
- 
+import { useDispatch, useSelector } from 'react-redux';
+import { saveStory, unsaveStory } from '../../redux/user/operations';
+import { selectSavedStories } from '../../redux/user/selectors';
 import AppButton from '../../components/ui/AppButton/AppButton';
-import styles from './StoryDetails.module.css';
- 
+import styles from './StoryDetails.module.css'; 
+
 const StoryDetails = ({ storyData }) => {
+  const dispatch = useDispatch();
+  const savedStoriesIds = useSelector(selectSavedStories);
+
   if (!storyData) {
     return null;
   }
  
-  const { img, category, title, article, owner, date } = storyData;
+  const { _id, img, category, title, article, owner, date } = storyData;
  
-  const authorAvatarUrl = owner?.avatar ? owner.avatar : '/images/placeholder.png'; 
+  const isSaved = savedStoriesIds.includes(_id);
+
+  const handleBookmarkClick = () => {
+    if (isSaved) {
+      dispatch(unsaveStory(_id));
+    } else {
+      dispatch(saveStory(_id));
+    }
+  };
+
   const authorName = owner?.name || 'Невідомий автор';
   const formattedDate = new Date(date).toLocaleDateString('uk-UA', {
     day: 'numeric',
@@ -17,10 +31,8 @@ const StoryDetails = ({ storyData }) => {
     year: 'numeric'
   }).replace(' р.', '');
 
-
   return (
     <article className={styles.container}>
-      
       <header className={styles.header}>
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.meta}>
@@ -47,17 +59,17 @@ const StoryDetails = ({ storyData }) => {
           className={styles.articleBody}
           dangerouslySetInnerHTML={{ __html: article }}
         />
-
-        <div as="aside" className={styles.saveSection} aria-labelledby="зберегти-історію-заголовок">
-           
-          <h3 id="зберегти-історію-заголовок" className={styles.saveTitle}>Збережіть собі історію</h3>
+        <aside className={styles.saveSection} aria-labelledby="зберегти-історію-заголовок">
+          <h3 id="зберегти-історію-заголовок" className={styles.saveTitle}>
+            {isSaved ? 'Історія збережена!' : 'Збережіть собі історію'}
+          </h3>
           <p className={styles.saveText}>
             Вона буде доступна у Вашому профілі у розділі "Збережене".
           </p>
-          <AppButton className={styles.saveButton} onClick={() => console.log('Save story clicked!')}>
-            Зберегти
+          <AppButton className={styles.saveButton} onClick={handleBookmarkClick}>
+            {isSaved ? 'Видалити зі збережених' : 'Зберегти'}
           </AppButton>
-        </div>
+        </aside>
       </div>
     </article>
   );
