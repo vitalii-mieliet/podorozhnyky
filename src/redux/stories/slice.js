@@ -21,6 +21,7 @@ const initialState = {
     avatar: null,
     status: 'idle',
     error: null,
+    bio: null,
   },
 };
 
@@ -81,6 +82,7 @@ const storiesSlice = createSlice({
         state.author.status = 'succeeded';
         state.author.name = action.payload.name;
         state.author.avatar = action.payload.avatar;
+        state.author.bio = action.payload.bio;
       })
       .addCase(getStoriesAuthorsById.rejected, (state, action) => {
         state.author.status = 'failed';

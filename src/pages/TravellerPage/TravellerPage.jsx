@@ -1,5 +1,4 @@
 import Container from '../../components/common/Container/Container';
-import avatarPlaceHolder from '../../assets/icons/AvatarImage.svg';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 
 import s from './TravellerPage.module.css';
@@ -13,6 +12,7 @@ import TravellersStories from '../../components/common/TravellersStories/Travell
 import useBreakpoint from '../../hooks/useBreakpoint.js';
 import AppButton from '../../components/ui/AppButton/AppButton.jsx';
 import { useParams } from 'react-router-dom';
+import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo.jsx';
 
 const TravellerPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,12 +23,12 @@ const TravellerPage = () => {
   const { travellerId } = useParams();
   const id = travellerId;
 
-  const { name, avatar } = useSelector((state) => state.stories.author || {});
+  const data = useSelector((state) => state.stories.author || {});
+
   const { items, hasNextPage } = useSelector((state) => state.stories);
   const { isDesktop } = useBreakpoint();
   const perPage = isDesktop ? 6 : 4;
 
-  // const displayedItems = items.slice(0, perPage * currentPage);
   const displayedItems = useMemo(() => {
     return items.slice(0, perPage * currentPage);
   }, [items, perPage, currentPage]);
@@ -77,37 +77,20 @@ const TravellerPage = () => {
     }
   };
 
-  //for a while
-
-  const description =
-    'Люблю активні подорожі та дослідження нових місць. Ділюся практичними порадами та маршрутами для мандрівників.';
-
   //JSX
   return (
     <>
       <Container>
         <div className={s.travellerInfo}>
-          <div className={s.avatarBox}>
-            <img
-              width={199}
-              height={199}
-              src={avatar || avatarPlaceHolder}
-              alt={name || 'Аватар'}
-            />
-          </div>
-
           {!error ? (
-            <div className={s.fullNameBox}>
-              <p className={s.userName}>{name}</p>
-              <p className={s.userDescr}>{description}</p>
-            </div>
+            <TravellerInfo user={data} />
           ) : (
             <p className={s.error}>{error}</p>
           )}
         </div>
 
         <section className={s.historySection} aria-busy={isLoading}>
-          <h1 className={s.title}>Історії Мандрівника</h1>
+          <h2 className={s.title}>Історії Мандрівника</h2>
 
           {items.length > 0 ? (
             <TravellersStories stories={displayedItems} />
