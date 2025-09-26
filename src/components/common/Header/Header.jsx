@@ -34,6 +34,9 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const overlayRef = useRef();
 
+  //  no allowed path
+  const noAllowed = ['/auth/login', '/auth/register', '/edit'];
+
   // handler
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -110,7 +113,7 @@ const Header = () => {
 
             {/* Desktop */}
             <>
-              {isDesktop && (
+              {isDesktop && !noAllowed.includes(location.pathname) && (
                 <div className={s.linksWrap}>
                   {isLoggedIn ? (
                     <>
@@ -137,25 +140,33 @@ const Header = () => {
                 </div>
               )}
             </>
-            {(isMobile || isTablet) && (
-              <div className={s.tabletWrapButn}>
-                {isLoggedIn && !isMobile && (
-                  <AppButton className={s.publish} href="/new-story">
-                    Опублікувати&#160;історію
+
+            {(isMobile || isTablet) &&
+              !noAllowed.includes(location.pathname) && (
+                <div className={s.tabletWrapButn}>
+                  {isLoggedIn && !isMobile && (
+                    <AppButton className={s.publish} href="/new-story">
+                      Опублікувати&#160;історію
+                    </AppButton>
+                  )}
+                  <AppButton
+                    className={isHome ? s.init : s.menuButton}
+                    variant="grey"
+                    onClick={toggleMenu}
+                    aria-expanded={isMenuOpen}
+                    aria-controls="mobile-nav"
+                    aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
+                  >
+                    {isMenuOpen ? (
+                      <BurgerClose />
+                    ) : (
+                      <BurgerMenu
+                        className={isHome ? s.menuWhite : s.menuBlack}
+                      />
+                    )}
                   </AppButton>
-                )}
-                <AppButton
-                  className={s.menuButton}
-                  variant={isHome ? 'init' : 'grey'}
-                  onClick={toggleMenu}
-                  aria-expanded={isMenuOpen}
-                  aria-controls="mobile-nav"
-                  aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
-                >
-                  {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
-                </AppButton>
-              </div>
-            )}
+                </div>
+              )}
           </div>
         </Container>
       </header>
