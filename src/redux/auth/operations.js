@@ -46,6 +46,13 @@ export const refreshUser = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Refresh failed');
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { isLoggedIn } = getState().auth;
+
+      return isLoggedIn;
+    },
   }
 );
 
@@ -62,26 +69,3 @@ export const logoutUser = createAsyncThunk(
     }
   }
 );
-
-// //GET INFO
-// export const fetchCurrentUser = createAsyncThunk(
-//   'auth/fetchCurrentUser',
-//   async (_, { getState, rejectWithValue }) => {
-//     try {
-//       const token = getState().auth.accessToken;
-//       if (!token) {
-//         return rejectWithValue('No token found');
-//       }
-
-//       const { data } = await api.get('/users/info', {
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-
-//       return data;
-//     } catch (error) {
-//       return rejectWithValue(
-//         error.response?.data?.message || 'Failed to fetch user'
-//       );
-//     }
-//   }
-// );

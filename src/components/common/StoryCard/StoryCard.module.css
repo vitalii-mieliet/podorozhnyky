@@ -1,4 +1,3 @@
- 
 .card {  
   width: 335px;
   height: 575px;
@@ -9,7 +8,12 @@
   flex-direction: column;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
-
+.image {
+  width: 100%;
+  height: 226px;
+  object-fit: cover;
+  display: block;
+}
 @media (min-width: 768px) {
   .card {
     width: 340px;
@@ -22,6 +26,10 @@
     width: 421px;
     height: 677px;
   }
+  .image {
+   
+  height: 281px;
+  }
 }
 
 .card:hover {
@@ -29,12 +37,7 @@
   box-shadow: 0 8px 20px var(--opacity-neutral-darkest-10);
 }
  
-.image {
-  width: 100%;
-  height: 277px;
-  object-fit: cover;
-  display: block;
-}
+
  
 .contentWrapper {
   padding: 24px;
@@ -134,14 +137,23 @@
 
 .viewButton {
   flex-grow: 1;  
-  height: 100%;
+  height: 100%; 
+  padding: 6px 12px;
+  min-width: 0; 
 }
 
-.iconButton {
-  width: 48px;
+.iconButton {   
+  min-width: 48px; 
   height: 48px;
-  padding: 6px;  
+  padding: 12px;  
   flex-shrink: 0;
+  box-sizing: border-box;  
+}
+
+.iconButton svg {
+  width: 24px;
+  height: 24px;
+  display: block;  
 }
 
 .normal,

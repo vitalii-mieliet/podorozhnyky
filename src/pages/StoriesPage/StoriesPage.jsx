@@ -1,104 +1,99 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchStories } from '../../redux/stories/operations';
+import { fetchAllStories } from '../../redux/stories/operations';
+import { applyFilters } from '../../redux/stories/slice';
+import { setActiveCategory, selectActiveCategory } from '../../redux/filter/slice';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import Container from '../../components/common/Container/Container';
 import Section from '../../components/common/Section/Section';
 import Loader from '../../components/common/Loader/Loader';
 import AppMessage from '../../components/common/AppMessage/AppMessage';
 import AppButton from '../../components/ui/AppButton/AppButton';
-import styles from './StoriesPage.module.css';  
-
-const STORIES_PER_PAGE = 9;
-const CATEGORIES = ["Всі історії", "Європа", "Азія", "Пустелі", "Африка"];
+import styles from './StoriesPage.module.css';
+import useResponsivePagination from '../../hooks/useResponsivePagination';
 
 const StoriesPage = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0]);
-
+  const activeCategory = useSelector(selectActiveCategory);
+  
   const {
-    items: stories,
+    items,  
     itemsStatus,
     error,
     hasNextPage,
-    isLoadingMore,
   } = useSelector((state) => state.stories);
+  
+  const storiesPerPage = useResponsivePagination({ mobile: 8, tablet: 8, desktop: 9 });
 
-  useEffect(() => {
+  const categories = useMemo(
+    () => ["Всі історії", "Європа", "Азія", "Пустелі", "Африка", "Україна", "Гори", "Америка"],
+    []
+  );
+ 
+  useEffect(() => { 
     if (itemsStatus === 'idle') {
-      dispatch(fetchStories({ page: 1, limit: STORIES_PER_PAGE }));
+      dispatch(fetchAllStories());
     }
   }, [dispatch, itemsStatus]);
-
-  const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    dispatch(fetchStories({ page: nextPage, limit: STORIES_PER_PAGE }));
+   
+  useEffect(() => {
+    if (itemsStatus === 'succeeded') {
+      dispatch(applyFilters({ category: activeCategory, page, perPage: storiesPerPage }));
+    }
+  }, [dispatch, activeCategory, page, storiesPerPage, itemsStatus]);
+ 
+  const handleCategoryChange = (category) => {
+    setPage(1);  
+    dispatch(setActiveCategory(category));
   };
 
+  const handleLoadMore = () => { 
+    setPage((prevPage) => prevPage + 1);
+  };
+  
   const isLoading = itemsStatus === 'loading';
 
   return (
     <Section aria-busy={isLoading}>
       <Container>
-        
-        <header className={styles.header}>
+        <div className={styles.header}>
           <h1 className={styles.title}>Історії Мандрівників</h1>
-
           <div className={styles.filters}>
-            
-             
-            <label htmlFor="categorySelect" className={styles.filterSelectHeading}>
-        Категорії
-      </label>
             <select
               className={styles.filterSelect}
               value={activeCategory}
-              onChange={(e) => setActiveCategory(e.target.value)}
+              onChange={(e) => handleCategoryChange(e.target.value)}
             >
-              <option disabled>Категорії</option>
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
-
-           
             <div className={styles.filterButtons}>
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <button
                   key={cat}
                   className={styles.filterButton}
-                  onClick={() => setActiveCategory(cat)}
-                 
+                  onClick={() => handleCategoryChange(cat)}
+                  style={{ background: activeCategory === cat ? 'var(--color-neutral-lighter)' : ''}}
                 >
                   {cat}
                 </button>
               ))}
             </div>
           </div>
-        </header>
-
-        {isLoading && <Loader />}
+        </div>
         
-        {itemsStatus === 'failed' && (
-          <AppMessage
-            title="Виникла помилка"
-            message={error}
-            buttonText="Спробувати знову"
-            route="/stories"
-          />
-        )}
-         
-        {itemsStatus === 'succeeded' && <TravellersStories stories={stories} />}
-
+        {isLoading && <Loader />}
+        {itemsStatus === 'failed' && <AppMessage title="Виникла помилка" message={error} />}
+        {itemsStatus === 'succeeded' && <TravellersStories stories={items} />}
+        
         <div className={styles.buttonWrapper}>
-          {hasNextPage && !isLoadingMore && (
+          {hasNextPage && (
             <AppButton onClick={handleLoadMore} variant="blue">
               Показати ще
             </AppButton>
           )}
-          {isLoadingMore && <Loader />}
         </div>
       </Container>
     </Section>
