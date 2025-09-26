@@ -5,7 +5,7 @@ import { StoriesCollection } from '../db/models/story.js';
 import { UserCollection } from '../db/models/user.js';
 
 export const getUserInfoService = async (query) => {
-  return UserCollection.findOne(query);
+  return UserCollection.findById(query);
 };
 
 export const updateUserById = async (userId, data) => {
