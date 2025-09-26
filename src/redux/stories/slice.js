@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  fetchAllStories,
+  fetchCategories,
+  fetchCreateStories,
+  fetchStories,
   fetchStoryById,
-  getStoriesAuthorsById,
 } from './operations';
 
 const initialState = {
   allItems: [],
   items: [],
+  category: [],
   currentStory: null,
   itemsStatus: 'idle',
   currentStoryStatus: 'idle',
@@ -49,16 +51,15 @@ const storiesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
-      .addCase(fetchAllStories.pending, (state) => {
+      .addCase(fetchStories.pending, (state) => {
         state.itemsStatus = 'loading';
         state.error = null;
       })
-      .addCase(fetchAllStories.fulfilled, (state, action) => {
+      .addCase(fetchStories.fulfilled, (state, action) => {
         state.itemsStatus = 'succeeded';
         state.allItems = action.payload.data;
       })
-      .addCase(fetchAllStories.rejected, (state, action) => {
+      .addCase(fetchStories.rejected, (state, action) => {
         state.itemsStatus = 'failed';
         state.error = action.payload;
       })
@@ -75,20 +76,31 @@ const storiesSlice = createSlice({
         state.error = action.payload;
       })
 
-      // --- Author loading state handlers ---
-      .addCase(getStoriesAuthorsById.pending, (state) => {
-        state.author.status = 'loading';
-        state.author.error = null;
+      .addCase(fetchCategories.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(getStoriesAuthorsById.fulfilled, (state, action) => {
-        state.author.status = 'succeeded';
-        state.author.name = action.payload.name;
-        state.author.avatar = action.payload.avatar;
-        state.author.bio = action.payload.bio;
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.category = action.payload.data;
       })
-      .addCase(getStoriesAuthorsById.rejected, (state, action) => {
-        state.author.status = 'failed';
-        state.author.error = action.payload;
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchCreateStories.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(fetchCreateStories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items.push(action.payload.data);
+      })
+      .addCase(fetchCreateStories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

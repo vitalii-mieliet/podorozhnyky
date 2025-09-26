@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import About from '../../components/About/About';
 import Hero from '../../components/Hero/Hero';
 import Join from '../../components/Join/Join';
@@ -9,6 +8,7 @@ const HomePage = () => {
   return (
     <>
       <Hero />
+
       <About />
       <Popular />
       <OurTravellers />
@@ -18,5 +18,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-

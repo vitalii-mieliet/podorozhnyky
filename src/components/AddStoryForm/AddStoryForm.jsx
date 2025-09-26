@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -12,44 +12,77 @@ import AppTextArea from '../ui/formInputs/AppTextArea/AppTextArea';
 import AppTextInput from '../ui/formInputs/AppTextInput/AppTextInput';
 import AppSelect from '../ui/formInputs/AppSelect/AppSelect';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchCategories,
+  fetchCreateStories,
+} from '../../redux/stories/operations';
+import { selectCategories } from '../../redux/stories/selectors';
+
 const validationSchema = Yup.object({
   title: Yup.string()
     .required('Заголовок обовʼязковий')
     .max(100, 'Максимум 100 символів'),
   category: Yup.string().required('Виберіть категорію'),
-  shortDescription: Yup.string()
+  article: Yup.string()
     .required('Опис обовʼязковий')
-    .max(120, 'Максимум 120 символів'),
+    .max(150, 'Максимум 150 символів'),
   fullText: Yup.string()
     .required('Текст історії обовʼязковий')
     .min(10, 'Мінімум 10 символів'),
 });
 
 const AddStoryForm = () => {
+  const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
 
-  const maxLength = 120;
+  const categories = useSelector(selectCategories);
+
+  const formattedCategories = categories.map((cat) => ({
+    value: cat,
+    label: cat,
+  }));
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const maxLength = 150;
 
   const initialValues = {
     title: '',
     category: '',
-    shortDescription: '',
+    article: '',
     fullText: '',
-    photo: null,
+    img: null,
   };
 
   const handleFileChange = (e, setFieldValue) => {
     const file = e.target.files[0];
-    setFieldValue('photo', file);
+    setFieldValue('img', file);
 
     if (file) {
       setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (values) => {
-    console.log('Форма відправлена:', values);
+  const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    try {
+      console.log('Форма відправлена на бекенд:', values);
+
+      await dispatch(fetchCreateStories(values)).unwrap();
+
+      resetForm();
+      setPreview(null);
+
+      alert('Історію успішно створено!');
+    } catch (error) {
+      console.error('Помилка при відправці форми:', error);
+      alert('Помилка при створенні історії. Спробуйте ще раз.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -66,6 +99,7 @@ const AddStoryForm = () => {
             {({ values, setFieldValue, isValid, dirty }) => (
               <Form className={style.formBox}>
                 <div className={style.formBoxDesktop}>
+                  {/* Завантаження фото */}
                   <div>
                     <label className={style.label} htmlFor="upload-photo">
                       Обкладинка статті
@@ -98,6 +132,7 @@ const AddStoryForm = () => {
                     </AppButton>
                   </div>
 
+                  {/* Заголовок */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="title">
                       Заголовок
@@ -116,17 +151,31 @@ const AddStoryForm = () => {
                     />
                   </div>
 
+                  {/* Категорія */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="category">
                       Категорія
                     </label>
-                    <Field
-                      as={AppSelect}
-                      id="category"
-                      name="category"
-                      placeholder="Категорія"
-                      aria-label="Категорія статті"
-                    />
+                    <Field name="category">
+                      {({ field, form }) => (
+                        <AppSelect
+                          options={formattedCategories}
+                          value={
+                            formattedCategories.find(
+                              (opt) => opt.value === field.value
+                            ) || null
+                          }
+                          placeholder="Категорія"
+                          ariaLabel="Категорія статті"
+                          onChange={(selectedOption) => {
+                            form.setFieldValue(
+                              field.name,
+                              selectedOption.value
+                            );
+                          }}
+                        />
+                      )}
+                    </Field>
                     <ErrorMessage
                       name="category"
                       component="div"
@@ -134,30 +183,31 @@ const AddStoryForm = () => {
                     />
                   </div>
 
+                  {/* Короткий опис */}
                   <div className={style.inputBox}>
-                    <label className={style.label} htmlFor="shortDescription">
+                    <label className={style.label} htmlFor="article">
                       Короткий опис
                     </label>
                     <Field
                       as={AppTextArea}
-                      id="shortDescription"
-                      name="shortDescription"
+                      id="article"
+                      name="article"
                       maxLength={maxLength}
                       placeholder="Введіть короткий опис історії"
                       aria-label="Короткий опис статті"
                       className={style.textArea}
                     />
                     <div className={style.symbol}>
-                      Лишилось символів:{' '}
-                      {maxLength - values.shortDescription.length}
+                      Лишилось символів: {maxLength - values.article.length}
                     </div>
                     <ErrorMessage
-                      name="shortDescription"
+                      name="article"
                       component="div"
                       className={style.error}
                     />
                   </div>
 
+                  {/* Повний текст історії */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="fullText">
                       Текст історії
@@ -177,6 +227,7 @@ const AddStoryForm = () => {
                   </div>
                 </div>
 
+                {/* Кнопки */}
                 <div className={style.appButtonBox}>
                   <AppButton
                     type="submit"
