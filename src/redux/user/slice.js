@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchCreatedStories,
   fetchSavedStories,
-  fetchUserInfo,
+  fetchCurrentUser,
 } from './operations';
 
 const initialState = {
@@ -26,15 +26,15 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // user info
-      .addCase(fetchUserInfo.pending, (state) => {
+      .addCase(fetchCurrentUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
       })
-      .addCase(fetchUserInfo.rejected, (state, action) => {
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || 'Щось пішло не так';
       })
