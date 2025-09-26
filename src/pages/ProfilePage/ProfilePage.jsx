@@ -7,6 +7,9 @@ import AppTabs from '../../components/ui/AppTabs/AppTabs';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 import Loader from '../../components/common/Loader/Loader';
 
+import Section from '../../components/common/Section/Section';
+import Container from '../../components/common/Container/Container';
+
 import styles from './ProfilePage.module.css';
 
 import {
@@ -41,7 +44,7 @@ const ProfilePage = () => {
 
   // Fetch user info
   useEffect(() => {
-    dispatch(fetchCurrentUser);
+    dispatch(fetchCurrentUser());
   }, [dispatch]);
 
   // Fetch stories depending on active tab
@@ -73,38 +76,42 @@ const ProfilePage = () => {
 
   return (
     <>
-      <TravellerInfo user={user} />
+      <Section className={styles.travellerSection}>
+        <Container className={styles.travellerContainer}>
+          <TravellerInfo user={user} />
 
-      <AppTabs
-        value={activeTab}
-        onChange={setActiveTab}
-        options={[
-          { label: 'Збережені історії', value: 'saved' },
-          { label: 'Мої історії', value: 'my' },
-        ]}
-        variant="contained"
-        className={styles.tabs}
-      />
-
-      <div className={styles.storiesSection}>
-        {isStoriesLoading && <Loader />}
-
-        {!isStoriesLoading && hasStories && (
-          <TravellersStories stories={currentStories} />
-        )}
-
-        {!isStoriesLoading && !hasStories && (
-          <MessageNoStories
-            text={noStoriesText}
-            buttonText="Назад до історій"
-            route="/stories"
+          <AppTabs
+            value={activeTab}
+            onChange={setActiveTab}
+            options={[
+              { label: 'Збережені історії', value: 'saved' },
+              { label: 'Мої історії', value: 'my' },
+            ]}
+            variant="contained"
+            className={styles.tabs}
           />
-        )}
 
-        {!isStoriesLoading && storiesError && (
-          <div className={styles.error}>{storiesError}</div>
-        )}
-      </div>
+          <div className={styles.storiesSection}>
+            {isStoriesLoading && <Loader />}
+
+            {!isStoriesLoading && hasStories && (
+              <TravellersStories stories={currentStories} />
+            )}
+
+            {!isStoriesLoading && !hasStories && (
+              <MessageNoStories
+                text={noStoriesText}
+                buttonText="Назад до історій"
+                route="/stories"
+              />
+            )}
+
+            {!isStoriesLoading && storiesError && (
+              <div className={styles.error}>{storiesError}</div>
+            )}
+          </div>
+        </Container>
+      </Section>
     </>
   );
 };
