@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Section from '../Section/Section';
-import Container from '../Container/Container';
 import styles from './TravellerInfo.module.css';
 
 import placeholderAvatar from '../../../assets/images/TravellerInfo-img/TravellerInfo.webp';
@@ -18,24 +16,25 @@ import placeholderAvatar from '../../../assets/images/TravellerInfo-img/Travelle
  *
  */
 const TravellerInfo = ({ user }) => {
+  console.log('TravellerInfo received user:', user); // ✅ Add this here
   if (!user) return null;
 
   const avatarSrc = user.avatar || user.photoUrl || placeholderAvatar;
   const altText = user.name || 'Traveller avatar';
 
   return (
-    <Section className={styles.travellerSection}>
-      <Container className={styles.travellerContainer}>
-        <div className={styles.travellerInfo}>
-          <img className={styles.avatar} src={avatarSrc} alt={altText} />
+    // <Section className={styles.travellerSection}>
+    //   <Container className={styles.travellerContainer}>
+    <div className={styles.travellerInfo}>
+      <img className={styles.avatar} src={avatarSrc} alt={altText} />
 
-          <div className={styles.info}>
-            <h1 className={styles.name}>{user.name}</h1>
-            {user.bio && <p className={styles.bio}>{user.bio}</p>}
-          </div>
-        </div>
-      </Container>
-    </Section>
+      <div className={styles.info}>
+        <h1 className={styles.name}>{user.name}</h1>
+        {user.bio && <p className={styles.bio}>{user.bio}</p>}
+      </div>
+    </div>
+    //   </Container>
+    // </Section>
   );
 };
 
