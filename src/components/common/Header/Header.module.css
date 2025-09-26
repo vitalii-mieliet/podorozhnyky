@@ -23,7 +23,26 @@
 
 .header .menuButton {
   min-width: 32px;
-  padding: 4px;
+  height: 32px;
+  padding: 0;
+}
+
+.header .init {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--color-scheme-2-border);
+  background: var(--opacity-white-10);
+  color: var(--color-white);
+
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+
+  min-width: 32px;
+  height: 32px;
+  padding: 0;
 }
 
 .overlay {
@@ -75,6 +94,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.menuWhite {
+  fill: #fff;
+}
+
+.menuBlack {
+  fill: #000;
 }
 
 /* #endregion Mobile */

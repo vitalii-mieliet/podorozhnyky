@@ -151,14 +151,20 @@ const Header = () => {
                     </AppButton>
                   )}
                   <AppButton
-                    className={s.menuButton}
-                    variant={isHome ? 'init' : 'grey'}
+                    className={isHome ? s.init : s.menuButton}
+                    variant="grey"
                     onClick={toggleMenu}
                     aria-expanded={isMenuOpen}
                     aria-controls="mobile-nav"
                     aria-label={isMenuOpen ? 'Закрити меню' : 'Відкрити меню'}
                   >
-                    {isMenuOpen ? <BurgerClose /> : <BurgerMenu />}
+                    {isMenuOpen ? (
+                      <BurgerClose />
+                    ) : (
+                      <BurgerMenu
+                        className={isHome ? s.menuWhite : s.menuBlack}
+                      />
+                    )}
                   </AppButton>
                 </div>
               )}
