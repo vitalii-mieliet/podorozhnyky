@@ -21,7 +21,7 @@ export const getStories = async (
 
   storiesQuery.populate({
     path: 'ownerId',
-    select: 'name avatar',
+    select: 'name avatar bio',
   });
 
   const [storiesCount, stories] = await Promise.all([
@@ -64,7 +64,7 @@ export const getStory = async (id) => {
   const story = await StoriesCollection.findById(id)
     .populate({
       path: 'ownerId',
-      select: 'name avatar',
+      select: 'name avatar bio',
     })
     .lean();
 
@@ -114,7 +114,7 @@ export const getStoriesByAuthorId = async (
 
   storiesQuery.populate({
     path: 'ownerId',
-    select: 'name avatar',
+    select: 'name avatar bio',
   });
 
   const [storiesCount, stories] = await Promise.all([

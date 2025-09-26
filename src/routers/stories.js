@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import {
   addStoryController,
-  categoriesEditController,
   deleteStoryByIdController,
   getAuthorByIdController,
   getCategoriesController,
@@ -9,6 +8,7 @@ import {
   getStoriesByAuthorIdController,
   getStoriesController,
   getStoryById,
+  storyEditController,
 } from '../controllers/stories.js';
 import {
   createStorySchema,
@@ -46,12 +46,12 @@ storyRouter.get('/authors/:id', isValidId, getAuthorByIdController);
 storyRouter.get('/category', getCategoriesController);
 
 storyRouter.patch(
-  '/category-update/:id',
+  '/story/:id',
   authenticate,
   isValidId,
   upload.single('photo'),
   validateBody(updateStoriesSchema),
-  categoriesEditController,
+  storyEditController,
 );
 
 export default storyRouter;

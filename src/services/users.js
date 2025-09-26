@@ -85,7 +85,7 @@ export const getSavedArticles = async (
     options: { skip, limit: perPage, sort: { [sortBy]: sortOrder } },
     populate: {
       path: 'ownerId',
-      select: 'name avatar',
+      select: 'name avatar bio',
     },
   });
 

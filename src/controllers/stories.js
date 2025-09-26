@@ -137,7 +137,7 @@ export const getCategoriesController = async (req, res) => {
   });
 };
 
-export const categoriesEditController = async (req, res) => {
+export const storyEditController = async (req, res) => {
   const { id: storyId } = req.params;
   const userId = req.user._id;
   const payload = req.body;
