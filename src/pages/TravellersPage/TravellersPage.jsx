@@ -13,6 +13,9 @@ import {
 import TravellerList from '../../components/common/TravellerList/TravellerList';
 import AppButton from '../../components/ui/AppButton/AppButton';
 import css from './TravellersPage.module.css';
+import Section from '../../components/common/Section/Section';
+import Container from '../../components/common/Container/Container';
+import useBreakpoint from '../../hooks/useBreakpoint';
 
 const TravellersPage = () => {
   const dispatch = useDispatch();
@@ -26,21 +29,24 @@ const TravellersPage = () => {
 
   const currentPage = Number(searchParams.get('page')) || 1;
 
+  const { isDesktop } = useBreakpoint();
+  const perPage = isDesktop ? 12 : 8;
+
   useEffect(() => {
-    dispatch(fetchTravellers({ page: currentPage }));
-  }, [dispatch, currentPage]);
+    dispatch(fetchTravellers({ page: currentPage, perPage }));
+  }, [dispatch, currentPage, perPage]);
 
   const handleLoadMore = () => {
     if (page < totalPages) {
       const nextPage = page + 1;
       setSearchParams({ page: nextPage });
-      dispatch(fetchTravellers({ page: nextPage }));
+      dispatch(fetchTravellers({ page: nextPage, perPage }));
     }
   };
 
   return (
-    <div className={css.travellersPage}>
-      <div className={css.container}>
+    <Section>
+      <Container>
         <h1 className={css.title}>Мандрівники</h1>
 
         {error && <p className={css.error}>Сталася помилка: {error}</p>}
@@ -57,8 +63,8 @@ const TravellersPage = () => {
             </AppButton>
           )}
         </div>
-      </div>
-    </div>
+      </Container>
+    </Section>
   );
 };
 
