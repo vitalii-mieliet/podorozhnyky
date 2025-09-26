@@ -18,16 +18,16 @@ function UserBar({ isLoggedIn, user }) {
   // JSX
   return (
     <div className={s.userBar}>
-      {isLoggedIn && user && (
+      {isLoggedIn && (
         <>
           <div className={s.avatar}>
-            {user.avatar ? (
-              <img src={user.avatar} alt="аватар" />
+            {user?.avatar ? (
+              <img src={user?.avatar} alt="аватар" />
             ) : (
-              user.name.charAt(0)
+              user?.name.charAt(0)
             )}
           </div>
-          <span>{user.name}</span>
+          <span>{user?.name}</span>
           <button
             className={s.logoutBtn}
             aria-label="Вихід"

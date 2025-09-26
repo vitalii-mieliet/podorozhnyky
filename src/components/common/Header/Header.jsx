@@ -19,6 +19,8 @@ import useBreakpoint from '../../../hooks/useBreakpoint';
 const Header = () => {
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  console.log(isLoggedIn);
+
   const user = useSelector(selectUser);
 
   const navLinks = [
@@ -33,11 +35,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const overlayRef = useRef();
 
-  //
+  //  no allowed path
   const noAllowed = ['/auth/login', '/auth/register', '/edit'];
-
-  //
-  console.log(location);
 
   // handler
   const toggleMenu = () => {
