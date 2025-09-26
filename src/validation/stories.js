@@ -2,7 +2,6 @@ import Joi from 'joi';
 import { STORY_CATEGORIES } from '../constants/validation.js';
 
 export const createStorySchema = Joi.object({
-  img: Joi.string().uri().allow(''),
   title: Joi.string().min(3).max(128).required(),
   article: Joi.string().allow('').required(),
   fullText: Joi.string().allow('').required(),
@@ -12,7 +11,6 @@ export const createStorySchema = Joi.object({
 });
 
 export const updateStoriesSchema = Joi.object({
-  img: Joi.string().uri().allow(''),
   title: Joi.string().min(3).max(128),
   article: Joi.string().allow(''),
   fullText: Joi.string().allow(''),
