@@ -26,6 +26,5 @@ export const loginWithGoogleOAuthSchema = Joi.object({
 });
 
 export const onboardingCompletedSchema = Joi.object({
-  avatar: Joi.string(),
   bio: Joi.string().min(0).max(256),
 });
