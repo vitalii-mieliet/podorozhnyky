@@ -482,6 +482,79 @@
             "$ref": "#/components/responses/404-2"
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Stories"
+        ],
+        "summary": "Update a story",
+        "description": "Updates an existing story. Only the user who created the story (`ownerId`) can edit it.\n",
+        "operationId": "updateStory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the story to update",
+            "schema": {
+              "type": "string",
+              "example": "66fb54e3a4c3f9410e2cba6b"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "The data to update the story",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "My Updated Journey"
+                  },
+                  "category": {
+                    "type": "string",
+                    "example": "travel"
+                  },
+                  "article": {
+                    "type": "string",
+                    "example": "Updated short description of the story"
+                  },
+                  "fullText": {
+                    "type": "string",
+                    "example": "Full updated story text with all the details"
+                  },
+                  "img": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": "https://res.cloudinary.com/demo/image/upload/v169523/image.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-6"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-2"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-2"
+          }
+        }
       }
     },
     "/stories/authors": {
@@ -661,81 +734,6 @@
           },
           "404": {
             "$ref": "#/components/responses/404-4"
-          }
-        }
-      }
-    },
-    "/stories/category-update/{id}": {
-      "patch": {
-        "tags": [
-          "Stories"
-        ],
-        "summary": "Update a story",
-        "description": "Updates an existing story. Only the user who created the story (`ownerId`) can edit it.\n",
-        "operationId": "updateStory",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "ID of the story to update",
-            "schema": {
-              "type": "string",
-              "example": "66fb54e3a4c3f9410e2cba6b"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "The data to update the story",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "example": "My Updated Journey"
-                  },
-                  "category": {
-                    "type": "string",
-                    "example": "travel"
-                  },
-                  "article": {
-                    "type": "string",
-                    "example": "Updated short description of the story"
-                  },
-                  "fullText": {
-                    "type": "string",
-                    "example": "Full updated story text with all the details"
-                  },
-                  "img": {
-                    "type": "string",
-                    "format": "uri",
-                    "example": "https://res.cloudinary.com/demo/image/upload/v169523/image.png"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200-6"
-          },
-          "401": {
-            "$ref": "#/components/responses/401-2"
-          },
-          "403": {
-            "$ref": "#/components/responses/403"
-          },
-          "404": {
-            "$ref": "#/components/responses/404-2"
           }
         }
       }
