@@ -12,14 +12,15 @@ import s from './Header.module.css';
 import AppButton from '../../ui/AppButton/AppButton';
 import Navigation from '../Navigation/Navigation';
 import AuthButtons from '../../AuthButtons/AuthButtons';
-import { selectIsLoggedIn, selectUser } from '../../../redux/auth/selectors';
+import { selectIsLoggedIn } from '../../../redux/auth/selectors';
 import UserBar from '../../ui/UserBar/UserBar';
 import useBreakpoint from '../../../hooks/useBreakpoint';
+import { selectUserProfile } from '../../../redux/user/selectors';
 
 const Header = () => {
   //data from Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUserProfile);
 
   const navLinks = [
     { to: '/', label: 'Головна' },
