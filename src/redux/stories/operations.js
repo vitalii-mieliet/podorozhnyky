@@ -3,6 +3,7 @@ import { api } from '../../services/api';
 
 export const fetchStories = createAsyncThunk(
   'stories/fetch',
+
   async ({ page = 1, perPage = 9, category = '' }, thunkAPI) => {
     try {
       const response = await api.get('/stories', {
