@@ -1,6 +1,10 @@
 // src/redux/stories/slice.js
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchStories, fetchStoryById } from './operations';
+import {
+  fetchStories,
+  fetchStoryById,
+  getStoriesAuthorsById,
+} from './operations';
 
 const initialState = {
   items: [],
@@ -11,6 +15,14 @@ const initialState = {
   isLoadingMore: false,
   error: null,
   hasNextPage: false,
+
+  author: {
+    name: null,
+    avatar: null,
+    status: 'idle',
+    error: null,
+    bio: null,
+  },
 };
 
 const storiesSlice = createSlice({
@@ -59,6 +71,22 @@ const storiesSlice = createSlice({
       .addCase(fetchStoryById.rejected, (state, action) => {
         state.currentStoryStatus = 'failed'; // Используем currentStoryStatus
         state.error = action.payload;
+      })
+
+      // --- Author loading state handlers ---
+      .addCase(getStoriesAuthorsById.pending, (state) => {
+        state.author.status = 'loading';
+        state.author.error = null;
+      })
+      .addCase(getStoriesAuthorsById.fulfilled, (state, action) => {
+        state.author.status = 'succeeded';
+        state.author.name = action.payload.name;
+        state.author.avatar = action.payload.avatar;
+        state.author.bio = action.payload.bio;
+      })
+      .addCase(getStoriesAuthorsById.rejected, (state, action) => {
+        state.author.status = 'failed';
+        state.author.error = action.payload;
       });
   },
 });
