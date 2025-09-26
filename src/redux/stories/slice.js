@@ -51,7 +51,6 @@ const storiesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
       .addCase(fetchStories.pending, (state) => {
         state.itemsStatus = 'loading';
         state.error = null;
@@ -73,9 +72,10 @@ const storiesSlice = createSlice({
         state.currentStory = action.payload;
       })
       .addCase(fetchStoryById.rejected, (state, action) => {
-        state.currentStoryStatus = 'failed'; // Используем currentStoryStatus
+        state.currentStoryStatus = 'failed';
         state.error = action.payload;
       })
+
       .addCase(fetchCategories.pending, (state) => {
         state.isLoading = true;
       })
@@ -87,6 +87,7 @@ const storiesSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       })
+
       .addCase(fetchCreateStories.pending, (state) => {
         state.isLoading = true;
         state.error = null;
