@@ -33,9 +33,12 @@ storyRouter.post(
   addStoryController,
 );
 
-storyRouter.delete('/:id', authenticate, isValidId, deleteStoryByIdController);
-
-storyRouter.get('/story/:id', isValidId, getStoryById);
+storyRouter.delete(
+  '/story/:id',
+  authenticate,
+  isValidId,
+  deleteStoryByIdController,
+);
 
 storyRouter.get('/byauthor/:id', isValidId, getStoriesByAuthorIdController);
 
