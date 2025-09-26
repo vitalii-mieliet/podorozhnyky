@@ -11,10 +11,14 @@ const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
     expires: session.refreshTokenValidUntil,
+    secure: true,
+    sameSite: 'none',
   });
   res.cookie('sessionId', session._id, {
     httpOnly: true,
     expires: session.refreshTokenValidUntil,
+    secure: true,
+    sameSite: 'none',
   });
 };
 
