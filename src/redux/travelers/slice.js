@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTravellers } from './operations';
+import { fetchTravellerInfoById, fetchTravellers } from './operations';
 
 const travelersSlice = createSlice({
   name: 'travelers',
@@ -13,6 +13,14 @@ const travelersSlice = createSlice({
     hasPreviousPage: false,
     loading: false,
     error: null,
+
+    author: {
+      name: null,
+      avatar: null,
+      status: 'idle',
+      error: null,
+      bio: null,
+    },
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -42,6 +50,22 @@ const travelersSlice = createSlice({
       .addCase(fetchTravellers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error fetching travelers';
+      })
+
+      // === Author ===
+      .addCase(fetchTravellerInfoById.pending, (state) => {
+        state.author.status = 'loading';
+        state.author.error = null;
+      })
+      .addCase(fetchTravellerInfoById.fulfilled, (state, action) => {
+        state.author.status = 'succeeded';
+        state.author.name = action.payload.name || null;
+        state.author.avatar = action.payload.avatar || null;
+        state.author.bio = action.payload.bio || null;
+      })
+      .addCase(fetchTravellerInfoById.rejected, (state, action) => {
+        state.author.status = 'failed';
+        state.author.error = action.payload || 'Error fetching author';
       });
   },
 });

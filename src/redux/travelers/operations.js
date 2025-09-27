@@ -15,3 +15,16 @@ export const fetchTravellers = createAsyncThunk(
     }
   }
 );
+
+// --- fetch author info by authorId ---
+export const fetchTravellerInfoById = createAsyncThunk(
+  'stories/fetchTravellerInfoById',
+  async (userId, thunkAPI) => {
+    try {
+      const response = await api.get(`/stories/authors/${userId}`);
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
