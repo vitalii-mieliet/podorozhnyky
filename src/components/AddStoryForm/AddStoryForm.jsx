@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 
 import style from './AddStoryForm.module.css';
 import Container from '../common/Container/Container';
@@ -34,6 +35,7 @@ const validationSchema = Yup.object({
 
 const AddStoryForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(null);
 
@@ -76,13 +78,18 @@ const AddStoryForm = () => {
       resetForm();
       setPreview(null);
 
-      alert('Історію успішно створено!');
+      navigate('/stories');
     } catch (error) {
       console.error('Помилка при відправці форми:', error);
       alert('Помилка при створенні історії. Спробуйте ще раз.');
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleResetForm = (resetForm) => {
+    resetForm();
+    setPreview(null);
   };
 
   return (
@@ -96,7 +103,7 @@ const AddStoryForm = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, setFieldValue, isValid, dirty }) => (
+            {({ values, setFieldValue, isValid, dirty, resetForm }) => (
               <Form className={style.formBox}>
                 <div className={style.formBoxDesktop}>
                   {/* Завантаження фото */}
@@ -240,6 +247,7 @@ const AddStoryForm = () => {
                     type="button"
                     variant="grey"
                     aria-label="Відмінити створення історії"
+                    onClick={() => handleResetForm(resetForm)}
                   >
                     Відмінити
                   </AppButton>
