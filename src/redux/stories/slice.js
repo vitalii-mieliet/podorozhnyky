@@ -16,14 +16,6 @@ const initialState = {
   isLoadingMore: false,
   error: null,
   hasNextPage: false,
-
-  author: {
-    name: null,
-    avatar: null,
-    status: 'idle',
-    error: null,
-    bio: null,
-  },
 };
 
 const storiesSlice = createSlice({

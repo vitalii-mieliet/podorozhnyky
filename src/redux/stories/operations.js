@@ -85,16 +85,3 @@ export const fetchCreateStories = createAsyncThunk(
     }
   }
 );
-
-// --- fetch author info by authorId ---
-export const getStoriesAuthorsById = createAsyncThunk(
-  'stories/fetchAuthorById',
-  async (userId, thunkAPI) => {
-    try {
-      const response = await api.get(`/stories/authors/${userId}`);
-      return response.data.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
