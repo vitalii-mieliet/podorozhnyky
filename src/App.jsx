@@ -17,8 +17,16 @@ import {
 } from './routes/lazyPages';
 import RestrictedRoute from './routes/RestrictedRoute';
 import PrivateRoute from './routes/PrivateRoute';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { refreshUser } from './redux/auth/operations';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
