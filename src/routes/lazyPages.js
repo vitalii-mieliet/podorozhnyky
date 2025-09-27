@@ -10,9 +10,6 @@ export const PersonalPage = withSuspense(
 export const ProfilePage = withSuspense(
   lazy(() => import('../pages/ProfilePage/ProfilePage'))
 );
-export const HomePage = withSuspense(
-  lazy(() => import('../pages/HomePage/HomePage'))
-);
 export const AuthPage = withSuspense(
   lazy(() => import('../pages/AuthPage/AuthPage'))
 );
