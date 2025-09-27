@@ -2,16 +2,16 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../../services/api';
 import {
   clearAccessToken,
-  getAccessToken,
   setAccessToken,
 } from '../../services/api/tokenStore';
+import { AUTH_ENDPOINTS } from '../../constants/auth';
 
 // REGISTER
 export const registerUser = createAsyncThunk(
   'auth/register',
   async (credentials, { dispatch, rejectWithValue }) => {
     try {
-      await api.post('/auth/register', credentials);
+      await api.post(AUTH_ENDPOINTS.REGISTER, credentials);
       const { name: _, ...loginCredentials } = credentials;
       await dispatch(loginUser(loginCredentials));
     } catch (error) {
@@ -27,9 +27,9 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/login', credentials);
+      const { data } = await api.post(AUTH_ENDPOINTS.LOGIN, credentials);
+
       setAccessToken(data.data.accessToken);
-      console.info('Login: ', getAccessToken());
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
     }
@@ -41,7 +41,7 @@ export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/refresh');
+      const { data } = await api.post(AUTH_ENDPOINTS.REFRESH);
       setAccessToken(data.data.accessToken);
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Refresh failed');
@@ -54,9 +54,8 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await api.post('/auth/logout');
+      await api.post(AUTH_ENDPOINTS.LOGOUT);
       clearAccessToken();
-      console.info('Logout: ', getAccessToken());
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Refresh failed');
     }
