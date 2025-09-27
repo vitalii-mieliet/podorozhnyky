@@ -46,7 +46,7 @@ storyRouter.get('/authors/:id', isValidId, getAuthorByIdController);
 storyRouter.get('/category', getCategoriesController);
 
 storyRouter.patch(
-  '/category-update/:id',
+  '/stories-update/:id',
   authenticate,
   isValidId,
   upload.single('photo'),
