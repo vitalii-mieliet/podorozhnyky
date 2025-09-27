@@ -30,6 +30,7 @@ const TravellerPage = () => {
     return items.slice(0, perPage * currentPage);
   }, [items, perPage, currentPage]);
 
+  // load traveller info
   useEffect(() => {
     const loadUserInfo = async () => {
       try {
@@ -42,6 +43,7 @@ const TravellerPage = () => {
     loadUserInfo();
   }, [dispatch, id]);
 
+  // load stories
   useEffect(() => {
     const loadStories = async () => {
       try {
