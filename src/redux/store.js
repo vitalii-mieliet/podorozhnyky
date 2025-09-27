@@ -3,17 +3,17 @@ import authReducer from './auth/slice';
 import userReducer from './user/slice';
 import storiesReducer from './stories/slice';
 import travelersReducer from './travelers/slice';
-import filterReducer from './filter/slice';
 import storiesPopularReducer from './popularStories/slice';
+import ourTravellersReducer from './ourTravellers/slice';
 import listenerMiddleware from './listenerMiddleware';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   stories: storiesReducer,
-  popularStories: storiesPopularReducer, // редьюсер для популярних історій
   travelers: travelersReducer,
-  filter: filterReducer,
+  popularStories: storiesPopularReducer, // редьюсер для популярних історій
+  ourTravellers: ourTravellersReducer,
 });
 
 export const store = configureStore({

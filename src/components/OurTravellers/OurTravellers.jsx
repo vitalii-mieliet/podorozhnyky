@@ -1,36 +1,45 @@
-import { useState, useEffect } from 'react';
-import useBreakpoint from '../../hooks/useBreakpoint.js';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { fetchTravellers } from '../../redux/travelers/operations.js';
 import Section from '../common/Section/Section.jsx';
 import Container from '../common/Container/Container.jsx';
-import TravellerList from '../common/TravellerList/TravellerList.jsx';
 import AppButton from '../ui/AppButton/AppButton.jsx';
 import styles from './OurTravellers.module.css';
+import useBreakpoint from '../../hooks/useBreakpoint.js';
+import { ourTravellersActions } from '../../redux/ourTravellers/slice.js';
+import TravellerList from '../common/TravellerList/TravellerList.jsx';
+import {
+  selectOurTravellers,
+  selectOurTravellersLoading,
+  selectOurTravellersPagination,
+} from '../../redux/ourTravellers/selectors.js';
 
-const OurTravellers = ({
-  travelers = [],
-  initialVisibleCount = 4, // кількість карток на сторінці
-  loadMoreCount = 4, // кількість карток що підвантажуются при кліку на кнопку
-}) => {
+const OurTravellers = () => {
   const { isMobile } = useBreakpoint();
-  const [visibleCount, setVisibleCount] = useState(initialVisibleCount);
+  const dispatch = useDispatch();
+  const { setPage } = ourTravellersActions;
+  const isLoading = useSelector(selectOurTravellersLoading);
+  const items = useSelector(selectOurTravellers) || [];
+  const { hasNextPage, page, perPage } = useSelector(
+    selectOurTravellersPagination
+  );
 
   useEffect(() => {
-    setVisibleCount(initialVisibleCount);
-  }, [initialVisibleCount]);
-
-  const showLoadMoreButton = travelers.length > visibleCount;
+    dispatch(fetchTravellers({ page, perPage }));
+  }, [dispatch, page, perPage]);
 
   const handleLoadMore = () => {
-    setVisibleCount((prevCount) => prevCount + loadMoreCount);
+    dispatch(setPage(page + 1));
   };
 
   return (
     <Section>
       <Container>
         <h2 className={styles.sectionTitle}>Наші Мандрівники</h2>
-        <TravellerList travelers={travelers.slice(0, visibleCount)} />
+        <TravellerList travelers={items} />
 
-        {showLoadMoreButton && (
+        {hasNextPage && (
           <div className={styles.actions}>
             <AppButton
               onClick={handleLoadMore}
@@ -38,8 +47,9 @@ const OurTravellers = ({
               type="button"
               size={isMobile ? 'sm' : 'md'}
               aria-label="Показати більше мандрівників"
+              disabled={isLoading} // добавь
             >
-              Переглянути всіх
+              {isLoading ? 'Завантаження...' : 'Переглянути всіх'}
             </AppButton>
           </div>
         )}
