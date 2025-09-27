@@ -3,16 +3,14 @@ import MessageNoStories from '../../components/common/MessageNoStories/MessageNo
 
 import s from './TravellerPage.module.css';
 import { useEffect, useMemo, useState } from 'react';
-import {
-  fetchStories,
-  getStoriesAuthorsById,
-} from '../../redux/stories/operations';
+import { fetchStories } from '../../redux/stories/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import useBreakpoint from '../../hooks/useBreakpoint.js';
 import AppButton from '../../components/ui/AppButton/AppButton.jsx';
 import { useParams } from 'react-router-dom';
 import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo.jsx';
+import { fetchTravellerInfoById } from '../../redux/travelers/operations.js';
 
 const TravellerPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,10 +18,9 @@ const TravellerPage = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
-  const { travellerId } = useParams();
-  const id = travellerId;
+  const { travellerId: id } = useParams();
 
-  const data = useSelector((state) => state.stories.author || {});
+  const travellerInfo = useSelector((state) => state.travelers.author || {});
 
   const { items, hasNextPage } = useSelector((state) => state.stories);
   const { isDesktop } = useBreakpoint();
@@ -36,7 +33,7 @@ const TravellerPage = () => {
   useEffect(() => {
     const loadUserInfo = async () => {
       try {
-        await dispatch(getStoriesAuthorsById(id)).unwrap();
+        await dispatch(fetchTravellerInfoById(id)).unwrap();
       } catch (error) {
         setError(error.message || 'Не вдалося завантажити дані користувача');
       }
@@ -83,7 +80,7 @@ const TravellerPage = () => {
       <Container>
         <div className={s.travellerInfo}>
           {!error ? (
-            <TravellerInfo user={data} />
+            <TravellerInfo user={travellerInfo} />
           ) : (
             <p className={s.error}>{error}</p>
           )}
