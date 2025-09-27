@@ -54,7 +54,11 @@ const TravellersPage = () => {
           <p className={css.empty}>Немає мандрівників</p>
         )}
 
-        <TravellerList travelers={travelers} />
+        <TravellerList
+          travelers={travelers}
+          isLoading={isLoading}
+          perPage={perPage}
+        />
 
         <div className={css.btn}>
           {page < totalPages && (
