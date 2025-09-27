@@ -3,8 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import SharedLayout from './components/Layouts/SharedLayout';
 import PublicLayout from './components/Layouts/PublicLayout';
 import PrivateLayout from './components/Layouts/PrivateLayout';
+import HomePage from './pages/HomePage/HomePage';
 import {
-  HomePage,
   AddStory,
   PersonalPage,
   ProfilePage,

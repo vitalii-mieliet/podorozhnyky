@@ -3,13 +3,10 @@ import { api } from '../../services/api';
 
 export const fetchTravellers = createAsyncThunk(
   'travelers/fetchTravellers',
-  async (
-    { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc' },
-    { rejectWithValue }
-  ) => {
+  async (params, { rejectWithValue }) => {
     try {
       const response = await api.get('/stories/authors', {
-        params: { page, perPage, sortBy, sortOrder },
+        params,
       });
 
       return response.data.data; // повертає { data, page, totalPages ... }
