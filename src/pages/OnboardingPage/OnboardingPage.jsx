@@ -1,5 +1,7 @@
 import styles from './OnboardingPage.module.css';
 import OnboardingForm from '../../components/OnboardingForm/OnboardingForm';
+import Section from '../../components/common/Section/Section';
+import Container from '../../components/common/Container/Container';
 
 export default function OnboardingPage() {
   // onSuccess — колбек, який ПІЗНІШЕ можна підвʼязати до navigate('/profile') або dispatch(...)
@@ -9,14 +11,13 @@ export default function OnboardingPage() {
   };
 
   return (
-    <main className={styles.page}>
-      <h1 className={styles.title}>Давайте познайомимось ближче</h1>
-
-      <div className={styles.card}>
-        <OnboardingForm styles={styles} onSuccess={handleSuccess} />
-      </div>
-
-      <footer className={styles.footer}>© 2025 Подорожники</footer>
-    </main>
+    <Section>
+      <Container>
+        <div className={styles.box}>
+          <h1 className={styles.title}>Давайте познайомимось ближче</h1>
+          <OnboardingForm onSuccess={handleSuccess} />
+        </div>
+      </Container>
+    </Section>
   );
 }
