@@ -92,6 +92,13 @@ const AddStoryForm = () => {
     setPreview(null);
   };
 
+  const removePhoto = (setFieldValue) => {
+    setFieldValue('avatarFile', null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview('');
+  };
+
   return (
     <Section>
       <Container>
@@ -133,9 +140,13 @@ const AddStoryForm = () => {
                       type="button"
                       variant="grey"
                       size="sm"
-                      onClick={() => fileInputRef.current.click()}
+                      onClick={
+                        preview
+                          ? () => removePhoto(setFieldValue)
+                          : () => fileInputRef.current.click()
+                      }
                     >
-                      Завантажити фото
+                      {preview ? 'Видалити фото' : 'Завантажити фото'}
                     </AppButton>
                   </div>
 
