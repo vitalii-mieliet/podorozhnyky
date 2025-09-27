@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import styles from './Footer.module.css';
 import Logo from '../Logo/Logo';
 import Socials from '../Socials/Socials';
@@ -9,7 +8,7 @@ const Footer = () => {
   const navLinks = [
     { to: '/', label: 'Головна' },
     { to: '/stories', label: 'Історії' },
-    { to: '/travelers', label: 'Мандрівники' },
+    { to: '/travellers', label: 'Мандрівники' },
   ];
 
   return (

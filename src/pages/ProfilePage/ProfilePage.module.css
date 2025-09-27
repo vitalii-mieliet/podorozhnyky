@@ -1,0 +1,14 @@
+.travellerSection {
+  padding: 32px 0;
+}
+.travellerContainer {
+  padding: 0 32px;
+}
+@media (min-width: 1440px) {
+  .travellerSection {
+    padding: 48px 0;
+  }
+  .travellerContainer {
+    padding: 0 64px;
+  }
+}

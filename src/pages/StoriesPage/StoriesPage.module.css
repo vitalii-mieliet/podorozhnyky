@@ -1,0 +1,101 @@
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.title {
+  color: var(--color-neutral-darkest); 
+}
+
+.filters {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+ 
+.filterButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;  
+  justify-content: center;
+}
+
+.filterButton {
+  border: 1px solid var(--opacity-transparent);
+  border-radius: 8px;
+  background: var(--color-neutral-lightest);
+  font-weight: 500;
+  color: var(--color-neutral-darkest);
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+  width: auto;  
+}
+
+.filterButton:hover {
+  background-color: var(--color-neutral-lighter);
+}
+ 
+@media (min-width: 768px) {
+  .filterButton {
+    padding: 6px 12px;
+    height: 36px;
+    font-size: 16px;  
+  }
+}
+ 
+@media (min-width: 1440px) {
+  .filterButton {
+    height: 39px;
+    font-size: 18px;
+  }
+}
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;  
+}
+ 
+.filterSelect {
+   
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-neutral-darkest);
+  
+  border: 1px solid var(--opacity-neutral-darkest-15);
+  border-radius: 8px;
+  padding: 8px;
+  width: 335px;
+  height: 40px;
+  background: var(--opacity-transparent);
+}
+.filterSelectHeading {
+   text-align: left;
+}
+ 
+.filterSelect {
+  display: block;  
+}
+.filterButtons {
+  display: none;  
+}
+
+@media (min-width: 768px) {
+  .filterSelect {
+    display: none;  
+  }
+  .filterButtons {
+    display: flex;  
+  }
+  .filterSelectHeading {
+    display: none;  
+  }
+}
+ 
+.buttonWrapper {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}

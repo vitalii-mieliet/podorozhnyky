@@ -2,16 +2,16 @@ import React from 'react';
 import s from './UserBar.module.css';
 import { useDispatch } from 'react-redux';
 
-import { authActions } from '../../../redux/auth/slice';
 import Logout from '../../../assets/icons/logout.svg?react';
 import { useNavigate } from 'react-router-dom';
+import { logoutUser } from '../../../redux/auth/operations';
 
 function UserBar({ isLoggedIn, user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(authActions.logout());
+    dispatch(logoutUser());
     navigate('/');
   };
 
@@ -21,13 +21,13 @@ function UserBar({ isLoggedIn, user }) {
       {isLoggedIn && (
         <>
           <div className={s.avatar}>
-            {user.avatar ? (
-              <img src={user.avatar} alt="аватар" />
+            {user?.avatar ? (
+              <img src={user?.avatar} alt="аватар" />
             ) : (
-              user.name.charAt(0)
+              user?.name.charAt(0)
             )}
           </div>
-          <span>{user.name}</span>
+          <span>{user?.name}</span>
           <button
             className={s.logoutBtn}
             aria-label="Вихід"

@@ -23,9 +23,11 @@ function TravellerCard({ userData = {} }) {
             'adipisicing elit. Id, impedit error. Libero aspernatur quo a.'}
         </p>
 
-        <AppButton href="#" variant="grey" fullWidth={true}>
-          Переглянути профіль
-        </AppButton>
+        <div className={css.btn}>
+          <AppButton href={userData._id} variant="grey" fullWidth={true}>
+            Переглянути профіль
+          </AppButton>
+        </div>
       </div>
     </article>
   );

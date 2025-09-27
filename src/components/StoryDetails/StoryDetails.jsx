@@ -1,59 +1,76 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { saveStory, unsaveStory } from '../../redux/user/operations';
+import { selectSavedStories } from '../../redux/user/selectors';
 import AppButton from '../../components/ui/AppButton/AppButton';
-import styles from './StoryDetails.module.css';
-import Section from '../common/Section/Section';
-import BookmarkIcon from '../../assets/icons/bookmark.svg?react';
+import styles from './StoryDetails.module.css'; 
 
 const StoryDetails = ({ storyData }) => {
+  const dispatch = useDispatch();
+  const savedStoriesIds = useSelector(selectSavedStories);
+
   if (!storyData) {
     return null;
   }
  
-  const { img, category, title, article, owner, date } = storyData;
+  const { _id, img, category, title, article, owner, date } = storyData;
  
-  const authorAvatarUrl = owner?.avatar ? owner.avatar : '/images/placeholder.png'; 
+  const isSaved = savedStoriesIds.includes(_id);
+
+  const handleBookmarkClick = () => {
+    if (isSaved) {
+      dispatch(unsaveStory(_id));
+    } else {
+      dispatch(saveStory(_id));
+    }
+  };
+
   const authorName = owner?.name || 'Невідомий автор';
+  const formattedDate = new Date(date).toLocaleDateString('uk-UA', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  }).replace(' р.', '');
 
   return (
     <article className={styles.container}>
       <header className={styles.header}>
-        <p className={styles.category}>{category}</p>
         <h1 className={styles.title}>{title}</h1>
         <div className={styles.meta}>
-          <div className={styles.authorInfo}>
-           
-            <img src={authorAvatarUrl} alt={authorName} className={styles.authorAvatar} />
-            <div>
-              <p className={styles.authorLabel}>Автор статті</p>
-            
-              <p className={styles.authorName}>{authorName}</p>
+          <div className={styles.metaLeft}>
+            <div className={styles.metaItem}>
+              <p className={styles.metaLabel}>Автор статті</p>
+              <p className={styles.metaValue}>{authorName}</p>
+            </div>
+            <div className={styles.metaItem}>
+              <p className={styles.metaLabel}>Опубліковано</p>
+              <p className={styles.metaValue}>{formattedDate}</p>
             </div>
           </div>
-          <div className={styles.dateInfo}>
-             <p className={styles.dateLabel}>Опубліковано</p>
-             <p className={styles.date}>{new Date(date).toLocaleDateString()}</p>
+          <div className={styles.metaRight}>
+            <p className={styles.category}>{category}</p>
           </div>
         </div>
       </header>
 
       <img src={img} alt={title} className={styles.mainImage} />
-
-      <div
-        className={styles.articleBody}
-        dangerouslySetInnerHTML={{ __html: article }}
-      />
-
-      <Section className={styles.saveSection} aria-labelledby="зберегти-історію-заголовок">
-        <div className={styles.saveIconWrapper} aria-hidden="true">
-            <BookmarkIcon className={styles.saveIcon} />
-        </div>
-        <h3 id="зберегти-історію-заголовок" className={styles.saveTitle}>Збережіть собі історію</h3>
-        <p className={styles.saveText}>
-          Вона буде доступна у Вашому профілі у розділі "Збережене".
-        </p>
-        <AppButton onClick={() => console.log('Save story clicked!')}>
-          Зберегти
-        </AppButton>
-      </Section>
+ 
+      <div className={styles.mainContent}>
+        <div
+          className={styles.articleBody}
+          dangerouslySetInnerHTML={{ __html: article }}
+        />
+        <aside className={styles.saveSection} aria-labelledby="зберегти-історію-заголовок">
+          <h3 id="зберегти-історію-заголовок" className={styles.saveTitle}>
+            {isSaved ? 'Історія збережена!' : 'Збережіть собі історію'}
+          </h3>
+          <p className={styles.saveText}>
+            Вона буде доступна у Вашому профілі у розділі "Збережене".
+          </p>
+          <AppButton className={styles.saveButton} onClick={handleBookmarkClick}>
+            {isSaved ? 'Видалити зі збережених' : 'Зберегти'}
+          </AppButton>
+        </aside>
+      </div>
     </article>
   );
 };
