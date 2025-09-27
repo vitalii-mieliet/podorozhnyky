@@ -10,7 +10,7 @@
   border-radius: 8px;
   border: 1px solid var(--opacity-neutral-darkest-15);
   color: var(--color-neutral-dark);
-  background-color: var(--opacity-white-60);
+  background-color: var(--color-white);
   cursor: pointer;
   display: flex;
   justify-content: space-between;
