@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import s from './AppButton.module.css';
+import { Link } from 'react-router-dom';
 
 /**
  * Універсальний компонент кнопки, який може рендеритись як нативна кнопка `<button>`
@@ -63,15 +64,13 @@ const AppButton = ({
   };
 
   if (href && /^https?:\/\//.test(href)) {
-    commonProps.rel = 'noopener noreferrer';
-  }
-
-  if (href) {
     return (
       <a
-        role={disabled ? 'button' : undefined}
         href={disabled ? undefined : href}
+        rel="noopener noreferrer"
+        target="_blank"
         aria-disabled={disabled}
+        role={disabled ? 'button' : undefined}
         onClick={(e) => {
           if (disabled) {
             e.preventDefault();
@@ -83,6 +82,25 @@ const AppButton = ({
       >
         {children}
       </a>
+    );
+  }
+
+  if (href) {
+    return (
+      <Link
+        to={href}
+        aria-disabled={disabled}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
+        {...commonProps}
+      >
+        {children}
+      </Link>
     );
   }
 
