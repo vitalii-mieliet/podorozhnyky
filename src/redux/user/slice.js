@@ -43,9 +43,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    resetUser: (state) => {
-      Object.assign(state, initialState);
-    },
+    resetUser: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -56,7 +54,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = action.payload;
+        Object.assign(state.userData, action.payload);
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -70,7 +68,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchSavedStories.fulfilled, (state, action) => {
         state.storiesLoading = false;
-        state.savedStories = action.payload;
+        Object.assign(state.savedStories, action.payload);
       })
       .addCase(fetchSavedStories.rejected, (state, action) => {
         state.storiesLoading = false;
@@ -84,7 +82,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchCreatedStories.fulfilled, (state, action) => {
         state.storiesLoading = false;
-        state.createdStories = action.payload;
+        Object.assign(state.createdStories, action.payload);
       })
       .addCase(fetchCreatedStories.rejected, (state, action) => {
         state.storiesLoading = false;
@@ -92,10 +90,10 @@ const userSlice = createSlice({
           action.payload || 'Не вдалося завантажити створені історії';
       })
       .addCase(saveStory.fulfilled, (state, action) => {
-        state.savedStories.push(action.payload);
+        state.userData.savedStories.push(action.payload);
       })
       .addCase(unsaveStory.fulfilled, (state, action) => {
-        state.savedStories = state.savedStories.filter(
+        state.userData.savedStories = state.userData.savedStories.filter(
           (id) => id !== action.payload
         );
       });
