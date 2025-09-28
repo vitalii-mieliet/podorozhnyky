@@ -26,7 +26,11 @@ function TravellerCard({ userData = {} }) {
         </p>
 
         <div className={css.btn}>
-          <AppButton href={`travellers/${_id}`} variant="grey" fullWidth={true}>
+          <AppButton
+            href={`/travellers/${_id}`}
+            variant="grey"
+            fullWidth={true}
+          >
             Переглянути профіль
           </AppButton>
         </div>
