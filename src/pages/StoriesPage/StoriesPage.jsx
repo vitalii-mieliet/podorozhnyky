@@ -45,6 +45,7 @@ const StoriesPage = () => {
       .slice(0, perPage * currentPage);
   }, [items, perPage, currentPage, currentCategory, categories]);
 
+  // first loading
   useEffect(() => {
     const loadStories = async () => {
       try {
@@ -74,6 +75,21 @@ const StoriesPage = () => {
     items.length,
     currentCategory,
   ]);
+
+  // category loading
+  useEffect(() => {
+    const fetchByCategory = async () => {
+      try {
+        setCurrentPage(1);
+        await dispatch(
+          fetchStories({ page: 1, perPage, category: currentCategory })
+        ).unwrap();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchByCategory();
+  }, [currentCategory, dispatch, perPage]);
 
   // handlers
   const handleShowMore = async () => {
