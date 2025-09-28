@@ -36,8 +36,8 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
     }
   };
 
-  const imageUrl = img || '/images/placeholder.png';
-  const authorAvatarUrl = owner?.avatar || '/images/placeholder.svg';
+  const imageUrl = img || '/src/assets/images/placeholder/Placeholder.webp';
+  const authorAvatarUrl = owner?.avatar || '/src/assets/icons/AvatarImage.svg';
 
   return (
     <div className={styles.card}>
@@ -51,11 +51,13 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
           <p className={styles.description}>{article}</p>
         </div>
         <div className={styles.authorBlock}>
-          <img
-            src={authorAvatarUrl}
-            alt={owner?.name || 'Автор'}
-            className={styles.authorAvatar}
-          />
+          <div className={styles.imageWrapper}>
+            <img
+              src={authorAvatarUrl}
+              alt={owner?.name || 'Автор'}
+              className={styles.authorAvatar}
+            />
+          </div>
           <div className={styles.authorDetails}>
             <p className={styles.authorName}>
               {owner?.name || 'Невідомий автор'}

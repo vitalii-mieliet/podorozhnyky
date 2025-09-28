@@ -1,4 +1,4 @@
-.card {  
+.card {
   width: 335px;
   height: 575px;
   background-color: var(--color-royal-blue-lighter);
@@ -6,7 +6,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 .image {
   width: 100%;
@@ -27,8 +29,7 @@
     height: 677px;
   }
   .image {
-   
-  height: 281px;
+    height: 281px;
   }
 }
 
@@ -36,16 +37,14 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 20px var(--opacity-neutral-darkest-10);
 }
- 
 
- 
 .contentWrapper {
   padding: 24px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
- 
+
 .content {
   height: 160px;
   margin-bottom: 24px;
@@ -56,14 +55,14 @@
   border-radius: 6px;
   padding: 0 8px;
   height: 24px;
-  line-height: 24px;  
+  line-height: 24px;
   font-weight: 600;
   font-size: 16px;
   margin-bottom: 8px;
   text-align: center;
 }
 
-.title { 
+.title {
   font-family: var(--second-family);
   font-weight: 700;
   font-size: 26px;
@@ -74,31 +73,37 @@
 }
 
 .description {
-  font-size: 18px;  
+  font-size: 18px;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-  line-clamp: 3; 
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
- 
+
 .authorBlock {
   height: 54px;
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-top: auto;  
+  margin-top: auto;
   margin-bottom: 24px;
 }
 
-.authorAvatar {
+.imageWrapper {
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.authorAvatar {
   object-fit: cover;
-  flex-shrink: 0;
 }
 
 .authorDetails {
@@ -115,7 +120,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 16px;  
+  font-size: 16px;
 }
 
 .separator {
@@ -127,7 +132,7 @@
   align-items: center;
   gap: 4px;
 }
- 
+
 .actions {
   height: 48px;
   display: flex;
@@ -136,24 +141,24 @@
 }
 
 .viewButton {
-  flex-grow: 1;  
-  height: 100%; 
+  flex-grow: 1;
+  height: 100%;
   padding: 6px 12px;
-  min-width: 0; 
+  min-width: 0;
 }
 
-.iconButton {   
-  min-width: 48px; 
+.iconButton {
+  min-width: 48px;
   height: 48px;
-  padding: 12px;  
+  padding: 12px;
   flex-shrink: 0;
-  box-sizing: border-box;  
+  box-sizing: border-box;
 }
 
 .iconButton svg {
   width: 24px;
   height: 24px;
-  display: block;  
+  display: block;
 }
 
 .normal,
@@ -163,7 +168,7 @@
 }
 .normal svg,
 .own svg {
-  opacity: 0.6;  
+  opacity: 0.6;
 }
 .normal svg path,
 .own svg path {
