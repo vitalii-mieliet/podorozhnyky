@@ -16,7 +16,7 @@ import placeholderAvatar from '../../../assets/images/TravellerInfo-img/Travelle
  *
  */
 const TravellerInfo = ({ user }) => {
-  console.log('TravellerInfo received user:', user); // ✅ Add this here
+  // console.log('TravellerInfo received user:', user); // ✅ Add this here
   if (!user) return null;
 
   const avatarSrc = user.avatar || user.photoUrl || placeholderAvatar;
