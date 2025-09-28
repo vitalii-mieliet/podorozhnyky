@@ -1,21 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  fetchCategories,
-  fetchCreateStories,
-  fetchStories,
-  fetchStoryById,
-} from './operations';
+import { fetchCreateStories, fetchStories, fetchStoryById } from './operations';
 
 const initialState = {
-  allItems: [],
   items: [],
-  category: [],
   currentStory: null,
   itemsStatus: 'idle',
   currentStoryStatus: 'idle',
-  isLoadingMore: false,
   error: null,
   hasNextPage: false,
+  totalPages: null,
+  isLoading: false,
 
   author: {
     name: null,
@@ -30,20 +24,6 @@ const storiesSlice = createSlice({
   name: 'stories',
   initialState,
   reducers: {
-    applyFilters: (state, action) => {
-      const { category, page, perPage } = action.payload;
-
-      const filteredStories =
-        category === 'Всі історії'
-          ? state.allItems
-          : state.allItems.filter((story) => story.category === category);
-
-      const startIndex = (page - 1) * perPage;
-      const endIndex = startIndex + perPage;
-      state.items = filteredStories.slice(startIndex, endIndex);
-
-      state.hasNextPage = endIndex < filteredStories.length;
-    },
     resetCurrentStory: (state) => {
       state.currentStory = null;
       state.currentStoryStatus = 'idle';
@@ -51,19 +31,26 @@ const storiesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // --- stories ---
       .addCase(fetchStories.pending, (state) => {
+        state.isLoading = true;
         state.itemsStatus = 'loading';
         state.error = null;
       })
       .addCase(fetchStories.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.itemsStatus = 'succeeded';
-        state.allItems = action.payload.data;
+        state.items = [...state.items, ...action.payload.data];
+        state.hasNextPage = action.payload.hasNextPage;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(fetchStories.rejected, (state, action) => {
+        state.isLoading = false;
         state.itemsStatus = 'failed';
         state.error = action.payload;
       })
 
+      // story by id
       .addCase(fetchStoryById.pending, (state) => {
         state.currentStoryStatus = 'loading';
       })
@@ -76,18 +63,7 @@ const storiesSlice = createSlice({
         state.error = action.payload;
       })
 
-      .addCase(fetchCategories.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.category = action.payload.data;
-      })
-      .addCase(fetchCategories.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-
+      // create story
       .addCase(fetchCreateStories.pending, (state) => {
         state.isLoading = true;
         state.error = null;

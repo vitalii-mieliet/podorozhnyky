@@ -3,19 +3,17 @@ import { api } from '../../services/api';
 
 export const fetchStories = createAsyncThunk(
   'stories/fetch',
-  async ({ page = 1, perPage = 9, category = '' }, thunkAPI) => {
+  async (args = {}, thunkAPI) => {
     try {
+      const { page, perPage, category, sortBy, sortOrder } = args;
+
       const response = await api.get('/stories', {
-        params: { page, perPage, category },
+        params: { page, perPage, category, sortBy, sortOrder },
       });
 
-      const payload = response.data.data;
+      const payload = response.data;
 
-      if (Array.isArray(payload.data)) {
-        payload.data = payload.data.slice(0, perPage);
-      }
-
-      return payload;
+      return payload.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -28,30 +26,6 @@ export const fetchStoryById = createAsyncThunk(
     try {
       const response = await api.get(`/stories/story/${storyId}`);
       return response.data.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const fetchAllStories = createAsyncThunk(
-  'stories/fetchAll',
-  async (_, thunkAPI) => {
-    try {
-      const response = await api.get('/stories?perPage=1000');
-      return response.data.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
-
-export const fetchCategories = createAsyncThunk(
-  'stories/categories',
-  async (_, thunkAPI) => {
-    try {
-      const response = await api.get('/stories/category');
-      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
