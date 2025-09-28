@@ -1,14 +1,13 @@
+import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo';
 import AppTabs from '../../components/ui/AppTabs/AppTabs';
 import Section from '../../components/common/Section/Section';
 import Container from '../../components/common/Container/Container';
-
 import { fetchCurrentUser } from '../../redux/user/operations';
-
 import { selectUserProfile, selectUserError } from '../../redux/user/selectors';
-import { Outlet, useLocation } from 'react-router-dom';
+import css from './ProfilePage.module.css';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -42,13 +41,14 @@ const ProfilePage = () => {
   return (
     <Section>
       <Container>
-        <TravellerInfo user={user} />
+        <TravellerInfo user={user} className={css.travellerInfo} />
 
         <AppTabs
           type="link"
           options={tabsOptions}
           value={activeTab}
           variant="contained"
+          className={css.tabs}
         />
         <Outlet />
       </Container>
