@@ -32,8 +32,20 @@ export const fetchStoryById = createAsyncThunk(
   }
 );
 
-export const fetchCreateStories = createAsyncThunk(
-  'stories/addStory',
+export const fetchCategories = createAsyncThunk(
+  'stories/categories',
+  async (_, thunkAPI) => {
+    try {
+      const response = await api.get('/stories/category');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createStory = createAsyncThunk(
+  'stories/createStory',
   async (values, thunkAPI) => {
     try {
       const formData = new FormData();
