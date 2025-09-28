@@ -18,10 +18,6 @@ export const updateUserById = async (userId, data) => {
 export const saveArticle = async (userId, storyId) => {
   const story = await StoriesCollection.findById(storyId);
 
-  if (!story) {
-    throw createHttpError(404, 'Story not found');
-  }
-
   const alreadySaved = await SavedArticleCollection.findOne({
     userId,
     storyId,
@@ -45,10 +41,6 @@ export const saveArticle = async (userId, storyId) => {
 
 export const unsaveArticle = async (userId, storyId) => {
   const saved = await SavedArticleCollection.findOne({ userId, storyId });
-
-  if (!saved) {
-    throw createHttpError(404, 'Story is not saved by this user');
-  }
 
   await SavedArticleCollection.deleteOne({ userId, storyId });
 
@@ -91,10 +83,6 @@ export const getSavedArticles = async (
 
   const stories = user.savedStories;
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
-
-  if (stories.length === 0) {
-    throw createHttpError(404, 'Stories not found');
-  }
 
   const modifiedStories = stories.map((story) => {
     const obj = story.toObject();

@@ -64,10 +64,6 @@ export const getStoryById = async (req, res) => {
 
   const data = await getStory(id);
 
-  if (!data) {
-    throw createHttpError(404, 'Story not found');
-  }
-
   res.json({
     status: 200,
     message: 'Successfully found story!',
