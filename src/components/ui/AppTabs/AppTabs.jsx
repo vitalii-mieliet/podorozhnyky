@@ -1,12 +1,57 @@
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 import css from './AppTabs.module.css';
+
+/**
+ * Універсальний компонент вкладок (tabs), який може рендеритися у вигляді кнопок
+ * (`<button>`) або посилань (`<Link>` з `react-router-dom`).
+ *
+ * Використовується для перемикання між різними станами або сторінками,
+ * наприклад, фільтри чи вкладки профілю.
+ *
+ * @component
+ * @param {Object} props - Властивості компонента.
+ * @param {{ label: string, value: string, to?: string }[]} props.options - Масив опцій для відображення вкладок.
+ * Кожна опція повинна мати текст (`label`), значення (`value`) і за потреби шлях (`to`).
+ * @param {string} props.value - Поточне активне значення вкладки.
+ * @param {function} [props.onChange] - Колбек, який викликається при зміні активної вкладки (для `type="button"`).
+ * @param {'contained' | 'outlined'} [props.variant='contained'] - Візуальний стиль відображення вкладок.
+ * @param {'button' | 'link'} [props.type='button'] - Тип вкладки: кнопка (`button`) або посилання (`link`).
+ * @param {string} [props.className] - Додатковий CSS-клас для контейнера вкладок.
+ * @returns {JSX.Element} Компонент групи вкладок.
+ *
+ * @example
+ * // Використання як кнопок (локальний state)
+ * <AppTabs
+ *   options={[
+ *     { label: "Всі історії", value: "all" },
+ *     { label: "Європа", value: "eu" }
+ *   ]}
+ *   value={filter}
+ *   onChange={setFilter}
+ *   variant="outlined"
+ *   type="button"
+ * />
+ *
+ * @example
+ * // Використання як посилань (роутинг)
+ * <AppTabs
+ *   options={[
+ *     { label: "Збережені історії", value: "saved", to: "saved-stories" },
+ *     { label: "Мої історії", value: "created", to: "created-stories" }
+ *   ]}
+ *   value={activeTab}
+ *   variant="contained"
+ *   type="link"
+ * />
+ */
 
 const AppTabs = ({
   options = [],
   value,
   onChange,
   variant = 'contained',
-  type = 'button',
+  type = 'button', // "button" | "link"
   className,
   ...props
 }) => {
@@ -22,19 +67,16 @@ const AppTabs = ({
 
         if (type === 'link') {
           return (
-            <a
+            <Link
               key={option.value}
               role="radio"
               aria-checked={isActive}
               className={classes}
-              href={option.href || '#'}
-              onClick={(e) => {
-                e.preventDefault();
-                onChange?.(option.value);
-              }}
+              to={option.to || '#'}
+              onClick={() => onChange?.(option.value)}
             >
               {option.label}
-            </a>
+            </Link>
           );
         }
 
@@ -54,32 +96,5 @@ const AppTabs = ({
     </div>
   );
 };
-export default AppTabs;
-//  фільтри
-//  <section>
-//    <AppTabs
-//      options={[
-//        { label: "Всі історії", value: "all" },
-//        { label: "Європа", value: "eu" },
-//        { label: "Азія", value: "asia" },
-//        { label: "Пустелі", value: "desert" },
-//        { label: "Африка", value: "africa" },
-//      ]}
-//      value={filter}
-//      onChange={setFilter}
-//      variant="outlined"
-//    />
-//  </section>;
 
-//  таби
-//  <section>
-//    <AppTabs
-//      options={[
-//        { label: "Збережені історії", value: "all" },
-//        { label: "Мої історії", value: "saved" },
-//      ]}
-//      value={tab}
-//      onChange={setTab}
-//      variant="contained"
-//    />
-//  </section>;
+export default AppTabs;

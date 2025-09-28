@@ -14,7 +14,7 @@ const AuthPage = () => {
   }
 
   return (
-    <Section className={css.wrapper}>
+    <Section className={(css.wrapper, css.authBgc)}>
       <Container className={css.Container}>
         <div className={css.content}>
           <ul className={css.nav}>
@@ -36,6 +36,9 @@ const AuthPage = () => {
             </li>
           </ul>
           {authType === 'register' ? <RegistrationForm /> : <LoginForm />}
+        </div>
+        <div className={css.copy}>
+          <p>© 2025 Подорожники. Усі права захищені.</p>
         </div>
       </Container>
     </Section>
