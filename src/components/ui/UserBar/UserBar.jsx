@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import Logout from '../../../assets/icons/logout.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../../redux/auth/operations';
+import clsx from 'clsx';
 
 function UserBar({ isLoggedIn, user }) {
   const dispatch = useDispatch();
@@ -17,7 +18,9 @@ function UserBar({ isLoggedIn, user }) {
 
   // JSX
   return (
-    <div className={s.userBar}>
+    <div
+      className={clsx(s.userBar, location.pathname === '/' ? s.white : s.black)}
+    >
       {isLoggedIn && (
         <>
           <div className={s.avatar}>

@@ -84,7 +84,6 @@ const AddStoryForm = () => {
       setSubmitting(false);
     }
   };
-
   return (
     <Section>
       <Container>
@@ -240,6 +239,7 @@ const AddStoryForm = () => {
                     type="button"
                     variant="grey"
                     aria-label="Відмінити створення історії"
+                    href="/"
                   >
                     Відмінити
                   </AppButton>

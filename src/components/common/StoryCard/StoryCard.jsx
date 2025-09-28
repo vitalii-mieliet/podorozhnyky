@@ -5,7 +5,7 @@ import BookmarkIcon from '../../../assets/icons/bookmark.svg?react';
 import EditIcon from '../../../assets/icons/edit.svg?react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveStory, unsaveStory } from '../../../redux/user/operations';
-import { selectSavedStories } from '../../../redux/user/selectors';
+import { selectSavedStoriesIds } from '../../../redux/user/selectors';
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -19,13 +19,14 @@ const formatDate = (dateString) => {
 
 const StoryCard = ({ storyInfo, variant = 'normal' }) => {
   const dispatch = useDispatch();
-  const savedStoriesIds = useSelector(selectSavedStories);
+  const savedStoriesIds = useSelector(selectSavedStoriesIds);
 
   if (!storyInfo) return null;
 
   const { _id, img, category, title, article, owner, date, rate } = storyInfo;
 
-  const isSaved = savedStoriesIds.includes(_id);
+  const isSaved =
+    Array.isArray(savedStoriesIds) && savedStoriesIds.includes(_id);
 
   const handleBookmarkClick = () => {
     if (isSaved) {
