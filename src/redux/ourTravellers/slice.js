@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTravellers } from '../travelers/operations';
+import { fetchOurTravellers } from './operations';
 
 const initialState = {
   items: [],
@@ -26,11 +26,11 @@ const ourTravellersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchTravellers.pending, (state) => {
+      .addCase(fetchOurTravellers.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchTravellers.fulfilled, (state, action) => {
+      .addCase(fetchOurTravellers.fulfilled, (state, action) => {
         state.isLoading = false;
         const { data, ...pagination } = action.payload;
         if (pagination.page === 1) {
@@ -40,7 +40,7 @@ const ourTravellersSlice = createSlice({
         }
         state.pagination = pagination;
       })
-      .addCase(fetchTravellers.rejected, (state, action) => {
+      .addCase(fetchOurTravellers.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
