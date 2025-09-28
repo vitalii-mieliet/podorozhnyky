@@ -29,8 +29,15 @@ const StoriesPage = () => {
     'Америка',
   ];
 
-  const { items, hasNextPage, itemsStatus, error, totalPages, isLoading } =
-    useSelector((state) => state.stories);
+  const {
+    items,
+    hasNextPage,
+    itemsStatus,
+    error,
+    // totalPages,
+    isLoading,
+    totalItems,
+  } = useSelector((state) => state.stories);
 
   const { isMobile, isTablet } = useBreakpoint();
   const perPage = isTablet ? 8 : 9;
@@ -184,7 +191,7 @@ const StoriesPage = () => {
         )}
 
         <div className={styles.buttonWrapper}>
-          {currentPage < totalPages && (
+          {displayedItems.length < totalItems && (
             <AppButton
               ref={buttonRef}
               className={styles.showMoreBtn}

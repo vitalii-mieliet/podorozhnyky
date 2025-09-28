@@ -10,6 +10,7 @@ const initialState = {
   hasNextPage: false,
   totalPages: null,
   isLoading: false,
+  totalItems: null,
 
   author: {
     name: null,
@@ -43,6 +44,7 @@ const storiesSlice = createSlice({
         state.items = [...state.items, ...action.payload.data];
         state.hasNextPage = action.payload.hasNextPage;
         state.totalPages = action.payload.totalPages;
+        state.totalItems = action.payload.totalItems;
       })
       .addCase(fetchStories.rejected, (state, action) => {
         state.isLoading = false;
