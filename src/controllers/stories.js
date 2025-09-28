@@ -17,7 +17,6 @@ import {
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
-import { StoriesCollection } from '../db/models/story.js';
 
 export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
