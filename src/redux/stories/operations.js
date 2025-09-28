@@ -32,6 +32,18 @@ export const fetchStoryById = createAsyncThunk(
   }
 );
 
+export const fetchCategories = createAsyncThunk(
+  'stories/categories',
+  async (_, thunkAPI) => {
+    try {
+      const response = await api.get('/stories/category');
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchCreateStories = createAsyncThunk(
   'stories/addStory',
   async (values, thunkAPI) => {

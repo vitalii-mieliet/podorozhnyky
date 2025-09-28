@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchCreateStories, fetchStories, fetchStoryById } from './operations';
+import {
+  fetchCategories,
+  fetchCreateStories,
+  fetchStories,
+  fetchStoryById,
+} from './operations';
 
 const initialState = {
   items: [],
+  categories: [],
   currentStory: null,
   itemsStatus: 'idle',
   currentStoryStatus: 'idle',
@@ -81,6 +87,17 @@ const storiesSlice = createSlice({
         state.items.push(action.payload.data);
       })
       .addCase(fetchCreateStories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchCategories.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.categories = action.payload.data;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
