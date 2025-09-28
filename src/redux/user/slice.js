@@ -7,12 +7,34 @@ import {
   unsaveStory,
 } from './operations';
 
+const initialProfile = {
+  _id: null,
+  name: '',
+  email: '',
+  bio: '',
+  avatar: '',
+  onboardingCompleted: false,
+  savedStories: [],
+  settings: {},
+  socialLinks: {},
+};
+
+const initialCollectionState = {
+  data: [],
+  page: 1,
+  perPage: 6,
+  totalItems: 0,
+  totalPages: 0,
+  hasNextPage: false,
+  hasPreviousPage: false,
+};
+
 const initialState = {
-  userData: null,
+  userData: initialProfile,
   isLoading: false,
   error: null,
-  savedStories: {},
-  createdStories: {},
+  savedStories: { ...initialCollectionState },
+  createdStories: { ...initialCollectionState },
   storiesLoading: false,
   storiesError: null,
 };
