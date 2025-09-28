@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPopularStories } from '../../../redux/popularStories/selectors.js';
+import {
+  selectPopularStories,
+  selectPopularStoriesLoading,
+} from '../../../redux/popularStories/selectors.js';
 import useResponsivePagination from '../../../hooks/useResponsivePagination.js';
 import useBreakpoint from '../../../hooks/useBreakpoint.js';
 import { fetchPopularStories } from '../../../redux/popularStories/operations.js';
@@ -13,6 +16,7 @@ import styles from './Popular.module.css';
 const Popular = () => {
   const dispatch = useDispatch();
   const stories = useSelector(selectPopularStories) || [];
+  const isLoading = useSelector(selectPopularStoriesLoading);
 
   // хук для пагінації
   const limit = useResponsivePagination({
@@ -45,7 +49,12 @@ const Popular = () => {
     <Section>
       <Container>
         <h2 className={styles.sectionTitle}>Популярні історії</h2>
-        <TravellersStories stories={visibleStories} />
+
+        <TravellersStories
+          stories={visibleStories}
+          isLoading={isLoading}
+          perPage={limit}
+        />
         {showLoadMoreButton && (
           <div className={styles.actions}>
             <AppButton

@@ -1,7 +1,8 @@
 import TravellerCard from '../TravellerCard/TravellerCard';
 import css from './TravellerList.module.css';
+import TravellerCardSkeleton from '../Skeletons/TravellerCardSkeleton/TravellerCardSkeleton';
 
-function TravellerList({ travelers = [] }) {
+function TravellerList({ travelers = [], isLoading = false, perPage = 0 }) {
   if (!Array.isArray(travelers)) {
     return null;
   }
@@ -13,6 +14,12 @@ function TravellerList({ travelers = [] }) {
           <TravellerCard userData={t} />
         </li>
       ))}
+      {isLoading &&
+        Array.from({ length: perPage }).map((_, idx) => (
+          <li key={`sk-${idx}`} className={css.cardItem}>
+            <TravellerCardSkeleton />
+          </li>
+        ))}
     </ul>
   );
 }
