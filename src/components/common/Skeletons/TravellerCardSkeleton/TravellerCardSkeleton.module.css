@@ -14,35 +14,32 @@
 }
 
 .avatar {
-  --base-color: #c0c0c0;
+  --base-color: rgba(0, 0, 0, 0.05);
   --highlight-color: #e0e0e0;
   margin-bottom: 24px;
 }
 
 .name {
   margin-bottom: 16px;
-  height: 27px;
+  height: 23px;
   width: 143px;
-  --base-color: #c0c0c0;
+  --base-color: rgba(0, 0, 0, 0.05);
   --highlight-color: #e0e0e0;
 }
 
 .bio {
-  --base-color: #c0c0c0;
+  --base-color: rgba(0, 0, 0, 0.05);
   --highlight-color: #e0e0e0;
   min-width: 200px;
-  height: 19px;
+  height: 16px;
   width: 287px;
-  margin-bottom: 5px;
-}
-.bio:last-child {
-  margin-bottom: 0;
+  margin-bottom: 4px;
 }
 
 .button {
   margin-top: 11px;
   border-radius: 8px;
-  --base-color: #c0c0c0;
+  --base-color: rgba(0, 0, 0, 0.05);
   --highlight-color: #e0e0e0;
   width: 287px;
   height: 48px;
@@ -58,9 +55,6 @@
   .card {
     width: 340px;
   }
-  .name {
-    height: 27px;
-  }
   .button {
     width: 292px;
   }
@@ -74,11 +68,11 @@
     margin-top: 16px;
   }
   .name {
-    height: 31px;
+    height: 26px;
   }
   .bio {
-    height: 21px;
+    height: 18px;
     width: 262px;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
   }
 }

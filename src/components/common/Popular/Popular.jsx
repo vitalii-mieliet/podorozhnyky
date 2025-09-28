@@ -49,6 +49,7 @@ const Popular = () => {
     <Section>
       <Container>
         <h2 className={styles.sectionTitle}>Популярні історії</h2>
+
         <TravellersStories
           stories={visibleStories}
           isLoading={isLoading}

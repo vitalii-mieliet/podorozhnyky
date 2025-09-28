@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchPopularStories} from '../popularStories/operations.js';
+import { fetchPopularStories } from '../popularStories/operations.js';
 
 const initialState = {
   items: [],
@@ -16,7 +16,7 @@ const storiesPopularSlice = createSlice({
     builder
       .addCase(fetchPopularStories.pending, (state) => {
         state.isLoading = true;
-        state.error = null; 
+        state.error = null;
       })
       .addCase(fetchPopularStories.fulfilled, (state, action) => {
         state.isLoading = false;
