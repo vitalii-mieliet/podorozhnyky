@@ -1,159 +1,128 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import {
   onboardingSchema,
   MAX_BIO,
 } from '../../validation/onboardingValidation';
-import { submitOnboarding } from '../../services/onboardingClient';
 
-export default function OnboardingForm({ styles, onSuccess }) {
-  const [preview, setPreview] = useState('');
+import styles from './OnboardingForm.module.css';
+import AppButton from '../ui/AppButton/AppButton';
+import AppTextArea from '../ui/formInputs/AppTextArea/AppTextArea';
+import placeholder from '../../assets/images/placeholder/Placeholder.webp';
+import { useDispatch } from 'react-redux';
+import { onboardingUser } from '../../redux/user/operations';
+
+export default function OnboardingForm() {
+  const [preview, setPreview] = useState(null);
   const fileRef = useRef(null);
+  const dispatch = useDispatch();
 
-  // чистимо objectURL при демонтажі/зміні
+  const initialValues = { bio: '', avatar: null };
+
   useEffect(() => () => preview && URL.revokeObjectURL(preview), [preview]);
+
+  const removePhoto = (setFieldValue) => {
+    setFieldValue('avatarFile', null);
+    if (fileRef.current) fileRef.current.value = '';
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview('');
+  };
+
+  const onPick = (e, setFieldValue) => {
+    const file = e.currentTarget.files?.[0];
+    setFieldValue('avatarFile', file || null);
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(file ? URL.createObjectURL(file) : '');
+  };
+
+  const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    try {
+      dispatch(onboardingUser(values));
+      resetForm();
+      setPreview(null);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Formik
-      initialValues={{ bio: '', avatarFile: null }}
+      initialValues={initialValues}
       validationSchema={onboardingSchema}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          // --- НІЧОГО В ЛОГІЦІ ПРОЄКТУ НЕ ЧІПАЄМО: просто викликаємо заглушку
-          const res = await submitOnboarding({
-            bio: values.bio.trim(),
-            avatarFile: values.avatarFile || null,
-          });
-          onSuccess?.(res); // дозволяє батьку вирішити: навігувати/диспатчити/тощо
-        } catch (e) {
-          // TODO: toast помилка
-          console.error(e);
-        } finally {
-          setSubmitting(false);
-        }
-      }}
+      onSubmit={handleSubmit}
     >
-      {({ values, setFieldValue, isSubmitting }) => {
-        const left = useMemo(
-          () => MAX_BIO - (values.bio?.length || 0),
-          [values.bio]
-        );
+      {({ values, setFieldValue, isValid, dirty }) => (
+        <Form className={styles.form}>
+          {/* Аватар */}
+          <div className={styles.row}>
+            <label className={styles.label}>Аватар</label>
 
-        const onPick = (e) => {
-          const file = e.currentTarget.files?.[0];
-          setFieldValue('avatarFile', file || null);
-          if (preview) URL.revokeObjectURL(preview);
-          setPreview(file ? URL.createObjectURL(file) : '');
-        };
-
-        const removePhoto = () => {
-          setFieldValue('avatarFile', null);
-          if (fileRef.current) fileRef.current.value = '';
-          if (preview) URL.revokeObjectURL(preview);
-          setPreview('');
-        };
-
-        const onSkip = async () => {
-          // Викликаємо ту саму заглушку без даних — готує ґрунт для майбутньої логіки
-          const res = await submitOnboarding({ bio: '', avatarFile: null });
-          onSuccess?.(res);
-        };
-
-        return (
-          <Form className={styles.form} encType="multipart/form-data">
-            {/* Аватар */}
-            <div className={styles.row}>
-              <label className={styles.label}>Аватар</label>
-
-              <div className={styles.avatarLine}>
-                <div className={styles.avatar}>
-                  {preview ? (
-                    <img src={preview} alt="avatar preview" />
-                  ) : (
-                    // Можете покласти свій плейсхолдер у /public/images/
-                    <div
-                      style={{
-                        display: 'grid',
-                        placeItems: 'center',
-                        width: '100%',
-                        height: '100%',
-                        color: '#999',
-                      }}
-                    >
-                      🙂
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.controls}>
-                  <input
-                    ref={fileRef}
-                    className={styles.fileInput}
-                    type="file"
-                    accept="image/*"
-                    onChange={onPick}
-                  />
-                  {preview && (
-                    <button
-                      type="button"
-                      className={styles.removeBtn}
-                      onClick={removePhoto}
-                    >
-                      Видалити фото
-                    </button>
-                  )}
-                </div>
+            <div className={styles.avatarLine}>
+              <div className={styles.avatar}>
+                <img
+                  src={preview || placeholder}
+                  alt="Фото"
+                  className={styles.avatar}
+                />
               </div>
 
-              <ErrorMessage
-                name="avatarFile"
-                component="div"
-                className={styles.error}
-              />
-            </div>
+              <div>
+                <input
+                  ref={fileRef}
+                  className={styles.fileInput}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => onPick(e, setFieldValue)}
+                />
 
-            {/* Біо */}
-            <div className={styles.row}>
-              <label htmlFor="bio" className={styles.label}>
-                Короткий опис
-              </label>
-              <Field
-                as="textarea"
-                id="bio"
-                name="bio"
-                maxLength={MAX_BIO}
-                className={styles.textarea}
-                placeholder="Розкажіть більше про вас"
-              />
-              <div className={styles.counter}>Залишилось символів: {left}</div>
-              <ErrorMessage
-                name="bio"
-                component="div"
-                className={styles.error}
-              />
+                <AppButton
+                  type="button"
+                  size="sm"
+                  variant="grey"
+                  onClick={
+                    preview
+                      ? () => removePhoto(setFieldValue)
+                      : () => fileRef.current.click()
+                  }
+                >
+                  {preview ? 'Видалити фото' : 'Завантажити фото'}
+                </AppButton>
+              </div>
             </div>
+          </div>
 
-            {/* Дії */}
-            <div className={styles.actions}>
-              <button
-                type="submit"
-                className={styles.btnPrimary}
-                disabled={isSubmitting}
-              >
-                Зберегти
-              </button>
-              <button
-                type="button"
-                className={styles.btnGhost}
-                onClick={onSkip}
-                disabled={isSubmitting}
-              >
-                Пропустити
-              </button>
-            </div>
-          </Form>
-        );
-      }}
+          {/* Біо */}
+          <div className={styles.row}>
+            <label htmlFor="bio" className={styles.label}>
+              Короткий опис
+            </label>
+            <Field
+              as={AppTextArea}
+              id="bio"
+              name="bio"
+              className={styles.textArea}
+              maxLength={MAX_BIO}
+              placeholder="Розкажіть більше про вас"
+            />
+            <p className={styles.counter}>
+              Лишилось символів: {MAX_BIO - values.bio.length}
+            </p>
+            <ErrorMessage name="bio" component="div" className={styles.error} />
+          </div>
+
+          {/* Дії */}
+          <div className={styles.buttonBox}>
+            <AppButton type="submit" disabled={!dirty || !isValid}>
+              Зберегти
+            </AppButton>
+            <AppButton variant="grey" type="button">
+              Пропустити
+            </AppButton>
+          </div>
+        </Form>
+      )}
     </Formik>
   );
 }

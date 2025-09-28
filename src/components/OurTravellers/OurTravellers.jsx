@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchTravellers } from '../../redux/travelers/operations.js';
 import Section from '../common/Section/Section.jsx';
 import Container from '../common/Container/Container.jsx';
 import AppButton from '../ui/AppButton/AppButton.jsx';
@@ -14,6 +13,7 @@ import {
   selectOurTravellersLoading,
   selectOurTravellersPagination,
 } from '../../redux/ourTravellers/selectors.js';
+import { fetchOurTravellers } from '../../redux/ourTravellers/operations.js';
 
 const OurTravellers = () => {
   const { isMobile } = useBreakpoint();
@@ -26,7 +26,7 @@ const OurTravellers = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchTravellers({ page, perPage }));
+    dispatch(fetchOurTravellers({ page, perPage }));
   }, [dispatch, page, perPage]);
 
   const handleLoadMore = () => {
