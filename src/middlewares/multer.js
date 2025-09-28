@@ -6,9 +6,21 @@ const storage = multer.diskStorage({
     cb(null, TEMP_UPLOAD_DIR);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, `${uniqueSuffix}_${file.originalname}`);
+    const uniquePreffix = Date.now();
+    cb(null, `${uniquePreffix}_${file.originalname}`);
   },
 });
 
-export const upload = multer({ storage });
+const limits = {
+  fileSize: 1024 * 1024 * 20,
+};
+
+const filefilter = (req, file, cb) => {
+  const extentions = file.originalname.split('.').pop();
+  if (extentions === 'exe') {
+    return cb(createHttpError(400, '.exe extention not allow'));
+  }
+  cb(null, true);
+};
+
+export const upload = multer({ storage, limits, filefilter });
