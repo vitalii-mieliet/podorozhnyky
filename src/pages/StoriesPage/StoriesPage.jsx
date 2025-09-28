@@ -10,6 +10,8 @@ import AppButton from '../../components/ui/AppButton/AppButton';
 import styles from './StoriesPage.module.css';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import useBreakpoint from '../../hooks/useBreakpoint';
+import { resetStories } from '../../redux/stories/slice';
+import clsx from 'clsx';
 
 const StoriesPage = () => {
   const buttonRef = useRef(null);
@@ -17,7 +19,6 @@ const StoriesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentCategory, setCurrentCategory] = useState('');
 
-  // eslint-disable-next-line
   const categories = [
     'Всі історії',
     'Європа',
@@ -25,34 +26,21 @@ const StoriesPage = () => {
     'Пустелі',
     'Африка',
     'Україна',
-    'Гори',
     'Америка',
   ];
 
-  const {
-    items,
-    hasNextPage,
-    itemsStatus,
-    error,
-    // totalPages,
-    isLoading,
-    totalItems,
-  } = useSelector((state) => state.stories);
+  const { items, hasNextPage, itemsStatus, error, isLoading } = useSelector(
+    (state) => state.stories
+  );
 
   const { isMobile, isTablet } = useBreakpoint();
   const perPage = isTablet ? 8 : 9;
 
-  // for displaying
   const displayedItems = useMemo(() => {
-    if (currentCategory === categories[0] || currentCategory === '') {
-      return items.slice(0, perPage * currentPage);
-    }
-    return items
-      .filter((item) => item.category === currentCategory)
-      .slice(0, perPage * currentPage);
-  }, [items, perPage, currentPage, currentCategory, categories]);
+    return items.slice(0, perPage * currentPage);
+  }, [items, perPage, currentPage]);
 
-  // first loading
+  // load stories
   useEffect(() => {
     const loadStories = async () => {
       try {
@@ -60,53 +48,31 @@ const StoriesPage = () => {
           await dispatch(fetchStories({ page: 1, perPage })).unwrap();
         }
         if (items.length < perPage * currentPage && hasNextPage) {
-          await dispatch(
-            fetchStories({
-              page: currentPage + 1,
-              perPage,
-              category: currentCategory,
-            })
-          ).unwrap();
+          await dispatch(fetchStories({ page: currentPage, perPage })).unwrap();
         }
       } catch (error) {
         console.log(error);
       }
     };
-
     loadStories();
-  }, [
-    dispatch,
-    currentPage,
-    perPage,
-    hasNextPage,
-    items.length,
-    currentCategory,
-  ]);
-
-  // category loading
-  useEffect(() => {
-    const fetchByCategory = async () => {
-      try {
-        setCurrentPage(1);
-        await dispatch(
-          fetchStories({ page: 1, perPage, category: currentCategory })
-        ).unwrap();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchByCategory();
-  }, [currentCategory, dispatch, perPage]);
+    // eslint-disable-next-line
+  }, [dispatch, currentPage, perPage, hasNextPage]);
 
   // handlers
   const handleShowMore = async () => {
-    const buttonPosition = buttonRef.current?.offsetTop || window.scrollY;
     if (!hasNextPage) return;
+
+    const buttonPosition = buttonRef.current?.offsetTop || window.scrollY;
+    const nextPage = currentPage + 1;
+
     try {
-      const nextPage = currentPage + 1;
-      await dispatch(
-        fetchStories({ page: nextPage, perPage, category: currentCategory })
-      ).unwrap();
+      if (currentCategory === categories[0] || currentCategory === '') {
+        await dispatch(fetchStories({ page: nextPage, perPage })).unwrap();
+      } else {
+        await dispatch(
+          fetchStories({ page: nextPage, perPage, category: currentCategory })
+        ).unwrap();
+      }
       setCurrentPage(nextPage);
       window.scrollTo({ top: buttonPosition, behavior: 'auto' });
     } catch (error) {
@@ -116,7 +82,16 @@ const StoriesPage = () => {
 
   const handleCategoryChange = async (category) => {
     try {
+      dispatch(resetStories());
       setCurrentCategory(category);
+
+      if (category !== categories[0]) {
+        return await dispatch(
+          fetchStories({ page: 1, perPage, category })
+        ).unwrap();
+      } else {
+        await dispatch(fetchStories({ page: 1, perPage })).unwrap();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -161,14 +136,11 @@ const StoriesPage = () => {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      className={styles.filterButton}
+                      className={clsx(
+                        styles.filterButton,
+                        currentCategory === cat && styles.filterButtonActive
+                      )}
                       onClick={() => handleCategoryChange(cat)}
-                      style={{
-                        background:
-                          currentCategory === cat
-                            ? 'var(--color-neutral-lighter)'
-                            : '',
-                      }}
                     >
                       {cat}
                     </button>
@@ -191,7 +163,7 @@ const StoriesPage = () => {
         )}
 
         <div className={styles.buttonWrapper}>
-          {displayedItems.length < totalItems && (
+          {hasNextPage && (
             <AppButton
               ref={buttonRef}
               className={styles.showMoreBtn}
