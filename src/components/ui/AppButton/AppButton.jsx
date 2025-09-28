@@ -3,8 +3,11 @@ import s from './AppButton.module.css';
 import { Link } from 'react-router-dom';
 
 /**
- * Універсальний компонент кнопки, який може рендеритись як нативна кнопка `<button>`
- * або як посилання `<a>` залежно від переданих пропсів.
+ * Універсальний компонент кнопки, який може рендеритись як:
+ * - нативна кнопка `<button>`
+ * - зовнішнє посилання `<a href="http...">`
+ * - внутрішнє посилання `<Link to="/path">`
+ * - посилання-якір `<a href="#id">`
  *
  * @component
  * @param {Object} props - Властивості компонента.
@@ -14,9 +17,9 @@ import { Link } from 'react-router-dom';
  * @param {boolean} [props.disabled=false] - Вимикає кнопку (працює як для `<button>`, так і для `<a>`).
  * @param {'blue' | 'grey'} [props.variant='blue'] - Візуальний стиль кнопки.
  * @param {'button' | 'submit' | 'reset'} [props.type='button'] - Тип кнопки (застосовується лише якщо рендериться `<button>`).
- * @param {string} [props.href] - Якщо передано, компонент рендериться як посилання `<a>` замість кнопки.
+ * @param {string} [props.href] - Якщо передано, компонент рендериться як посилання (`<a>` або `<Link>`).
  * @param {string} [props.className] - Додатковий CSS-клас для стилізації.
- * @param {function(MouseEvent):void} [props.onClick] - Обробник кліку. Викликається як для `<button>`, так і для `<a>`, крім випадку `disabled`.
+ * @param {function(MouseEvent):void} [props.onClick] - Обробник кліку. Викликається як для `<button>`, так і для `<a>/<Link>`, крім випадку `disabled`.
  * @returns {JSX.Element} Відрендерений елемент кнопки або посилання.
  *
  * @example
@@ -63,12 +66,14 @@ const AppButton = ({
     ...props,
   };
 
-  if (href && /^https?:\/\//.test(href)) {
+  if (href && (href.startsWith('http') || href.startsWith('#'))) {
+    const isExternal = /^https?:\/\//.test(href);
+
     return (
       <a
         href={disabled ? undefined : href}
-        rel="noopener noreferrer"
-        target="_blank"
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
         aria-disabled={disabled}
         role={disabled ? 'button' : undefined}
         onClick={(e) => {
@@ -84,25 +89,7 @@ const AppButton = ({
       </a>
     );
   }
-  if (href && href.startsWith('#')) {
-    return (
-      <a
-        href={disabled ? undefined : href}
-        aria-disabled={disabled}
-        role={disabled ? 'button' : undefined}
-        onClick={(e) => {
-          if (disabled) {
-            e.preventDefault();
-            return;
-          }
-          onClick?.(e);
-        }}
-        {...commonProps}
-      >
-        {children}
-      </a>
-    );
-  }
+
   if (href) {
     return (
       <Link
