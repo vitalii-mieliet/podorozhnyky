@@ -11,8 +11,8 @@ const initialState = {
   userData: null,
   isLoading: false,
   error: null,
-  savedStories: [],
-  createdStories: [],
+  savedStories: {},
+  createdStories: {},
   storiesLoading: false,
   storiesError: null,
 };
@@ -35,7 +35,6 @@ const userSlice = createSlice({
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.userData = action.payload;
-        state.savedStories = action.payload.savedStories || [];
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
