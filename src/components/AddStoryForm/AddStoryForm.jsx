@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-import style from './AddStoryForm.module.css';
 import Container from '../common/Container/Container';
 import Section from '../common/Section/Section';
 import AppButton from '../ui/AppButton/AppButton';
@@ -14,11 +13,9 @@ import AppTextInput from '../ui/formInputs/AppTextInput/AppTextInput';
 import AppSelect from '../ui/formInputs/AppSelect/AppSelect';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchCategories,
-  fetchCreateStories,
-} from '../../redux/stories/operations';
+import { fetchCategories, createStory } from '../../redux/stories/operations';
 import { selectCategories } from '../../redux/stories/selectors';
+import style from './AddStoryForm.module.css';
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -73,7 +70,7 @@ const AddStoryForm = () => {
     try {
       console.log('Форма відправлена на бекенд:', values);
 
-      await dispatch(fetchCreateStories(values)).unwrap();
+      await dispatch(createStory(values)).unwrap();
 
       resetForm();
       setPreview(null);
