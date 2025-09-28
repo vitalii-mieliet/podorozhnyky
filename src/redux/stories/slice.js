@@ -29,6 +29,10 @@ const storiesSlice = createSlice({
       state.currentStory = null;
       state.currentStoryStatus = 'idle';
     },
+
+    resetStories: (state) => {
+      state.items = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -83,5 +87,6 @@ const storiesSlice = createSlice({
   },
 });
 
-export const { applyFilters, resetCurrentStory } = storiesSlice.actions;
+export const { applyFilters, resetCurrentStory, resetStories } =
+  storiesSlice.actions;
 export default storiesSlice.reducer;

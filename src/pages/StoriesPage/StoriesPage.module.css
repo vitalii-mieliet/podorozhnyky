@@ -62,6 +62,10 @@
   margin-bottom: 40px;
 }
 
+.filterButtonActive {
+  background-color: var(--color-neutral-lighter);
+}
+
 .showMoreBtn {
   font-family: var(--font-family);
   font-size: 16px;
