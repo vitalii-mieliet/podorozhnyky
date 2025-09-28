@@ -20,6 +20,8 @@ import PrivateRoute from './routes/PrivateRoute';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { refreshUser } from './redux/auth/operations';
+import SavedStories from './pages/ProfilePage/SavedStories';
+import CreatedStories from './pages/ProfilePage/CreatedStories';
 
 function App() {
   const dispatch = useDispatch();
@@ -64,7 +66,12 @@ function App() {
         >
           <Route path="new-story" element={<AddStory />} />
           <Route path="edit" element={<PersonalPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile" element={<ProfilePage />}>
+            <Route index element={<Navigate to="saved-stories" replace />} />
+
+            <Route path="saved-stories" element={<SavedStories />} />
+            <Route path="created-stories" element={<CreatedStories />} />
+          </Route>
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />
