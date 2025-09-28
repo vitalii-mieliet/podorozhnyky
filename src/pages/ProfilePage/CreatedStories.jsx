@@ -3,39 +3,43 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCreatedStories,
   selectStoriesError,
+  selectStoriesLoading,
+  selectUserProfile,
 } from '../../redux/user/selectors';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import { fetchCreatedStories } from '../../redux/user/operations';
+import Loader from '../../components/common/Loader/Loader';
+import AppMessage from '../../components/common/AppMessage/AppMessage';
 
 const CreatedStories = () => {
   const dispatch = useDispatch();
   const { data: stories, ...meta } = useSelector(selectCreatedStories);
-
+  const isLoading = useSelector(selectStoriesLoading);
   const error = useSelector(selectStoriesError);
+  const user = useSelector(selectUserProfile);
 
   const noStoriesText = 'Ви ще не створювали жодної історії';
 
   useEffect(() => {
-    if (!stories.length) {
+    if (user?._id && !stories.length && meta.page === 1) {
       dispatch(fetchCreatedStories());
     }
-  }, [dispatch, stories.length]);
+  }, [dispatch, user?._id, stories.length, meta.page]);
+
+  if (isLoading) return <Loader />;
 
   if (error) return <AppMessage title={'Виникла помилка'} message={error} />;
+  if (meta.totalItems > 0) {
+    return <TravellersStories stories={stories} />;
+  }
 
   return (
-    <>
-      {meta.totalItems ? (
-        <TravellersStories stories={stories} />
-      ) : (
-        <MessageNoStories
-          text={noStoriesText}
-          buttonText="Назад до історій"
-          route="/stories"
-        />
-      )}
-    </>
+    <MessageNoStories
+      text={noStoriesText}
+      buttonText="Назад до історій"
+      route="/stories"
+    />
   );
 };
 
