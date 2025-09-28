@@ -28,6 +28,3 @@ export const TravellersPage = withSuspense(
 export const NotFoundPage = withSuspense(
   lazy(() => import('../pages/NotFoundPage/NotFoundPage'))
 );
-export const OnboardingPage = withSuspense(
-  lazy(() => import('../pages/OnboardingPage/OnboardingPage'))
-);

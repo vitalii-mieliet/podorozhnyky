@@ -14,7 +14,6 @@ import {
   TravellerPage,
   TravellersPage,
   NotFoundPage,
-  OnboardingPage,
 } from './routes/lazyPages';
 import RestrictedRoute from './routes/RestrictedRoute';
 import PrivateRoute from './routes/PrivateRoute';
@@ -66,7 +65,6 @@ function App() {
           <Route path="new-story" element={<AddStory />} />
           <Route path="edit" element={<PersonalPage />} />
           <Route path="profile" element={<ProfilePage />} />
-          <Route path="onboarding" element={<OnboardingPage />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFoundPage />} />
