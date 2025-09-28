@@ -55,7 +55,7 @@
   height: 120px;
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 768px) {
   .photo {
     max-width: 704px;
     max-height: 469px;
@@ -65,7 +65,7 @@
   }
 }
 
-@media screen and (min-width: 1439px) {
+@media screen and (min-width: 1440px) {
   .photo {
     max-width: 865px;
     max-height: 576px;
