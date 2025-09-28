@@ -16,15 +16,12 @@ import placeholderAvatar from '../../../assets/images/TravellerInfo-img/Travelle
  *
  */
 const TravellerInfo = ({ user }) => {
-  console.log('TravellerInfo received user:', user); // ✅ Add this here
   if (!user) return null;
 
   const avatarSrc = user.avatar || user.photoUrl || placeholderAvatar;
   const altText = user.name || 'Traveller avatar';
 
   return (
-    // <Section className={styles.travellerSection}>
-    //   <Container className={styles.travellerContainer}>
     <div className={styles.travellerInfo}>
       <img className={styles.avatar} src={avatarSrc} alt={altText} />
 
@@ -33,8 +30,6 @@ const TravellerInfo = ({ user }) => {
         {user.bio && <p className={styles.bio}>{user.bio}</p>}
       </div>
     </div>
-    //   </Container>
-    // </Section>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo';
@@ -66,7 +66,8 @@ const ProfilePage = () => {
     return <div>⚠️ Помилка завантаження профілю</div>;
   }
 
-  const currentStories = activeTab === 'saved' ? savedStories : createdStories;
+  const currentStories =
+    activeTab === 'saved' ? savedStories.data : createdStories.data;
   const hasStories = currentStories && currentStories.length > 0;
 
   const noStoriesText =
@@ -75,44 +76,42 @@ const ProfilePage = () => {
       : 'Ви ще не створювали жодної історії';
 
   return (
-    <>
-      <Section className={styles.travellerSection}>
-        <Container className={styles.travellerContainer}>
-          <TravellerInfo user={user} />
+    <Section>
+      <Container>
+        <TravellerInfo user={user} />
 
-          <AppTabs
-            value={activeTab}
-            onChange={setActiveTab}
-            options={[
-              { label: 'Збережені історії', value: 'saved' },
-              { label: 'Мої історії', value: 'my' },
-            ]}
-            variant="contained"
-            className={styles.tabs}
-          />
+        <AppTabs
+          value={activeTab}
+          onChange={setActiveTab}
+          options={[
+            { label: 'Збережені історії', value: 'saved' },
+            { label: 'Мої історії', value: 'my' },
+          ]}
+          variant="contained"
+          className={styles.tabs}
+        />
 
-          <div className={styles.storiesSection}>
-            {isStoriesLoading && <Loader />}
+        <div className={styles.storiesSection}>
+          {isStoriesLoading && <Loader />}
 
-            {!isStoriesLoading && hasStories && (
-              <TravellersStories stories={currentStories} />
-            )}
+          {!isStoriesLoading && hasStories && (
+            <TravellersStories stories={currentStories} />
+          )}
 
-            {!isStoriesLoading && !hasStories && (
-              <MessageNoStories
-                text={noStoriesText}
-                buttonText="Назад до історій"
-                route="/stories"
-              />
-            )}
+          {!isStoriesLoading && !hasStories && (
+            <MessageNoStories
+              text={noStoriesText}
+              buttonText="Назад до історій"
+              route="/stories"
+            />
+          )}
 
-            {!isStoriesLoading && storiesError && (
-              <div className={styles.error}>{storiesError}</div>
-            )}
-          </div>
-        </Container>
-      </Section>
-    </>
+          {!isStoriesLoading && storiesError && (
+            <div className={styles.error}>{storiesError}</div>
+          )}
+        </div>
+      </Container>
+    </Section>
   );
 };
 
