@@ -37,8 +37,7 @@ export const fetchCreateStories = createAsyncThunk(
   async (values, thunkAPI) => {
     try {
       const formData = new FormData();
-
-      formData.append('title', values.title);
+      -formData.append('title', values.title);
       formData.append('category', values.category);
       formData.append('article', values.article);
       formData.append('fullText', values.fullText);

@@ -1,14 +1,13 @@
-.travellerSection {
-  padding: 32px 0;
+.tabs {
+  margin-bottom: 40px;
 }
-.travellerContainer {
-  padding: 0 32px;
+
+.travellerInfo {
+  margin-bottom: 32px; /* мобилка по умолчанию */
 }
-@media (min-width: 1440px) {
-  .travellerSection {
-    padding: 48px 0;
-  }
-  .travellerContainer {
-    padding: 0 64px;
+
+@media (min-width: 768px) {
+  .travellerInfo {
+    margin-bottom: 48px; /* планшет/десктоп */
   }
 }
