@@ -1,20 +1,23 @@
 import createHttpError from 'http-errors';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import { randomBytes } from 'node:crypto';
-import path from 'node:path';
-import { readFile } from 'node:fs/promises';
 import handlebars from 'handlebars';
-
+import bcrypt from 'bcrypt';
+import path from 'node:path';
+import jwt from 'jsonwebtoken';
+import { randomBytes } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import {
+  getFullNameFromGoogleTokenPayload,
+  validateCode,
+} from '../utils/googleOAuth2.js';
 import {
   accessTokenLifeTime,
   refreshTokenLifeTime,
 } from '../constants/auth.js';
+import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 import { SessionsCollection } from '../db/models/session.js';
 import { UserCollection } from '../db/models/user.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendEmail.js';
-import { SMTP, TEMPLATES_DIR } from '../constants/index.js';
 
 const createSession = () => ({
   accessToken: randomBytes(30).toString('base64'),
@@ -181,4 +184,32 @@ export const resetPassword = async (payload) => {
     { _id: user._id },
     { password: encryptedPassword },
   );
+};
+
+export const loginWithGoogleOAuth = async (code) => {
+  const loginTicket = await validateCode(code);
+
+  const payload = loginTicket.getPayload();
+  if (!payload) throw createHttpError(401, 'Google payload missing');
+
+  let user = await findUser({ email: payload.email });
+  if (!user) {
+    const name = getFullNameFromGoogleTokenPayload(payload);
+    const password = await bcrypt.hash(randomBytes(10).toString('base64'), 10);
+
+    user = await UserCollection.create({
+      name,
+      email: payload.email,
+      password,
+    });
+  }
+
+  await SessionsCollection.deleteOne({ userId: user._id });
+
+  const session = createSession();
+
+  return await SessionsCollection.create({
+    userId: user._id,
+    ...session,
+  });
 };

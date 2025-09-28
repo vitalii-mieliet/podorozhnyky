@@ -34,6 +34,12 @@ paths:
   /auth/reset-password:
     post:
       $ref: '../swagger/paths/auth/reset-password.yaml'
+  /auth/google/get-oauth-url:
+    get:
+      $ref: '../swagger/paths/auth/google/get-oauth-url.yaml'
+  /auth/google/confirm-oauth:
+    post:
+      $ref: '../swagger/paths/auth/google/confirm-oauth.yaml'
   /stories:
     get:
       $ref: '../swagger/paths/stories/get.yaml'
