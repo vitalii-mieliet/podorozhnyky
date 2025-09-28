@@ -37,7 +37,12 @@ const OurTravellers = () => {
     <Section>
       <Container>
         <h2 className={styles.sectionTitle}>Наші Мандрівники</h2>
-        <TravellerList travelers={items} />
+
+        <TravellerList
+          travelers={items}
+          isLoading={isLoading}
+          perPage={perPage}
+        />
 
         {hasNextPage && (
           <div className={styles.actions}>
