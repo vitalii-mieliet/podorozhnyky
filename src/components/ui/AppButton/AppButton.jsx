@@ -84,7 +84,25 @@ const AppButton = ({
       </a>
     );
   }
-
+  if (href && href.startsWith('#')) {
+    return (
+      <a
+        href={disabled ? undefined : href}
+        aria-disabled={disabled}
+        role={disabled ? 'button' : undefined}
+        onClick={(e) => {
+          if (disabled) {
+            e.preventDefault();
+            return;
+          }
+          onClick?.(e);
+        }}
+        {...commonProps}
+      >
+        {children}
+      </a>
+    );
+  }
   if (href) {
     return (
       <Link

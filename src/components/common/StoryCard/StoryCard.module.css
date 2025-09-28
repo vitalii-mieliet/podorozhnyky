@@ -112,6 +112,8 @@
 }
 
 .authorName {
+  display: flex;
+  justify-content: flex-start;
   font-weight: 600;
   font-size: 16px;
 }

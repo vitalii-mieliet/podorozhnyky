@@ -1,6 +1,6 @@
 .container {
   max-width: 1312px;
-  margin: 0 auto;  
+  margin: 0 auto;
   padding: 20px;
   font-family: var(--font-family);
   color: var(--color-scheme-2-text);
@@ -107,13 +107,14 @@
 }
 
 @media (min-width: 1440px) {
-  .metaLabel, .metaValue {
+  .metaLabel,
+  .metaValue {
     font-size: 18px;
   }
   .category {
     font-weight: 600;
     font-size: 16px;
-    width: auto; 
+    width: auto;
   }
 }
 
@@ -159,8 +160,18 @@
   width: 100%;
   max-width: 418px;
 }
+@media (min-width: 768px) {
+  .saveSection {
+    margin: 0;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
 
 .saveTitle {
+  text-align: left;
   font-family: var(--second-family);
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -170,6 +181,7 @@
 }
 
 .saveText {
+  text-align: left;
   font-family: var(--font-family);
   font-weight: 400;
   font-size: 16px;
@@ -206,22 +218,22 @@
   }
 
   .articleBody {
-    flex-basis: 865px;  
+    flex-basis: 865px;
     min-height: 234px;
   }
-  
+
   .saveSection {
     flex-basis: 418px;
-    flex-shrink: 0;  
+    flex-shrink: 0;
     margin: 0;
     height: 234px;
     padding: 32px;
   }
-  
+
   .saveTitle {
     font-size: 26px;
   }
-  
+
   .saveText {
     font-size: 18px;
   }
@@ -230,4 +242,3 @@
     font-size: 18px;
   }
 }
- 
