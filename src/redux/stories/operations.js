@@ -44,8 +44,8 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
-export const fetchCreateStories = createAsyncThunk(
-  'stories/addStory',
+export const createStory = createAsyncThunk(
+  'stories/createStory',
   async (values, thunkAPI) => {
     try {
       const formData = new FormData();
