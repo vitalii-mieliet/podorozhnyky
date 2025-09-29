@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { emailRegexp } from '../../constants/auth.js';
 import { handleSaveError, setUpdateSetting } from '../hooks.js';
+import { required } from 'joi';
 
 const userSchema = new Schema(
   {
@@ -9,8 +10,7 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     avatar: {
       type: String,
-      default:
-        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
+      required: false,
     },
     bio: { type: String, required: false, default: '' },
     onboardingCompleted: { type: Boolean, default: false },

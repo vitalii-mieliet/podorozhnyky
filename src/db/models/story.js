@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
+import { required } from 'joi';
 
 const storiesSchema = new Schema(
   {
     img: {
       type: String,
-      default:
-        'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png',
+      required: false,
     },
     title: {
       type: String,
