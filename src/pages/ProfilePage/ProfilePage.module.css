@@ -1,8 +1,8 @@
 .tabs {
+  margin-top: 32px;
   margin-bottom: 40px;
 }
-
-.travellerInfo {
+.tabs .travellerInfo {
   margin-bottom: 32px; /* мобилка по умолчанию */
 }
 

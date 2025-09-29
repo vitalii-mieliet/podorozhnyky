@@ -12,8 +12,10 @@ import Container from '../Container/Container.jsx';
 import TravellersStories from '../TravellersStories/TravellersStories.jsx';
 import AppButton from '../../ui/AppButton/AppButton.jsx';
 import styles from './Popular.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Popular = ({ showButton = true }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const stories = useSelector(selectPopularStories) || [];
   const isLoading = useSelector(selectPopularStoriesLoading);
@@ -63,6 +65,15 @@ const Popular = ({ showButton = true }) => {
               type="button"
               size={isMobile ? 'sm' : 'md'}
               aria-label="Показати більше історій"
+            >
+              Показати ще
+            </AppButton>
+            <AppButton
+              onClick={() => navigate('/stories')}
+              variant="blue"
+              type="button"
+              size={isMobile ? 'sm' : 'md'}
+              aria-label="Показати всі історії"
             >
               Переглянути всі
             </AppButton>
