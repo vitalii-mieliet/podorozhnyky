@@ -10,7 +10,6 @@ import { fetchSavedStories } from '../../redux/user/operations';
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import AppMessage from '../../components/common/AppMessage/AppMessage';
-import Loader from '../../components/common/Loader/Loader';
 
 const SavedStories = () => {
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ const SavedStories = () => {
     }
   }, [dispatch, user?._id, stories.length, meta.page]);
 
-  // if (isLoading) return <Loader />;
   if (error) return <AppMessage title={'Виникла помилка'} message={error} />;
 
   // перший екран скелети

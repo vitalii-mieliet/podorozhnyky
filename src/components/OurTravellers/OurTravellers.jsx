@@ -62,15 +62,6 @@ const OurTravellers = () => {
             >
               {isLoading ? 'Завантаження...' : 'Показати ще'}
             </AppButton>
-            <AppButton
-              onClick={() => navigate('/travellers')}
-              variant="blue"
-              type="button"
-              size={isMobile ? 'sm' : 'md'}
-              aria-label="Переглянути всіх мандрівників"
-            >
-              Переглянути всіх
-            </AppButton>
           </div>
         )}
       </Container>
