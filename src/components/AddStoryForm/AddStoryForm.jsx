@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+
 import { useNavigate } from 'react-router-dom';
 
 import Container from '../common/Container/Container';
@@ -20,19 +20,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from '../common/AppToastContainer/toastHelpers';
-
-const validationSchema = Yup.object({
-  title: Yup.string()
-    .required('Заголовок обовʼязковий')
-    .max(100, 'Максимум 100 символів'),
-  category: Yup.string().required('Виберіть категорію'),
-  article: Yup.string()
-    .required('Опис обовʼязковий')
-    .max(150, 'Максимум 150 символів'),
-  fullText: Yup.string()
-    .required('Текст історії обовʼязковий')
-    .min(10, 'Мінімум 10 символів'),
-});
+import { validationAddStorySchema } from '../../validation/createStoryValidation';
 
 const AddStoryForm = () => {
   const dispatch = useDispatch();
@@ -106,7 +94,7 @@ const AddStoryForm = () => {
 
           <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={validationAddStorySchema}
             onSubmit={handleSubmit}
           >
             {({ values, setFieldValue, isValid, dirty, resetForm }) => (
@@ -161,11 +149,6 @@ const AddStoryForm = () => {
                       placeholder="Введіть заголовок історії"
                       aria-label="Заголовок статті"
                     />
-                    <ErrorMessage
-                      name="title"
-                      component="div"
-                      className={style.error}
-                    />
                   </div>
 
                   {/* Категорія */}
@@ -173,30 +156,11 @@ const AddStoryForm = () => {
                     <label className={style.label} htmlFor="category">
                       Категорія
                     </label>
-                    <Field name="category">
-                      {({ field, form }) => (
-                        <AppSelect
-                          options={formattedCategories}
-                          value={
-                            formattedCategories.find(
-                              (opt) => opt.value === field.value
-                            ) || null
-                          }
-                          placeholder="Категорія"
-                          ariaLabel="Категорія статті"
-                          onChange={(selectedOption) => {
-                            form.setFieldValue(
-                              field.name,
-                              selectedOption.value
-                            );
-                          }}
-                        />
-                      )}
-                    </Field>
-                    <ErrorMessage
+                    <AppSelect
                       name="category"
-                      component="div"
-                      className={style.error}
+                      options={formattedCategories}
+                      placeholder="Категорія"
+                      ariaLabel="Категорія статті"
                     />
                   </div>
 
@@ -214,14 +178,9 @@ const AddStoryForm = () => {
                       aria-label="Короткий опис статті"
                       className={style.textArea}
                     />
-                    <div className={style.symbol}>
+                    <p className={style.symbol}>
                       Лишилось символів: {maxLength - values.article.length}
-                    </div>
-                    <ErrorMessage
-                      name="article"
-                      component="div"
-                      className={style.error}
-                    />
+                    </p>
                   </div>
 
                   {/* Повний текст історії */}
@@ -235,11 +194,6 @@ const AddStoryForm = () => {
                       name="fullText"
                       placeholder="Ваша історія тут"
                       aria-label="Повний текст статті"
-                    />
-                    <ErrorMessage
-                      name="fullText"
-                      component="div"
-                      className={style.error}
                     />
                   </div>
                 </div>

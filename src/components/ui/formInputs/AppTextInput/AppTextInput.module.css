@@ -34,6 +34,7 @@
 }
 
 .errorMessage {
+  display: block;
   min-height: 18px; /* зарезервована висота для помилки */
   margin-top: 8px;
   font-size: 12px;
