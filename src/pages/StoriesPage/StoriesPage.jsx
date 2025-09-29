@@ -13,6 +13,7 @@ import TravellersStories from '../../components/common/TravellersStories/Travell
 import useBreakpoint from '../../hooks/useBreakpoint';
 import { resetStories, setSearchParams } from '../../redux/stories/slice';
 import clsx from 'clsx';
+import AppSelect from '../../components/ui/formInputs/AppSelect/AppSelect';
 
 const StoriesPage = () => {
   const buttonRef = useRef(null);
@@ -137,28 +138,19 @@ const StoriesPage = () => {
             <>
               <h1 className={styles.title}>Історії Мандрівників</h1>
               {isMobile ? (
-                <div>
-                  <label
-                    htmlFor="categorySelect"
-                    className={styles.selectTitle}
-                  >
-                    Категорії
-                  </label>
-                  <div className={styles.selectWrapper}>
-                    <select
-                      id="categorySelect"
-                      name="selectCategory"
-                      value={currentCategory}
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      className={styles.selectCategory}
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div className={styles.mobileFilter}>
+                  <label className={styles.selectTitle}>Категорії</label>
+                  <AppSelect
+                    options={categories.map((cat) => ({
+                      label: cat,
+                      value: cat,
+                    }))}
+                    value={{ label: currentCategory, value: currentCategory }}
+                    placeholder="Виберіть категорію"
+                    onChange={(option) => handleCategoryChange(option.value)}
+                    className={styles.selectCategory}
+                    ariaLabel="Вибір категорії"
+                  />
                 </div>
               ) : (
                 <div className={styles.filterButtons}>
