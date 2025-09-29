@@ -7,9 +7,14 @@ import clsx from 'clsx';
 import Section from '../common/Section/Section';
 import { selectIsLoggedIn } from '../../redux/auth/selectors';
 import placeholder from '../../assets/images/placeholder/Placeholder.webp';
+import { useState } from 'react';
+import InfoModal from '../common/InfoModal/InfoModal';
+import { useNavigate } from 'react-router-dom';
 
 const StoryDetails = ({ storyData }) => {
+  const [ismodalOpen, setIsmodalOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const savedStoriesIds = useSelector(selectSavedStoriesIds);
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -21,6 +26,11 @@ const StoryDetails = ({ storyData }) => {
 
   const isSaved =
     Array.isArray(savedStoriesIds) && savedStoriesIds.includes(_id);
+
+  // handler
+  const handleOpenModal = () => {
+    setIsmodalOpen(true);
+  };
 
   const handleBookmarkClick = () => {
     if (isSaved) {
@@ -84,8 +94,11 @@ const StoryDetails = ({ storyData }) => {
             </p>
 
             {!isLoggedIn ? (
-              <AppButton href="/auth/login" className={styles.saveButton}>
-                Увійти, щоб зберегти
+              <AppButton
+                onClick={handleOpenModal}
+                className={styles.saveButton}
+              >
+                Зберегти
               </AppButton>
             ) : (
               <AppButton
@@ -111,6 +124,25 @@ const StoryDetails = ({ storyData }) => {
             )}
           </aside>
         </div>
+
+        {ismodalOpen && (
+          <InfoModal
+            isOpen={ismodalOpen}
+            title="Помилка під час збереження"
+            text="Щоб зберегти статтю вам треба увійти, якщо ще немає облікового запису зареєструйтесь."
+            cancelButtonText="Увійти"
+            onCancel={() => {
+              setIsmodalOpen(false);
+              navigate('/auth/login');
+            }}
+            confirmButtonText="Зареєструватись"
+            onConfirm={() => {
+              setIsmodalOpen(false);
+              navigate('/auth/register');
+            }}
+            onClose={() => setIsmodalOpen(false)}
+          />
+        )}
       </article>
     </Section>
   );
