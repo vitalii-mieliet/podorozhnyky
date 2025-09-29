@@ -1,0 +1,22 @@
+description: Bad Request (missing file or unsupported type).
+content:
+  application/json:
+    schema:
+      type: object
+      required: [status, message]
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: Avatar file is required
+    examples:
+      noFile:
+        value: { status: 400, message: 'Avatar file is required' }
+      badType:
+        value:
+          {
+            status: 400,
+            message: 'Unsupported file type (only JPG, PNG, WEBP, GIF)',
+          }
