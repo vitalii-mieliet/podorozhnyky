@@ -19,12 +19,12 @@ requestBody:
             description: Image file (JPG, PNG, WEBP or GIF), max 5MB.
 responses:
   '200':
-    $ref: '../../../../components/responses/users/avatar/200.yaml'
+    $ref: '../../../components/responses/users/avatar/200.yaml'
   '400':
-    $ref: '../../../../components/responses/users/avatar/400.yaml'
+    $ref: '../../../components/responses/users/avatar/400.yaml'
   '401':
-    $ref: '../../../../components/responses/users/avatar/401.yaml'
+    $ref: '../../../components/responses/users/avatar/401.yaml'
   '413':
-    $ref: '../../../../components/responses/users/avatar/413.yaml'
+    $ref: '../../../components/responses/users/avatar/413.yaml'
   '500':
     description: Server error
