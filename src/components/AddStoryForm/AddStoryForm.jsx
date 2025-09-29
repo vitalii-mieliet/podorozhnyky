@@ -16,6 +16,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, createStory } from '../../redux/stories/operations';
 import { selectCategories } from '../../redux/stories/selectors';
 import style from './AddStoryForm.module.css';
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../common/AppToastContainer/toastHelpers';
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -65,20 +69,17 @@ const AddStoryForm = () => {
       setPreview(URL.createObjectURL(file));
     }
   };
-
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      console.log('Форма відправлена на бекенд:', values);
-
       await dispatch(createStory(values)).unwrap();
 
       resetForm();
       setPreview(null);
+      showSuccessToast('Форма відправлена успішно!');
 
-      navigate('/stories');
+      navigate(-1);
     } catch (error) {
-      console.error('Помилка при відправці форми:', error);
-      alert('Помилка при створенні історії. Спробуйте ще раз.');
+      showErrorToast('Помилка при створенні історії. Спробуйте ще раз!');
     } finally {
       setSubmitting(false);
     }
@@ -87,6 +88,7 @@ const AddStoryForm = () => {
   const handleResetForm = (resetForm) => {
     resetForm();
     setPreview(null);
+    navigate(-1);
   };
 
   const removePhoto = (setFieldValue) => {
