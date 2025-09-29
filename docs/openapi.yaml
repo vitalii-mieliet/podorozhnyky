@@ -75,6 +75,9 @@ paths:
       $ref: '../swagger/paths/users/save-story/{id}/post.yaml'
     delete:
       $ref: '../swagger/paths/users/save-story/{id}/delete.yaml'
+  /users/avatar:
+    patch:
+      $ref: '../swagger/paths/users/avatar/patch.yaml'
 components:
   securitySchemes:
     bearerAuth:
