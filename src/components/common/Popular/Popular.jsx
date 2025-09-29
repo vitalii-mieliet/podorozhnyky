@@ -68,15 +68,6 @@ const Popular = ({ showButton = true }) => {
             >
               Показати ще
             </AppButton>
-            <AppButton
-              onClick={() => navigate('/stories')}
-              variant="blue"
-              type="button"
-              size={isMobile ? 'sm' : 'md'}
-              aria-label="Показати всі історії"
-            >
-              Переглянути всі
-            </AppButton>
           </div>
         )}
       </Container>
