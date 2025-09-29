@@ -10,6 +10,7 @@ const userSchema = new Schema(
     avatar: {
       type: String,
       required: false,
+      default: '',
     },
     bio: { type: String, required: false, default: '' },
     onboardingCompleted: { type: Boolean, default: false },
