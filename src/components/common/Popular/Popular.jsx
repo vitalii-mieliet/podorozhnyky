@@ -35,8 +35,8 @@ const Popular = () => {
 
   // завантажуєм історії
   useEffect(() => {
-    dispatch(fetchPopularStories());
-  }, [dispatch]);
+    if (!stories.length) dispatch(fetchPopularStories());
+  }, [dispatch, stories.length]);
 
   const handleLoadMore = () => {
     setVisibleCount((prevCount) => prevCount + limit);
