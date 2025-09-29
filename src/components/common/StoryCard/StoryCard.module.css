@@ -1,6 +1,6 @@
 .card {
-  width: 335px;
-  height: 575px;
+  width: 100%;
+  max-width: 100%;
   background-color: var(--color-royal-blue-lighter);
   border-radius: 16px;
   overflow: hidden;
@@ -16,18 +16,8 @@
   object-fit: cover;
   display: block;
 }
-@media (min-width: 768px) {
-  .card {
-    width: 340px;
-    height: 578px;
-  }
-}
 
 @media (min-width: 1440px) {
-  .card {
-    width: 421px;
-    height: 677px;
-  }
   .image {
     height: 281px;
   }
@@ -46,7 +36,6 @@
 }
 
 .content {
-  height: 160px;
   margin-bottom: 24px;
 }
 
