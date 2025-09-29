@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose';
 import { STORY_CATEGORIES } from '../../constants/validation.js';
-import { required } from 'joi';
 
 const storiesSchema = new Schema(
   {
