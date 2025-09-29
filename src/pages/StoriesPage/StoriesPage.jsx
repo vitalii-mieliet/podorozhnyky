@@ -131,7 +131,7 @@ const StoriesPage = () => {
   return (
     <Section className={styles.storiesSection}>
       <Container>
-        {isLoading ? (
+        {/* {isLoading ? (
           <Loader />
         ) : (
           <div className={styles.storiesContent}>
@@ -170,14 +170,15 @@ const StoriesPage = () => {
               )}
             </>
 
-            {itemsStatus === 'succeeded' && (
-              <TravellersStories
-                stories={displayedItems}
-                aria-busy={isLoading}
-              />
-            )}
-          </div>
-        )}
+          {/* {itemsStatus === 'succeeded' && ( */}
+          <TravellersStories
+            stories={displayedItems}
+            isLoading={isLoading}
+            perPage={perPage}
+          />
+          {/* )} */}
+        </div>
+        {/* )} */}
 
         {itemsStatus === 'failed' && (
           <AppMessage title="Виникла помилка" message={error} />

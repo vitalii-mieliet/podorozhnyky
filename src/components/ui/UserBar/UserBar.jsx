@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import s from './UserBar.module.css';
 import { useDispatch } from 'react-redux';
 
@@ -6,14 +6,21 @@ import Logout from '../../../assets/icons/logout.svg?react';
 import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../../redux/auth/operations';
 import clsx from 'clsx';
+import InfoModal from '../../common/InfoModal/InfoModal';
+import { showErrorToast } from '../../common/AppToastContainer/toastHelpers';
 
 function UserBar({ isLoggedIn, user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false); // Confirm modal state
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      navigate('/');
+    } catch {
+      showErrorToast('Не вдалося вийти. Спробуйте ще раз.');
+    }
   };
 
   // JSX
@@ -34,10 +41,17 @@ function UserBar({ isLoggedIn, user }) {
           <button
             className={s.logoutBtn}
             aria-label="Вихід"
-            onClick={handleLogout}
+            onClick={() => setIsOpen(true)}
           >
             <Logout />
           </button>
+          <InfoModal
+            isOpen={isOpen}
+            title="Ви точно хочете вийти?"
+            text="Ми будемо сумувати за вами!"
+            onCancel={() => setIsOpen(false)}
+            onConfirm={handleLogout}
+          />
         </>
       )}
     </div>
