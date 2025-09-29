@@ -2,10 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { fetchStories } from '../../redux/stories/operations';
-
 import Container from '../../components/common/Container/Container';
 import Section from '../../components/common/Section/Section';
-import Loader from '../../components/common/Loader/Loader';
 import AppMessage from '../../components/common/AppMessage/AppMessage';
 import AppButton from '../../components/ui/AppButton/AppButton';
 import styles from './StoriesPage.module.css';
@@ -74,7 +72,6 @@ const StoriesPage = () => {
 
     dispatch(setSearchParams({ page, category: searchCategory }));
     setInitialized(true);
-    // eslint-disable-next-line
   }, [dispatch, searchParamsUrl]);
 
   // load stories
@@ -131,54 +128,46 @@ const StoriesPage = () => {
   return (
     <Section className={styles.storiesSection}>
       <Container>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div className={styles.storiesContent}>
-            <>
-              <h1 className={styles.title}>Історії Мандрівників</h1>
-              {isMobile ? (
-                <div className={styles.mobileFilter}>
-                  <label className={styles.selectTitle}>Категорії</label>
-                  <AppSelect
-                    options={categories.map((cat) => ({
-                      label: cat,
-                      value: cat,
-                    }))}
-                    value={{ label: currentCategory, value: currentCategory }}
-                    placeholder="Виберіть категорію"
-                    onChange={(option) => handleCategoryChange(option.value)}
-                    className={styles.selectCategory}
-                    ariaLabel="Вибір категорії"
-                  />
-                </div>
-              ) : (
-                <div className={styles.filterButtons}>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      className={clsx(
-                        styles.filterButton,
-                        currentCategory === cat && styles.filterButtonActive
-                      )}
-                      onClick={() => handleCategoryChange(cat)}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </>
-
-            {itemsStatus === 'succeeded' && (
-              <TravellersStories
-                stories={displayedItems}
-                isLoading={isLoading}
-                perPage={perPage}
+        <div className={styles.storiesContent}>
+          <h1 className={styles.title}>Історії Мандрівників</h1>
+          {isMobile ? (
+            <div className={styles.mobileFilter}>
+              <label className={styles.selectTitle}>Категорії</label>
+              <AppSelect
+                options={categories.map((cat) => ({
+                  label: cat,
+                  value: cat,
+                }))}
+                value={{ label: currentCategory, value: currentCategory }}
+                placeholder="Виберіть категорію"
+                onChange={(option) => handleCategoryChange(option.value)}
+                className={styles.selectCategory}
+                ariaLabel="Вибір категорії"
               />
-            )}
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className={styles.filterButtons}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={clsx(
+                    styles.filterButton,
+                    currentCategory === cat && styles.filterButtonActive
+                  )}
+                  onClick={() => handleCategoryChange(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <TravellersStories
+            stories={displayedItems}
+            isLoading={isLoading}
+            perPage={perPage}
+          />
+        </div>
 
         {itemsStatus === 'failed' && (
           <AppMessage title="Виникла помилка" message={error} />
