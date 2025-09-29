@@ -11,6 +11,7 @@ import { authenticate } from '../middlewares/authenticate.js';
 import { onboardingController } from '../controllers/users.js';
 import { onboardingCompletedSchema } from '../validation/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
+
 import { avatarUpload } from '../middlewares/multer.js';
 
 const userRouter = Router();
@@ -20,6 +21,7 @@ userRouter.get('/info', authenticate, getUserInfoController);
 userRouter.patch(
   '/onboarding',
   authenticate,
+  avatarUpload.single('avatar'),
   validateBody(onboardingCompletedSchema),
   onboardingController,
 );

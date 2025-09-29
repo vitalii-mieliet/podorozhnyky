@@ -12,9 +12,6 @@ import { STORIES_SORT_FIELDS } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const onboardingController = async (req, res) => {
-  console.log('BODY:', req.body);
-  console.log('FILE:', req.file);
-  console.log('USER ID:', req.user?._id);
   const photo = req.file;
   const userId = req.user._id;
   const data = { ...req.body, onboardingCompleted: true };
