@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './AppNavLink.module.css';
 
@@ -27,11 +27,18 @@ import styles from './AppNavLink.module.css';
  */
 
 const AppNavLink = ({ to, label, className, activeClassName }) => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   return (
     <NavLink
       to={to}
       className={({ isActive }) =>
-        clsx(styles.navLink, className, isActive && activeClassName)
+        clsx(
+          styles.navLink,
+          className,
+          isActive && activeClassName,
+          isHome && styles.home
+        )
       }
     >
       <span className={styles.label}>{label}</span>

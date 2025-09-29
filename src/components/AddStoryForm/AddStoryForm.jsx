@@ -87,6 +87,7 @@ const AddStoryForm = () => {
   const handleResetForm = (resetForm) => {
     resetForm();
     setPreview(null);
+    navigate(-1);
   };
 
   const removePhoto = (setFieldValue) => {
