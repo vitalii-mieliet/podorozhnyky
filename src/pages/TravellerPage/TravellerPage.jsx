@@ -71,17 +71,19 @@ const TravellerPage = () => {
         <section className={s.historySection} aria-busy={isLoading}>
           <h2 className={s.title}>Історії Мандрівника</h2>
 
-          {items.length > 0 ? (
-            <TravellersStories stories={displayedItems} />
+          {items.length === 0 && !isLoading ? (
+            <div className={s.messageWrap}>
+              <MessageNoStories
+                buttonText="Назад до історій"
+                text="Цей користувач ще не публікував історій"
+              />
+            </div>
           ) : (
-            !isLoading && (
-              <div className={s.messageWrap}>
-                <MessageNoStories
-                  buttonText="Назад до історій"
-                  text="Цей користувач ще не публікував історій"
-                />
-              </div>
-            )
+            <TravellersStories
+              stories={displayedItems}
+              isLoading={isLoading}
+              perPage={perPage}
+            />
           )}
 
           {hasNextPage && (
