@@ -1,9 +1,9 @@
-.container {
-  max-width: 1312px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: var(--font-family);
-  color: var(--color-scheme-2-text);
+.pageSection {
+  margin: 0;
+  padding: 0;
+  margin-top: 33px;
+  padding-top: 32px;
+  padding-bottom: 32px;
 }
 
 .header {
@@ -19,22 +19,7 @@
   color: var(--color-neutral-darkest);
   line-height: 1.1;
   margin: 0 0 32px 0;
-  word-wrap: break-word;
   font-size: 32px;
-  width: 335px;
-}
-
-@media (min-width: 768px) {
-  .title {
-    font-size: 48px;
-    width: auto;
-  }
-}
-
-@media (min-width: 1440px) {
-  .title {
-    font-size: 56px;
-  }
 }
 
 .meta {
@@ -88,56 +73,12 @@
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .meta {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .metaLeft {
-    flex-direction: row;
-    gap: 48px;
-  }
-  .metaRight {
-    margin-left: auto;
-  }
-  .category {
-    font-size: 14px;
-  }
-}
-
-@media (min-width: 1440px) {
-  .metaLabel,
-  .metaValue {
-    font-size: 18px;
-  }
-  .category {
-    font-weight: 600;
-    font-size: 16px;
-    width: auto;
-  }
-}
-
 .mainImage {
   width: 100%;
   object-fit: cover;
   border-radius: 24px;
   margin-top: 16px;
   height: 223px;
-}
-
-@media (min-width: 768px) {
-  .mainImage {
-    margin-top: 18px;
-    height: 469px;
-  }
-}
-
-@media (min-width: 1440px) {
-  .mainImage {
-    margin-top: 16px;
-    height: 874px;
-  }
 }
 
 .mainContent {
@@ -152,22 +93,13 @@
 }
 
 .saveSection {
-  margin: 24px auto 0 auto;
+  margin-top: 24px;
   border-radius: 24px;
-  padding: 32px;
+  padding: 32px 20px;
   background: var(--color-neutral-lightest);
-  text-align: center;
+  /* text-align: center; */
   width: 100%;
-  max-width: 418px;
-}
-@media (min-width: 768px) {
-  .saveSection {
-    margin: 0;
-    margin-top: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
+  max-width: 335px;
 }
 
 .saveTitle {
@@ -187,28 +119,56 @@
   font-size: 16px;
   line-height: 1.5;
   color: var(--color-neutral-darkest);
-  margin: 0 auto 16px auto;
+  margin-bottom: 16px;
 }
 
-.saveButton {
-  border: 1px solid var(--color-royal-blue);
-  border-radius: 8px;
-  background: var(--color-royal-blue);
-  font-family: var(--font-family);
-  font-weight: 500;
-  color: var(--color-white);
+.saveButton,
+.lookStoriesBtn {
   height: 48px;
-  width: 240px;
+  width: 100%;
   font-size: 16px;
 }
 
-@media (min-width: 768px) {
-  .saveButton {
-    width: 354px;
+.saveButtonWithMargin {
+  margin-bottom: 16px;
+}
+
+@media screen and (min-width: 768px) {
+  .meta {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .metaLeft {
+    flex-direction: row;
+    gap: 48px;
+  }
+  .metaRight {
+    margin-left: auto;
+  }
+  .category {
+    font-size: 14px;
+  }
+  .mainImage {
+    margin-top: 18px;
+    height: 469px;
+  }
+
+  .title {
+    font-size: 48px;
+    width: auto;
+  }
+
+  .saveSection {
+    max-width: 418px;
+  }
+
+  .saveText {
+    max-width: 354px;
   }
 }
 
-@media (min-width: 1440px) {
+@media screen and (min-width: 1440px) {
   .mainContent {
     margin-top: 48px;
     display: flex;
@@ -222,12 +182,29 @@
     min-height: 234px;
   }
 
+  .metaLabel,
+  .metaValue {
+    font-size: 18px;
+  }
+  .category {
+    font-weight: 600;
+    font-size: 16px;
+    width: auto;
+  }
+
+  .mainImage {
+    margin-top: 16px;
+    height: 874px;
+  }
+
   .saveSection {
-    flex-basis: 418px;
-    flex-shrink: 0;
+    padding: 32px;
     margin: 0;
     height: 234px;
-    padding: 32px;
+  }
+
+  .title {
+    font-size: 56px;
   }
 
   .saveTitle {
@@ -235,10 +212,6 @@
   }
 
   .saveText {
-    font-size: 18px;
-  }
-
-  .saveButton {
     font-size: 18px;
   }
 }

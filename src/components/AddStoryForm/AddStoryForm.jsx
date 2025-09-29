@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, generatePath } from 'react-router-dom';
 
 import Container from '../common/Container/Container';
 import Section from '../common/Section/Section';
@@ -23,12 +23,57 @@ const validationSchema = Yup.object({
     .max(100, 'Максимум 100 символів'),
   category: Yup.string().required('Виберіть категорію'),
   article: Yup.string()
-    .required('Опис обовʼязковий')
-    .max(150, 'Максимум 150 символів'),
-  fullText: Yup.string()
     .required('Текст історії обовʼязковий')
     .min(10, 'Мінімум 10 символів'),
 });
+
+// місток для AppTextInput
+const FormikTextInput = ({ name, ...props }) => {
+  const [field, meta] = useField(name);
+  return (
+    <AppTextInput
+      {...field}
+      {...props}
+      error={meta.touched && !!meta.error}
+      errorMessage={meta.touched ? meta.error : ''}
+    />
+  );
+};
+
+// місток для AppSelect
+const FormikSelect = ({ name, options, placeholder, ariaLabel, ...props }) => {
+  const [field, meta, helpers] = useField(name);
+
+  const handleChange = (option) => {
+    helpers.setValue(option.value);
+  };
+
+  return (
+    <AppSelect
+      options={options}
+      value={options.find((opt) => opt.value === field.value) || null}
+      placeholder={placeholder}
+      ariaLabel={ariaLabel}
+      onChange={handleChange}
+      error={meta.touched && !!meta.error}
+      errorMessage={meta.touched ? meta.error : ''}
+      {...props}
+    />
+  );
+};
+
+// місток для AppTextArea
+const FormikTextArea = ({ name, ...props }) => {
+  const [field, meta] = useField(name);
+  return (
+    <AppTextArea
+      {...field}
+      {...props}
+      error={meta.touched && !!meta.error}
+      errorMessage={meta.touched ? meta.error : ''}
+    />
+  );
+};
 
 const AddStoryForm = () => {
   const dispatch = useDispatch();
@@ -47,13 +92,10 @@ const AddStoryForm = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const maxLength = 150;
-
   const initialValues = {
     title: '',
     category: '',
     article: '',
-    fullText: '',
     img: null,
   };
 
@@ -68,14 +110,15 @@ const AddStoryForm = () => {
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      console.log('Форма відправлена на бекенд:', values);
-
-      await dispatch(createStory(values)).unwrap();
+      const newStory = await dispatch(createStory(values)).unwrap();
 
       resetForm();
       setPreview(null);
 
-      navigate('/stories');
+      //  редірект на сторіз айді
+      const storyId = newStory.data ? newStory.data._id : newStory._id;
+
+      navigate(generatePath('/stories/:storyId', { storyId }));
     } catch (error) {
       console.error('Помилка при відправці форми:', error);
       alert('Помилка при створенні історії. Спробуйте ще раз.');
@@ -107,8 +150,10 @@ const AddStoryForm = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            validateOnChange={false}
+            validateOnBlur={false}
           >
-            {({ values, setFieldValue, isValid, dirty, resetForm }) => (
+            {({ setFieldValue, isValid, dirty, resetForm }) => (
               <Form className={style.formBox}>
                 <div className={style.formBoxDesktop}>
                   {/* Завантаження фото */}
@@ -153,92 +198,36 @@ const AddStoryForm = () => {
                     <label className={style.label} htmlFor="title">
                       Заголовок
                     </label>
-                    <Field
-                      as={AppTextInput}
-                      id="title"
+                    <FormikTextInput
                       name="title"
+                      id="title"
                       placeholder="Введіть заголовок історії"
                       aria-label="Заголовок статті"
                     />
-                    <ErrorMessage
-                      name="title"
-                      component="div"
-                      className={style.error}
-                    />
                   </div>
 
-                  {/* Категорія */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="category">
                       Категорія
                     </label>
-                    <Field name="category">
-                      {({ field, form }) => (
-                        <AppSelect
-                          options={formattedCategories}
-                          value={
-                            formattedCategories.find(
-                              (opt) => opt.value === field.value
-                            ) || null
-                          }
-                          placeholder="Категорія"
-                          ariaLabel="Категорія статті"
-                          onChange={(selectedOption) => {
-                            form.setFieldValue(
-                              field.name,
-                              selectedOption.value
-                            );
-                          }}
-                        />
-                      )}
-                    </Field>
-                    <ErrorMessage
+                    <FormikSelect
                       name="category"
-                      component="div"
-                      className={style.error}
-                    />
-                  </div>
-
-                  {/* Короткий опис */}
-                  <div className={style.inputBox}>
-                    <label className={style.label} htmlFor="article">
-                      Короткий опис
-                    </label>
-                    <Field
-                      as={AppTextArea}
-                      id="article"
-                      name="article"
-                      maxLength={maxLength}
-                      placeholder="Введіть короткий опис історії"
-                      aria-label="Короткий опис статті"
-                      className={style.textArea}
-                    />
-                    <div className={style.symbol}>
-                      Лишилось символів: {maxLength - values.article.length}
-                    </div>
-                    <ErrorMessage
-                      name="article"
-                      component="div"
-                      className={style.error}
+                      options={formattedCategories}
+                      placeholder="Категорія"
+                      ariaLabel="Категорія статті"
                     />
                   </div>
 
                   {/* Повний текст історії */}
                   <div className={style.inputBox}>
-                    <label className={style.label} htmlFor="fullText">
+                    <label className={style.label} htmlFor="article">
                       Текст історії
                     </label>
-                    <Field
-                      as={AppTextArea}
-                      id="fullText"
-                      name="fullText"
+                    <FormikTextArea
+                      name="article"
+                      id="article"
                       placeholder="Ваша історія тут"
                       aria-label="Повний текст статті"
-                    />
-                    <ErrorMessage
-                      name="fullText"
-                      component="div"
-                      className={style.error}
                     />
                   </div>
                 </div>
@@ -247,8 +236,8 @@ const AddStoryForm = () => {
                 <div className={style.appButtonBox}>
                   <AppButton
                     type="submit"
-                    disabled={!dirty || !isValid}
                     aria-label="Зберегти історію"
+                    disabled={!dirty}
                   >
                     Зберегти
                   </AppButton>
