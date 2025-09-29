@@ -7,13 +7,25 @@ import { UserCollection } from '../db/models/user.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getUserInfoService = async (query) => {
-  return UserCollection.findById(query);
+  return await UserCollection.findOne(query);
 };
 
-export const updateUserById = async (userId, data) => {
-  const updatedUser = await UserCollection.findByIdAndUpdate(userId, data, {
-    new: true,
-  });
+export const updateUserById = async (userId, data, photo) => {
+  let photoUrl = null;
+
+  if (photo)
+    try {
+      photoUrl = await saveFileToCloudinary(photo);
+    } catch {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
+    }
+
+  const updatedUser = await UserCollection.findByIdAndUpdate(
+    userId,
+    { ...data, avatar: photoUrl },
+    { new: true },
+  );
+
   return updatedUser;
 };
 
