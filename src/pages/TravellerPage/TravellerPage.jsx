@@ -47,6 +47,8 @@ const TravellerPage = () => {
   useEffect(() => {
     const loadStories = async () => {
       try {
+        // для першого екрану лоадінг тру
+        setIsLoading(true);
         if (items.length === 0) {
           await dispatch(fetchStories({ page: 1, perPage })).unwrap();
         }
@@ -55,10 +57,11 @@ const TravellerPage = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     loadStories();
-    // eslint-disable-next-line
   }, [dispatch, currentPage, perPage, hasNextPage]);
 
   // handler
@@ -91,15 +94,19 @@ const TravellerPage = () => {
         <section className={s.historySection} aria-busy={isLoading}>
           <h2 className={s.title}>Історії Мандрівника</h2>
 
-          {items.length > 0 ? (
-            <TravellersStories stories={displayedItems} />
-          ) : (
+          {items.length === 0 && !isLoading ? (
             <div className={s.messageWrap}>
               <MessageNoStories
                 buttonText="Назад до історій"
                 text="Цей користувач ще не публікував історій"
               />
             </div>
+          ) : (
+            <TravellersStories
+              stories={displayedItems}
+              isLoading={isLoading}
+              perPage={perPage}
+            />
           )}
 
           {hasNextPage && (

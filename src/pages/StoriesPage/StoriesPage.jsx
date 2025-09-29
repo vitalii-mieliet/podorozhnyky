@@ -130,62 +130,60 @@ const StoriesPage = () => {
   return (
     <Section className={styles.storiesSection}>
       <Container>
-        {isLoading ? (
+        {/* {isLoading ? (
           <Loader />
-        ) : (
-          <div className={styles.storiesContent}>
-            <>
-              <h1 className={styles.title}>Історії Мандрівників</h1>
-              {isMobile ? (
-                <div>
-                  <label
-                    htmlFor="categorySelect"
-                    className={styles.selectTitle}
+        ) : ( */}
+        <div className={styles.storiesContent}>
+          <>
+            <h1 className={styles.title}>Історії Мандрівників</h1>
+            {isMobile ? (
+              <div>
+                <label htmlFor="categorySelect" className={styles.selectTitle}>
+                  Категорії
+                </label>
+                <div className={styles.selectWrapper}>
+                  <select
+                    id="categorySelect"
+                    name="selectCategory"
+                    value={currentCategory}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
+                    className={styles.selectCategory}
                   >
-                    Категорії
-                  </label>
-                  <div className={styles.selectWrapper}>
-                    <select
-                      id="categorySelect"
-                      name="selectCategory"
-                      value={currentCategory}
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      className={styles.selectCategory}
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              ) : (
-                <div className={styles.filterButtons}>
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      className={clsx(
-                        styles.filterButton,
-                        currentCategory === cat && styles.filterButtonActive
-                      )}
-                      onClick={() => handleCategoryChange(cat)}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </>
-
-            {itemsStatus === 'succeeded' && (
-              <TravellersStories
-                stories={displayedItems}
-                aria-busy={isLoading}
-              />
+              </div>
+            ) : (
+              <div className={styles.filterButtons}>
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    className={clsx(
+                      styles.filterButton,
+                      currentCategory === cat && styles.filterButtonActive
+                    )}
+                    onClick={() => handleCategoryChange(cat)}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             )}
-          </div>
-        )}
+          </>
+
+          {/* {itemsStatus === 'succeeded' && ( */}
+          <TravellersStories
+            stories={displayedItems}
+            isLoading={isLoading}
+            perPage={perPage}
+          />
+          {/* )} */}
+        </div>
+        {/* )} */}
 
         {itemsStatus === 'failed' && (
           <AppMessage title="Виникла помилка" message={error} />
