@@ -1049,6 +1049,58 @@
           }
         }
       }
+    },
+    "/users/avatar": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user avatar",
+        "operationId": "patchUserAvatar",
+        "description": "Upload a new avatar image for the authenticated user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "avatar"
+                ],
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Image file (JPG, PNG, WEBP or GIF), max 5MB."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-14"
+          },
+          "400": {
+            "$ref": "#/components/responses/400-6"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-5"
+          },
+          "413": {
+            "$ref": "#/components/responses/413"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1309,6 +1361,38 @@
                       "example": "Email in use"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "413": {
+        "description": "Payload Too Large (file > 5MB).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 413
+                },
+                "message": {
+                  "type": "string",
+                  "example": "File too large"
+                }
+              }
+            },
+            "examples": {
+              "tooLarge": {
+                "value": {
+                  "status": 413,
+                  "message": "File too large"
                 }
               }
             }
@@ -2362,6 +2446,130 @@
                   "type": "object",
                   "description": "Additional data related to the operation (if any).",
                   "properties": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-14": {
+        "description": "Avatar updated successfully.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "user"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Avatar updated!"
+                },
+                "user": {
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            },
+            "examples": {
+              "success": {
+                "value": {
+                  "status": 200,
+                  "message": "Avatar updated!",
+                  "user": {
+                    "_id": "66f4b0c0b1c9a0f2c7d2a111",
+                    "name": "Alice",
+                    "email": "alice@example.com",
+                    "password": "12345678",
+                    "avatar": "https://res.cloudinary.com/.../avatars/img.jpg",
+                    "bio": "",
+                    "onboardingCompleted": false,
+                    "savedStories": [],
+                    "settings": {
+                      "darkMode": false
+                    },
+                    "socialLinks": {
+                      "twitter": "",
+                      "facebook": "",
+                      "instagram": ""
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400-6": {
+        "description": "Bad Request (missing file or unsupported type).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Avatar file is required"
+                }
+              }
+            },
+            "examples": {
+              "noFile": {
+                "value": {
+                  "status": 400,
+                  "message": "Avatar file is required"
+                }
+              },
+              "badType": {
+                "value": {
+                  "status": 400,
+                  "message": "Unsupported file type (only JPG, PNG, WEBP, GIF)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401-5": {
+        "description": "Unauthorized.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized"
+                }
+              }
+            },
+            "examples": {
+              "unauth": {
+                "value": {
+                  "status": 401,
+                  "message": "Unauthorized"
                 }
               }
             }
