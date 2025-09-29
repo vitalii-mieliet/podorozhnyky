@@ -3,8 +3,9 @@ import { loginUser, registerUser, refreshUser } from './operations';
 import { fetchCurrentUser } from '../user/operations';
 
 const initialState = {
-  user: null,
   isLoading: false,
+  isInitialized: false,
+  isRefreshing: false,
   isLoggedIn: false,
   error: null,
 };
@@ -50,16 +51,18 @@ const authSlice = createSlice({
 
       // --- Refresh ---
       .addCase(refreshUser.pending, (state) => {
-        state.isLoading = true;
+        state.isRefreshing = true;
         state.error = null;
       })
       .addCase(refreshUser.fulfilled, (state) => {
-        state.isLoading = false;
+        state.isRefreshing = false;
+        state.isInitialized = true;
         state.isLoggedIn = true;
         state.error = null;
       })
       .addCase(refreshUser.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isRefreshing = false;
+        state.isInitialized = true;
         state.error = action.payload;
       })
 
