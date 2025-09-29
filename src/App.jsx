@@ -17,18 +17,26 @@ import {
 } from './routes/lazyPages';
 import RestrictedRoute from './routes/RestrictedRoute';
 import PrivateRoute from './routes/PrivateRoute';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { refreshUser } from './redux/auth/operations';
 import SavedStories from './pages/ProfilePage/SavedStories';
 import CreatedStories from './pages/ProfilePage/CreatedStories';
 
+import { selectAuthState } from './redux/auth/selectors';
+import Loader from './components/common/Loader/Loader';
+
 function App() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(refreshUser());
-  }, [dispatch]);
+  const { isRefreshing, isInitialized } = useSelector(selectAuthState);
 
+  useEffect(() => {
+    if (!isInitialized && !isRefreshing) {
+      dispatch(refreshUser());
+    }
+  }, [dispatch, isInitialized, isRefreshing]);
+
+  if (!isInitialized && isRefreshing) return <Loader />;
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
