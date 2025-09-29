@@ -3,12 +3,13 @@ import {
   getUserInfoService,
   saveArticle,
   unsaveArticle,
+  updateUserAvatarService,
+  updateUserById,
 } from '../services/users.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { getStoriesByAuthorId } from '../services/stories.js';
 import { STORIES_SORT_FIELDS } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
-import { updateUserById } from '../services/users.js';
 
 export const onboardingController = async (req, res) => {
   const userId = req.user_id;
@@ -104,4 +105,21 @@ export const getUserCreatedStoriesController = async (req, res) => {
     message: 'Successfully found stories!',
     data,
   });
+};
+
+export const updateAvatarController = async (req, res, next) => {
+  try {
+    // так як в різних місцях зустрічаються req.user та req.user_id
+    const userId = req.user?._id ?? req.user_id;
+
+    const updatedUser = await updateUserAvatarService(userId, req.file);
+
+    res.json({
+      status: 200,
+      message: 'Avatar updated!',
+      user: updatedUser,
+    });
+  } catch (err) {
+    next(err);
+  }
 };

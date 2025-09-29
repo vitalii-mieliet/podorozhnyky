@@ -1,8 +1,10 @@
+import fs from 'node:fs/promises';
 import createHttpError from 'http-errors';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SavedArticleCollection } from '../db/models/savedArticle.js';
 import { StoriesCollection } from '../db/models/story.js';
 import { UserCollection } from '../db/models/user.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getUserInfoService = async (query) => {
   return UserCollection.findById(query);
@@ -92,4 +94,30 @@ export const getSavedArticles = async (
   });
 
   return { data: modifiedStories, ...paginationData };
+};
+
+export const updateUserAvatarService = async (userId, file) => {
+  if (!userId) {
+    throw createHttpError(401, 'Unauthorized');
+  }
+  if (!file) {
+    throw createHttpError(400, 'Avatar file is required');
+  }
+
+  const localPath = file.path;
+
+  // Завантажуємо на Cloudinary
+  const { secure_url } = await saveFileToCloudinary(localPath, {
+    folder: 'avatars',
+    // за бажанням:
+    // transformation: [{ width: 320, height: 320, crop: 'fill', gravity: 'face' }],
+  });
+
+  // Прибираємо тимчасовий файл
+  await fs.unlink(localPath).catch(() => {});
+
+  // Оновлюємо юзера по полю "avatar" у схемі
+  const updatedUser = await updateUserById(userId, { avatar: secure_url });
+
+  return updatedUser;
 };
