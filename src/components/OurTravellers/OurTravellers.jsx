@@ -14,10 +14,12 @@ import {
   selectOurTravellersPagination,
 } from '../../redux/ourTravellers/selectors.js';
 import { fetchOurTravellers } from '../../redux/ourTravellers/operations.js';
+import { useNavigate } from 'react-router-dom';
 
 const OurTravellers = () => {
   const { isMobile } = useBreakpoint();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { setPage } = ourTravellersActions;
   const isLoading = useSelector(selectOurTravellersLoading);
   const items = useSelector(selectOurTravellers) || [];
@@ -26,12 +28,15 @@ const OurTravellers = () => {
   );
 
   useEffect(() => {
-    if (!items.length && page === 1)
+    if (page === 1 && !items.length) {
       dispatch(fetchOurTravellers({ page, perPage }));
-  }, [dispatch, items.length, page, perPage]);
+    }
+  }, [dispatch, page, perPage, items.length]);
 
   const handleLoadMore = () => {
-    dispatch(setPage(page + 1));
+    const nextPage = page + 1;
+    dispatch(setPage(nextPage));
+    dispatch(fetchOurTravellers({ page: nextPage, perPage }));
   };
 
   return (
@@ -55,7 +60,16 @@ const OurTravellers = () => {
               aria-label="Показати більше мандрівників"
               disabled={isLoading}
             >
-              {isLoading ? 'Завантаження...' : 'Переглянути всіх'}
+              {isLoading ? 'Завантаження...' : 'Показати ще'}
+            </AppButton>
+            <AppButton
+              onClick={() => navigate('/travellers')}
+              variant="blue"
+              type="button"
+              size={isMobile ? 'sm' : 'md'}
+              aria-label="Переглянути всіх мандрівників"
+            >
+              Переглянути всіх
             </AppButton>
           </div>
         )}
