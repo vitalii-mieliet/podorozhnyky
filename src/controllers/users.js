@@ -11,9 +11,13 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { updateUserById } from '../services/users.js';
 
 export const onboardingController = async (req, res) => {
-  const userId = req.user_id;
+  console.log('BODY:', req.body);
+  console.log('FILE:', req.file);
+  console.log('USER ID:', req.user?._id);
+  const photo = req.file;
+  const userId = req.user._id;
   const data = { ...req.body, onboardingCompleted: true };
-  const updatedUser = await updateUserById(userId, data);
+  const updatedUser = await updateUserById(userId, data, photo);
 
   res.json({
     status: 200,
@@ -23,7 +27,8 @@ export const onboardingController = async (req, res) => {
 };
 
 export const getUserInfoController = async (req, res) => {
-  const data = await getUserInfoService(req.user);
+  const userId = req.user._id;
+  const data = await getUserInfoService(userId);
   res.json({
     status: 200,
     message: 'User information found!',

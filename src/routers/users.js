@@ -17,6 +17,7 @@ userRouter.get('/info', authenticate, getUserInfoController);
 
 userRouter.patch(
   '/onboarding',
+  authenticate,
   validateBody(onboardingCompletedSchema),
   onboardingController,
 );

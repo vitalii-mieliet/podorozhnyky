@@ -21,7 +21,7 @@ export const getStories = async (
 
   storiesQuery.populate({
     path: 'ownerId',
-    select: 'name avatar',
+    select: 'name avatar bio',
   });
 
   const [storiesCount, stories] = await Promise.all([
@@ -64,7 +64,7 @@ export const getStory = async (id) => {
   const story = await StoriesCollection.findById(id)
     .populate({
       path: 'ownerId',
-      select: 'name avatar',
+      select: 'name avatar bio',
     })
     .lean();
 
@@ -84,7 +84,7 @@ export const getAuthors = async (
 ) => {
   const skip = (page - 1) * perPage;
 
-  const authorsQuery = await UserCollection.find({}, 'name avatar')
+  const authorsQuery = await UserCollection.find({}, 'name avatar bio')
     .skip(skip)
     .limit(perPage)
     .sort({ [sortBy]: sortOrder });
@@ -98,7 +98,7 @@ export const getAuthors = async (
 };
 
 export const getAuthor = async (id) => {
-  return UserCollection.findById(id, 'name avatar');
+  return UserCollection.findById(id, 'name avatar bio');
 };
 
 export const getStoriesByAuthorId = async (
@@ -114,7 +114,7 @@ export const getStoriesByAuthorId = async (
 
   storiesQuery.populate({
     path: 'ownerId',
-    select: 'name avatar',
+    select: 'name avatar bio',
   });
 
   const [storiesCount, stories] = await Promise.all([
@@ -124,10 +124,6 @@ export const getStoriesByAuthorId = async (
       .limit(perPage)
       .sort({ [sortBy]: sortOrder }),
   ]);
-
-  if (stories.length === 0) {
-    throw createHttpError(404, 'Stories not found');
-  }
 
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 

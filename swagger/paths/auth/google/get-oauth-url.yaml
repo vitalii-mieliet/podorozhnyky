@@ -1,0 +1,13 @@
+tags:
+  - Auth
+summary: Get Google OAuth authorization URL
+operationId: getGoogleOAuthUrl
+description: 'Get the OAuth URL to redirect the user to Google login page for authentication.'
+security: []
+responses:
+  '200':
+    $ref: ../../../components/responses/auth/google/get-oauth-url/200.yaml
+  '401':
+    description: Unauthorized. User is not authenticated.
+  '500':
+    $ref: ../../../components/responses/auth/google/get-oauth-url/500.yaml

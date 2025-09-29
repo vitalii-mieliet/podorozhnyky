@@ -2,6 +2,7 @@ type: object
 required:
   - _id
   - name
+  - bio
 properties:
   _id:
     type: string
@@ -11,6 +12,10 @@ properties:
     type: string
     description: 'Name of the author'
     example: 'Tim Cook'
+  bio:
+    description: "Author's info"
+    type: string
+    example: 'Traveler, photographer, and storyteller.'
   avatar:
     type: string
     description: 'URL to the avatar image'

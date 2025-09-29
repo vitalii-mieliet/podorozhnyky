@@ -3,24 +3,33 @@ import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SavedArticleCollection } from '../db/models/savedArticle.js';
 import { StoriesCollection } from '../db/models/story.js';
 import { UserCollection } from '../db/models/user.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getUserInfoService = async (query) => {
-  return UserCollection.findOne(query);
+  return await UserCollection.findOne(query);
 };
 
-export const updateUserById = async (userId, data) => {
-  const updatedUser = await UserCollection.findByIdAndUpdate(userId, data, {
-    new: true,
-  });
+export const updateUserById = async (userId, data, photo) => {
+  let photoUrl = null;
+
+  if (photo)
+    try {
+      photoUrl = await saveFileToCloudinary(photo);
+    } catch {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
+    }
+
+  const updatedUser = await UserCollection.findByIdAndUpdate(
+    userId,
+    { ...data, avatar: photoUrl },
+    { new: true },
+  );
+
   return updatedUser;
 };
 
 export const saveArticle = async (userId, storyId) => {
   const story = await StoriesCollection.findById(storyId);
-
-  if (!story) {
-    throw createHttpError(404, 'Story not found');
-  }
 
   const alreadySaved = await SavedArticleCollection.findOne({
     userId,
@@ -46,10 +55,6 @@ export const saveArticle = async (userId, storyId) => {
 export const unsaveArticle = async (userId, storyId) => {
   const saved = await SavedArticleCollection.findOne({ userId, storyId });
 
-  if (!saved) {
-    throw createHttpError(404, 'Story is not saved by this user');
-  }
-
   await SavedArticleCollection.deleteOne({ userId, storyId });
 
   await UserCollection.findByIdAndUpdate(userId, {
@@ -72,29 +77,25 @@ export const getSavedArticles = async (
 ) => {
   const skip = (page - 1) * perPage;
 
-  const storiesCount = await UserCollection.findById(userId)
+  const user = await UserCollection.findById(userId)
     .select('savedStories')
-    .lean()
-    .then((user) => {
-      if (!user) throw createHttpError(404, 'User not found');
-      return user.savedStories.length;
-    });
+    .lean();
+  if (!user) throw createHttpError(404, 'User not found');
 
-  const user = await UserCollection.findById(userId).populate({
-    path: 'savedStories',
-    options: { skip, limit: perPage, sort: { [sortBy]: sortOrder } },
-    populate: {
-      path: 'ownerId',
-      select: 'name avatar',
-    },
-  });
+  const savedIds = user.savedStories || [];
 
-  const stories = user.savedStories;
+  const storiesQuery = StoriesCollection.find({ _id: { $in: savedIds } })
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
+    .limit(perPage)
+    .populate('ownerId', 'name avatar bio');
+
+  const [stories, storiesCount] = await Promise.all([
+    storiesQuery,
+    StoriesCollection.countDocuments({ _id: { $in: savedIds } }),
+  ]);
+
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
-
-  if (stories.length === 0) {
-    throw createHttpError(404, 'Stories not found');
-  }
 
   const modifiedStories = stories.map((story) => {
     const obj = story.toObject();

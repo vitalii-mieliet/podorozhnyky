@@ -46,13 +46,14 @@ properties:
     type: string
     format: date
     example: '2025-06-17'
-  ownerId:
+  owner:
     description: 'Author of the story'
     type: object
     required:
       - _id
       - name
       - avatar
+      - bio
     properties:
       _id:
         description: 'Author ID'
@@ -67,3 +68,7 @@ properties:
         type: string
         format: uri
         example: 'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png'
+      bio:
+        description: "Author's info"
+        type: string
+        example: 'Traveler, photographer, and storyteller.'

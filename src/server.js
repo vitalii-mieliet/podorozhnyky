@@ -7,6 +7,7 @@ import { swaggerDocs } from './middlewares/swaggerDocs.js';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { logger } from './middlewares/logger.js';
 import router from './routers/index.js';
+import { corsOptions } from './config/corsOptions.js';
 
 const PORT = Number(getEnvVar('PORT', 3000));
 
@@ -20,7 +21,7 @@ export const startServer = () => {
     }),
   );
 
-  app.use(cors());
+  app.use(cors(corsOptions));
   app.use(cookieParser());
   app.use('/api-docs', swaggerDocs());
   // app.use(logger);

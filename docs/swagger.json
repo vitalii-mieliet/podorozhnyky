@@ -264,6 +264,65 @@
         }
       }
     },
+    "/auth/google/get-oauth-url": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Get Google OAuth authorization URL",
+        "operationId": "getGoogleOAuthUrl",
+        "description": "Get the OAuth URL to redirect the user to Google login page for authentication.",
+        "security": [],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-5"
+          },
+          "401": {
+            "description": "Unauthorized. User is not authenticated."
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/google/confirm-oauth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Confirm Google OAuth authorization",
+        "operationId": "confirmGoogleOAuth",
+        "description": "Confirm Google OAuth authorization using the code obtained from Google OAuth process.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "4/0AVGzR1A4XCATv7Gcxl9HukHu1rJuRRm4oSMChpDWeH2e8R_tEAy3pM49T12AWzDk5tzUzA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-6"
+          },
+          "400": {
+            "$ref": "#/components/responses/400-4"
+          }
+        }
+      }
+    },
     "/stories": {
       "get": {
         "tags": [
@@ -334,7 +393,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-5"
+            "$ref": "#/components/responses/200-7"
           },
           "400": {
             "description": "Invalid parameters in the request"
@@ -404,180 +463,10 @@
             "$ref": "#/components/responses/201-2"
           },
           "400": {
-            "$ref": "#/components/responses/400-4"
+            "$ref": "#/components/responses/400-5"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
-          }
-        }
-      }
-    },
-    "/stories/{id}": {
-      "delete": {
-        "tags": [
-          "Stories"
-        ],
-        "summary": "Delete a story by id",
-        "operationId": "deleteStory",
-        "description": "Delete a story by id. Returns 204 when the story is successfully deleted.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "ID of the story to be deleted",
-            "schema": {
-              "type": "string",
-              "example": "68cf0539207bbf808f009700"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content - Story successfully deleted"
-          },
-          "400": {
-            "$ref": "#/components/responses/400-4"
-          },
-          "401": {
-            "$ref": "#/components/responses/401-4"
-          },
-          "404": {
-            "$ref": "#/components/responses/404-2"
-          }
-        }
-      }
-    },
-    "/stories/story/{id}": {
-      "get": {
-        "tags": [
-          "Story"
-        ],
-        "summary": "Get a story by id",
-        "operationId": "getStoryById",
-        "description": "Retrieve a single story by author unique ID",
-        "security": [],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The unique ID of the story to be fetched",
-            "schema": {
-              "type": "string",
-              "example": "68cf3738147f34b70f224b30"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200-6"
-          },
-          "404": {
-            "$ref": "#/components/responses/404-2"
-          }
-        }
-      }
-    },
-    "/stories/authors": {
-      "get": {
-        "tags": [
-          "Authors"
-        ],
-        "summary": "Get list of authors",
-        "operationId": "getAuthors",
-        "description": "Fetch a list of authors with pagination and sorting options.",
-        "security": [],
-        "parameters": [
-          {
-            "in": "query",
-            "name": "page",
-            "schema": {
-              "type": "integer",
-              "example": 1
-            },
-            "description": "The page number for pagination."
-          },
-          {
-            "in": "query",
-            "name": "perPage",
-            "schema": {
-              "type": "integer",
-              "example": 10
-            },
-            "description": "The number of authors to return per page."
-          },
-          {
-            "in": "query",
-            "name": "sortBy",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "name"
-              ]
-            },
-            "description": "Field to sort authors by.",
-            "example": "name"
-          },
-          {
-            "in": "query",
-            "name": "sortOrder",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ]
-            },
-            "description": "The sorting order: ascending (asc) or descending (desc).",
-            "example": "asc"
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200-7"
-          },
-          "400": {
-            "description": "Invalid parameters in the request."
-          },
-          "404": {
-            "description": "No authors found."
-          }
-        }
-      }
-    },
-    "/stories/authors/{id}": {
-      "get": {
-        "tags": [
-          "Authors"
-        ],
-        "summary": "Get author by ID",
-        "operationId": "getAuthorById",
-        "description": "Fetch author details by their unique ID.",
-        "security": [],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "The unique ID of the author",
-              "example": "68cb1a7465ec501c0ff95094"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "$ref": "#/components/responses/200-8"
-          },
-          "404": {
-            "$ref": "#/components/responses/404-3"
           }
         }
       }
@@ -657,15 +546,44 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-9"
+            "$ref": "#/components/responses/200-8"
           },
           "404": {
-            "$ref": "#/components/responses/404-4"
+            "$ref": "#/components/responses/404-2"
           }
         }
       }
     },
-    "/stories/category-update/{id}": {
+    "/stories/story/{id}": {
+      "get": {
+        "tags": [
+          "Story"
+        ],
+        "summary": "Get a story by id",
+        "operationId": "getStoryById",
+        "description": "Retrieve a single story by author unique ID",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The unique ID of the story to be fetched",
+            "schema": {
+              "type": "string",
+              "example": "68cf3738147f34b70f224b30"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-9"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-3"
+          }
+        }
+      },
       "patch": {
         "tags": [
           "Stories"
@@ -694,7 +612,7 @@
           "required": true,
           "description": "The data to update the story",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -716,7 +634,7 @@
                   },
                   "img": {
                     "type": "string",
-                    "format": "uri",
+                    "format": "binary",
                     "example": "https://res.cloudinary.com/demo/image/upload/v169523/image.png"
                   }
                 }
@@ -726,7 +644,7 @@
         },
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-6"
+            "$ref": "#/components/responses/200-9"
           },
           "401": {
             "$ref": "#/components/responses/401-2"
@@ -735,7 +653,144 @@
             "$ref": "#/components/responses/403"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404-3"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Stories"
+        ],
+        "summary": "Delete a story by id",
+        "operationId": "deleteStory",
+        "description": "Delete a story by id. Returns 204 when the story is successfully deleted.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID of the story to be deleted",
+            "schema": {
+              "type": "string",
+              "example": "68cf0539207bbf808f009700"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content - Story successfully deleted"
+          },
+          "400": {
+            "$ref": "#/components/responses/400-5"
+          },
+          "401": {
+            "$ref": "#/components/responses/401-4"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-3"
+          }
+        }
+      }
+    },
+    "/stories/authors": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Get list of authors",
+        "operationId": "getAuthors",
+        "description": "Fetch a list of authors with pagination and sorting options.",
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "The page number for pagination."
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer",
+              "example": 10
+            },
+            "description": "The number of authors to return per page."
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name"
+              ]
+            },
+            "description": "Field to sort authors by.",
+            "example": "name"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            },
+            "description": "The sorting order: ascending (asc) or descending (desc).",
+            "example": "asc"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-10"
+          },
+          "400": {
+            "description": "Invalid parameters in the request."
+          },
+          "404": {
+            "description": "No authors found."
+          }
+        }
+      }
+    },
+    "/stories/authors/{id}": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Get author by ID",
+        "operationId": "getAuthorById",
+        "description": "Fetch author details by their unique ID.",
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique ID of the author",
+              "example": "68cb1a7465ec501c0ff95094"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200-11"
+          },
+          "404": {
+            "$ref": "#/components/responses/404-4"
           }
         }
       }
@@ -755,7 +810,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-10"
+            "$ref": "#/components/responses/200-12"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
@@ -828,7 +883,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-11"
+            "$ref": "#/components/responses/200-13"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
@@ -904,7 +959,7 @@
         ],
         "responses": {
           "200": {
-            "$ref": "#/components/responses/200-11"
+            "$ref": "#/components/responses/200-13"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
@@ -945,13 +1000,13 @@
             "$ref": "#/components/responses/201-3"
           },
           "400": {
-            "$ref": "#/components/responses/400-4"
+            "$ref": "#/components/responses/400-5"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404-3"
           }
         }
       },
@@ -984,13 +1039,13 @@
             "description": "No Content - Story successfully deleted"
           },
           "400": {
-            "$ref": "#/components/responses/400-4"
+            "$ref": "#/components/responses/400-5"
           },
           "401": {
             "$ref": "#/components/responses/401-4"
           },
           "404": {
-            "$ref": "#/components/responses/404-2"
+            "$ref": "#/components/responses/404-3"
           }
         }
       }
@@ -1260,6 +1315,26 @@
           }
         }
       },
+      "500": {
+        "description": "Error: Failed to retrieve the Google OAuth URL.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 500
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Failed to retrieve Google OAuth URL, please try again later."
+                }
+              }
+            }
+          }
+        }
+      },
       "200-2": {
         "description": "Successfully logged in user",
         "content": {
@@ -1508,6 +1583,88 @@
         }
       },
       "200-5": {
+        "description": "Successfully retrieved Google OAuth URL",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Successfully get Google OAuth url!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "example": "https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=1070117217803-1v8t1cjjrcnjmf97o4lrm0quq3eilbhb.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fgoogle-oauth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-6": {
+        "description": "Successfully logged in with Google",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Successfully logged in an user with Google!"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "example": "wI5q26m48ZIQMvc2EKqYIuQa9XxxszXDixi8nBJt"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "400-4": {
+        "description": "Bad Request: Invalid authorization code or failed authentication",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong"
+                },
+                "data": {
+                  "type": "string",
+                  "example": "invalid_grant"
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-7": {
         "description": "Successfully found stories",
         "content": {
           "application/json": {
@@ -1666,7 +1823,7 @@
           }
         }
       },
-      "400-4": {
+      "400-5": {
         "description": "Bad Request - Validation error or missing required fields",
         "content": {
           "application/json": {
@@ -1734,202 +1891,7 @@
           }
         }
       },
-      "404-2": {
-        "description": "Not Found - Story with the given ID does not exist",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 404
-                },
-                "message": {
-                  "type": "string",
-                  "example": "NotFoundError"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Story not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "200-6": {
-        "description": "Successfully found story!",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 200
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Successfully found story!"
-                },
-                "data": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/story"
-                }
-              }
-            }
-          }
-        }
-      },
-      "200-7": {
-        "description": "Successfully found authors!",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 200
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Successfully found authors!"
-                },
-                "data": {
-                  "type": "object",
-                  "required": [
-                    "data",
-                    "page",
-                    "perPage",
-                    "totalItems",
-                    "totalPages",
-                    "hasNextPage",
-                    "hasPreviousPage"
-                  ],
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/author"
-                      }
-                    },
-                    "page": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "perPage": {
-                      "type": "integer",
-                      "example": 10
-                    },
-                    "totalItems": {
-                      "type": "integer",
-                      "example": 6
-                    },
-                    "totalPages": {
-                      "type": "integer",
-                      "example": 1
-                    },
-                    "hasNextPage": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "hasPreviousPage": {
-                      "type": "boolean",
-                      "example": false
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "200-8": {
-        "description": "Successfully found author",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 200
-                },
-                "message": {
-                  "type": "string",
-                  "example": "Successfully found author!"
-                },
-                "data": {
-                  "type": "object",
-                  "$ref": "#/components/schemas/author"
-                }
-              }
-            }
-          }
-        }
-      },
-      "404-3": {
-        "description": "User not found",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
-              "properties": {
-                "status": {
-                  "type": "integer",
-                  "example": 404
-                },
-                "message": {
-                  "type": "string",
-                  "example": "NotFoundError"
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "******************** not valid id / User not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "200-9": {
         "description": "Successfully found stories!",
         "content": {
           "application/json": {
@@ -1998,7 +1960,7 @@
           }
         }
       },
-      "404-4": {
+      "404-2": {
         "description": "Not Found - The specified author ID is invalid",
         "content": {
           "application/json": {
@@ -2035,7 +1997,202 @@
           }
         }
       },
+      "200-9": {
+        "description": "Successfully found story!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Successfully found story!"
+                },
+                "data": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/story"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404-3": {
+        "description": "Not Found - Story with the given ID does not exist",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "NotFoundError"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Story not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "200-10": {
+        "description": "Successfully found authors!",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Successfully found authors!"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "page",
+                    "perPage",
+                    "totalItems",
+                    "totalPages",
+                    "hasNextPage",
+                    "hasPreviousPage"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/author"
+                      }
+                    },
+                    "page": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "example": 10
+                    },
+                    "totalItems": {
+                      "type": "integer",
+                      "example": 6
+                    },
+                    "totalPages": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "hasNextPage": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "hasPreviousPage": {
+                      "type": "boolean",
+                      "example": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-11": {
+        "description": "Successfully found author",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Successfully found author!"
+                },
+                "data": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/author"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404-4": {
+        "description": "User not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "NotFoundError"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "******************** not valid id / User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "200-12": {
         "description": "Successfully retrieved user information.",
         "content": {
           "application/json": {
@@ -2064,7 +2221,7 @@
           }
         }
       },
-      "200-11": {
+      "200-13": {
         "description": "Successfully retrieved saved stories.",
         "content": {
           "application/json": {
@@ -2272,13 +2429,14 @@
             "format": "date",
             "example": "2025-06-17"
           },
-          "ownerId": {
+          "owner": {
             "description": "Author of the story",
             "type": "object",
             "required": [
               "_id",
               "name",
-              "avatar"
+              "avatar",
+              "bio"
             ],
             "properties": {
               "_id": {
@@ -2296,6 +2454,11 @@
                 "type": "string",
                 "format": "uri",
                 "example": "https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png"
+              },
+              "bio": {
+                "description": "Author's info",
+                "type": "string",
+                "example": "Traveler, photographer, and storyteller."
               }
             }
           }
@@ -2305,7 +2468,8 @@
         "type": "object",
         "required": [
           "_id",
-          "name"
+          "name",
+          "bio"
         ],
         "properties": {
           "_id": {
@@ -2317,6 +2481,11 @@
             "type": "string",
             "description": "Name of the author",
             "example": "Tim Cook"
+          },
+          "bio": {
+            "description": "Author's info",
+            "type": "string",
+            "example": "Traveler, photographer, and storyteller."
           },
           "avatar": {
             "type": "string",
