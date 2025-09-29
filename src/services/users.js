@@ -110,14 +110,10 @@ export const getSavedArticles = async (
 
 export const updateUserAvatarService = async (userId, file) => {
   if (!userId) {
-    const err = new Error('Unauthorized');
-    err.status = 401;
-    throw err;
+    throw createHttpError(401, 'Unauthorized');
   }
   if (!file) {
-    const err = new Error('Avatar file is required');
-    err.status = 400;
-    throw err;
+    throw createHttpError(400, 'Avatar file is required');
   }
 
   const localPath = file.path;

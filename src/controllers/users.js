@@ -4,12 +4,12 @@ import {
   saveArticle,
   unsaveArticle,
   updateUserAvatarService,
+  updateUserById,
 } from '../services/users.js';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { getStoriesByAuthorId } from '../services/stories.js';
 import { STORIES_SORT_FIELDS } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
-import { updateUserById } from '../services/users.js';
 
 export const onboardingController = async (req, res) => {
   const userId = req.user_id;
