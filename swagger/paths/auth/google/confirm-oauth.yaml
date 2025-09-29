@@ -1,0 +1,22 @@
+tags:
+  - Auth
+summary: Confirm Google OAuth authorization
+operationId: confirmGoogleOAuth
+description: 'Confirm Google OAuth authorization using the code obtained from Google OAuth process.'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - code
+        properties:
+          code:
+            type: string
+            example: '4/0AVGzR1A4XCATv7Gcxl9HukHu1rJuRRm4oSMChpDWeH2e8R_tEAy3pM49T12AWzDk5tzUzA'
+responses:
+  '200':
+    $ref: '../../../components/responses/auth/google/confirm-oauth/200.yaml'
+  '400':
+    $ref: '../../../components/responses/auth/google/confirm-oauth/400.yaml'

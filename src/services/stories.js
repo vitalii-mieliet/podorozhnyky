@@ -125,10 +125,6 @@ export const getStoriesByAuthorId = async (
       .sort({ [sortBy]: sortOrder }),
   ]);
 
-  if (stories.length === 0) {
-    throw createHttpError(404, 'Stories not found');
-  }
-
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
   const modifiedStories = stories.map((story) => {

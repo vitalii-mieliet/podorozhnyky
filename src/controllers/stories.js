@@ -17,7 +17,6 @@ import {
 } from '../constants/validation.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilters } from '../utils/parseFiltes.js';
-import { StoriesCollection } from '../db/models/story.js';
 
 export const getStoriesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -64,10 +63,6 @@ export const getStoryById = async (req, res) => {
   const { id } = req.params;
 
   const data = await getStory(id);
-
-  if (!data) {
-    throw createHttpError(404, 'Story not found');
-  }
 
   res.json({
     status: 200,
