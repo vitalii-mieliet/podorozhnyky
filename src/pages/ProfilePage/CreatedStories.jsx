@@ -9,7 +9,7 @@ import {
 import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import { fetchCreatedStories } from '../../redux/user/operations';
-import Loader from '../../components/common/Loader/Loader';
+
 import AppMessage from '../../components/common/AppMessage/AppMessage';
 
 const CreatedStories = () => {
@@ -27,8 +27,6 @@ const CreatedStories = () => {
       dispatch(fetchCreatedStories());
     }
   }, [dispatch, user?._id, stories.length, meta.page]);
-
-  // if (isLoading) return <Loader />;
 
   if (error) return <AppMessage title={'Виникла помилка'} message={error} />;
   // перший екран скелетів
