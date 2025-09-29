@@ -26,8 +26,9 @@ const OurTravellers = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchOurTravellers({ page, perPage }));
-  }, [dispatch, page, perPage]);
+    if (!items.length && page === 1)
+      dispatch(fetchOurTravellers({ page, perPage }));
+  }, [dispatch, items.length, page, perPage]);
 
   const handleLoadMore = () => {
     dispatch(setPage(page + 1));
@@ -52,7 +53,7 @@ const OurTravellers = () => {
               type="button"
               size={isMobile ? 'sm' : 'md'}
               aria-label="Показати більше мандрівників"
-              disabled={isLoading} // добавь
+              disabled={isLoading}
             >
               {isLoading ? 'Завантаження...' : 'Переглянути всіх'}
             </AppButton>

@@ -33,8 +33,9 @@ const TravellersPage = () => {
   const perPage = isDesktop ? 12 : 8;
 
   useEffect(() => {
-    dispatch(fetchTravellers({ page: currentPage, perPage }));
-  }, [dispatch, currentPage, perPage]);
+    if (!travelers.length && page === 1)
+      dispatch(fetchTravellers({ page: currentPage, perPage }));
+  }, [dispatch, travelers.length, currentPage, perPage, page]);
 
   const handleLoadMore = () => {
     if (page < totalPages) {
