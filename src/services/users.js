@@ -64,24 +64,24 @@ export const getSavedArticles = async (
 ) => {
   const skip = (page - 1) * perPage;
 
-  const storiesCount = await UserCollection.findById(userId)
+  const user = await UserCollection.findById(userId)
     .select('savedStories')
-    .lean()
-    .then((user) => {
-      if (!user) throw createHttpError(404, 'User not found');
-      return user.savedStories.length;
-    });
+    .lean();
+  if (!user) throw createHttpError(404, 'User not found');
 
-  const user = await UserCollection.findById(userId).populate({
-    path: 'savedStories',
-    options: { skip, limit: perPage, sort: { [sortBy]: sortOrder } },
-    populate: {
-      path: 'ownerId',
-      select: 'name avatar bio',
-    },
-  });
+  const savedIds = user.savedStories || [];
 
-  const stories = user.savedStories;
+  const storiesQuery = StoriesCollection.find({ _id: { $in: savedIds } })
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
+    .limit(perPage)
+    .populate('ownerId', 'name avatar bio');
+
+  const [stories, storiesCount] = await Promise.all([
+    storiesQuery,
+    StoriesCollection.countDocuments({ _id: { $in: savedIds } }),
+  ]);
+
   const paginationData = calculatePaginationData(storiesCount, perPage, page);
 
   const modifiedStories = stories.map((story) => {
