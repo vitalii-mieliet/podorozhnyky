@@ -234,7 +234,11 @@ const AddStoryForm = () => {
 
                 {/* Кнопки */}
                 <div className={style.appButtonBox}>
-                  <AppButton type="submit" aria-label="Зберегти історію">
+                  <AppButton
+                    type="submit"
+                    aria-label="Зберегти історію"
+                    disabled={!dirty}
+                  >
                     Зберегти
                   </AppButton>
                   <AppButton
