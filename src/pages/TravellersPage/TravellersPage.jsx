@@ -40,7 +40,6 @@ const TravellersPage = () => {
     if (page < totalPages) {
       const nextPage = page + 1;
       setSearchParams({ page: nextPage });
-      dispatch(fetchTravellers({ page: nextPage, perPage }));
     }
   };
 

@@ -1,28 +1,28 @@
-import Container from '../../components/common/Container/Container';
-import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
-
-import s from './TravellerPage.module.css';
 import { useEffect, useMemo, useState } from 'react';
-import { fetchStories } from '../../redux/stories/operations';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
-import useBreakpoint from '../../hooks/useBreakpoint.js';
-import AppButton from '../../components/ui/AppButton/AppButton.jsx';
-import { useParams } from 'react-router-dom';
-import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo.jsx';
 import { fetchTravellerInfoById } from '../../redux/travelers/operations.js';
+import { fetchStoriesByAuthor } from '../../redux/authorStories/operation.js';
+import { selectAuthorStories } from '../../redux/authorStories/selectors.js';
+import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
+import MessageNoStories from '../../components/common/MessageNoStories/MessageNoStories';
+import useBreakpoint from '../../hooks/useBreakpoint.js';
+import TravellerInfo from '../../components/common/TravellerInfo/TravellerInfo.jsx';
+import Container from '../../components/common/Container/Container';
+import AppButton from '../../components/ui/AppButton/AppButton.jsx';
+import s from './TravellerPage.module.css';
 
 const TravellerPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState(null);
 
   const { travellerId: id } = useParams();
+  const page = searchParams.get('page') || 1;
 
   const travellerInfo = useSelector((state) => state.travelers.author || {});
-
-  const { items, hasNextPage } = useSelector((state) => state.stories);
+  const { items, hasNextPage, isLoading } = useSelector(selectAuthorStories);
   const { isDesktop } = useBreakpoint();
   const perPage = isDesktop ? 6 : 4;
 
@@ -30,7 +30,7 @@ const TravellerPage = () => {
     return items.slice(0, perPage * currentPage);
   }, [items, perPage, currentPage]);
 
-  // load traveller info
+  // load stories
   useEffect(() => {
     const loadUserInfo = async () => {
       try {
@@ -39,41 +39,21 @@ const TravellerPage = () => {
         setError(error.message || 'Не вдалося завантажити дані користувача');
       }
     };
-
     loadUserInfo();
-  }, [dispatch, id]);
 
-  // load stories
-  useEffect(() => {
-    const loadStories = async () => {
-      try {
-        if (items.length === 0) {
-          await dispatch(fetchStories({ page: 1, perPage })).unwrap();
-        }
-        if (items.length < perPage * currentPage && hasNextPage) {
-          await dispatch(fetchStories({ page: currentPage, perPage })).unwrap();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loadStories();
-    // eslint-disable-next-line
-  }, [dispatch, currentPage, perPage, hasNextPage]);
+    dispatch(fetchStoriesByAuthor({ params: { page, perPage }, id }));
+  }, [dispatch, id, page, perPage]);
 
   // handler
   const handleClick = async () => {
     if (!hasNextPage) return;
-    try {
-      setIsLoading(true);
-      const nextPage = currentPage + 1;
-      await dispatch(fetchStories({ page: nextPage, perPage })).unwrap();
-      setCurrentPage(nextPage);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('page', nextPage);
+    setSearchParams(newSearchParams);
   };
 
   //JSX
@@ -94,12 +74,14 @@ const TravellerPage = () => {
           {items.length > 0 ? (
             <TravellersStories stories={displayedItems} />
           ) : (
-            <div className={s.messageWrap}>
-              <MessageNoStories
-                buttonText="Назад до історій"
-                text="Цей користувач ще не публікував історій"
-              />
-            </div>
+            !isLoading && (
+              <div className={s.messageWrap}>
+                <MessageNoStories
+                  buttonText="Назад до історій"
+                  text="Цей користувач ще не публікував історій"
+                />
+              </div>
+            )
           )}
 
           {hasNextPage && (
