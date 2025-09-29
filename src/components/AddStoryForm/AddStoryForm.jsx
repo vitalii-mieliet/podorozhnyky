@@ -14,13 +14,17 @@ import AppSelect from '../ui/formInputs/AppSelect/AppSelect';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, createStory } from '../../redux/stories/operations';
-import { selectCategories } from '../../redux/stories/selectors';
+import {
+  selectCategories,
+  selectIsLoading,
+} from '../../redux/stories/selectors';
 import style from './AddStoryForm.module.css';
 import {
   showErrorToast,
   showSuccessToast,
 } from '../common/AppToastContainer/toastHelpers';
 import { validationAddStorySchema } from '../../validation/createStoryValidation';
+import Loader from '../common/Loader/Loader';
 
 const AddStoryForm = () => {
   const dispatch = useDispatch();
@@ -29,6 +33,7 @@ const AddStoryForm = () => {
   const [preview, setPreview] = useState(null);
 
   const categories = useSelector(selectCategories);
+  const isLoading = useSelector(selectIsLoading);
 
   const formattedCategories = categories.map((cat) => ({
     value: cat,
@@ -67,6 +72,7 @@ const AddStoryForm = () => {
 
       navigate(-1);
     } catch (error) {
+      console.log(error);
       showErrorToast('Помилка при створенні історії. Спробуйте ще раз!');
     } finally {
       setSubmitting(false);
@@ -89,6 +95,7 @@ const AddStoryForm = () => {
   return (
     <Section>
       <Container>
+        {isLoading && <Loader />}
         <div className={style.box}>
           <h1 className={style.tittle}>Створити нову історію</h1>
 

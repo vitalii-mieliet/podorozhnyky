@@ -12,7 +12,8 @@ const StoryDetails = ({ storyData }) => {
     return null;
   }
 
-  const { _id, img, category, title, article, owner, date } = storyData;
+  const { _id, img, category, title, article, fullText, owner, date } =
+    storyData;
 
   const isSaved =
     Array.isArray(savedStoriesIds) && savedStoriesIds.includes(_id);
@@ -62,6 +63,7 @@ const StoryDetails = ({ storyData }) => {
           className={styles.articleBody}
           dangerouslySetInnerHTML={{ __html: article }}
         />
+
         <aside
           className={styles.saveSection}
           aria-labelledby="зберегти-історію-заголовок"
@@ -80,6 +82,10 @@ const StoryDetails = ({ storyData }) => {
           </AppButton>
         </aside>
       </div>
+      <div
+        className={styles.fullText}
+        dangerouslySetInnerHTML={{ __html: fullText }}
+      />
     </article>
   );
 };

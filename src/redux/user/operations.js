@@ -83,3 +83,22 @@ export const unsaveStory = createAsyncThunk(
     }
   }
 );
+
+export const onboardingUser = createAsyncThunk(
+  'user/completeOnboarding',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.patch('/users/onboarding', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true, // якщо є JWT cookie
+      });
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to complete onboarding'
+      );
+    }
+  }
+);

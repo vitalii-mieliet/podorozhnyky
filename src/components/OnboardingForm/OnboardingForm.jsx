@@ -4,42 +4,64 @@ import {
   onboardingSchema,
   MAX_BIO,
 } from '../../validation/onboardingValidation';
-
 import styles from './OnboardingForm.module.css';
 import AppButton from '../ui/AppButton/AppButton';
 import AppTextArea from '../ui/formInputs/AppTextArea/AppTextArea';
 import placeholder from '../../assets/images/placeholder/Placeholder.webp';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { onboardingUser } from '../../redux/user/operations';
+import { useNavigate } from 'react-router-dom';
+import { selectUserProfile } from '../../redux/user/selectors';
 
 export default function OnboardingForm() {
-  const [preview, setPreview] = useState(null);
-  const fileRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const fileRef = useRef(null);
 
-  const initialValues = { bio: '', avatar: null };
+  // Беремо дані користувача з Redux
+  const user = useSelector(selectUserProfile);
+
+  console.log(user);
+
+  // preview потрібен тільки для нового фото
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => () => preview && URL.revokeObjectURL(preview), [preview]);
+
+  const onPick = (e, setFieldValue) => {
+    const file = e.currentTarget.files?.[0];
+    setFieldValue('avatarFile', file || null); // тільки реальні файли
+    if (preview) URL.revokeObjectURL(preview);
+    setPreview(file ? URL.createObjectURL(file) : null);
+  };
 
   const removePhoto = (setFieldValue) => {
     setFieldValue('avatarFile', null);
     if (fileRef.current) fileRef.current.value = '';
     if (preview) URL.revokeObjectURL(preview);
-    setPreview('');
-  };
-
-  const onPick = (e, setFieldValue) => {
-    const file = e.currentTarget.files?.[0];
-    setFieldValue('avatarFile', file || null);
-    if (preview) URL.revokeObjectURL(preview);
-    setPreview(file ? URL.createObjectURL(file) : '');
+    setPreview(null);
   };
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      dispatch(onboardingUser(values));
-      resetForm();
+      const formData = new FormData();
+      formData.append('bio', values.bio);
+      console.log('Submit', values);
+      if (values.avatarFile instanceof File) {
+        formData.append('avatar', values.avatarFile);
+      }
+
+      const updatedUser = await dispatch(onboardingUser(formData)).unwrap();
+
+      // Скидаємо прев’ю нового фото після сабміту
       setPreview(null);
+      resetForm({
+        values: {
+          bio: updatedUser.bio || '',
+          avatarFile: updatedUser.avatar || null,
+        },
+      });
+      navigate(-1);
     } catch (e) {
       console.error(e);
     } finally {
@@ -47,27 +69,28 @@ export default function OnboardingForm() {
     }
   };
 
+  const initialValues = { bio: user?.bio || '', avatarFile: user?.avatar };
+
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize
       validationSchema={onboardingSchema}
       onSubmit={handleSubmit}
     >
-      {({ values, setFieldValue, isValid, dirty }) => (
+      {({ values, setFieldValue, isSubmitting }) => (
         <Form className={styles.form}>
           {/* Аватар */}
           <div className={styles.row}>
             <label className={styles.label}>Аватар</label>
-
             <div className={styles.avatarLine}>
               <div className={styles.avatar}>
                 <img
-                  src={preview || placeholder}
+                  src={preview || user?.avatar || placeholder}
                   alt="Фото"
                   className={styles.avatar}
                 />
               </div>
-
               <div>
                 <input
                   ref={fileRef}
@@ -76,7 +99,6 @@ export default function OnboardingForm() {
                   accept="image/*"
                   onChange={(e) => onPick(e, setFieldValue)}
                 />
-
                 <AppButton
                   type="button"
                   size="sm"
@@ -114,10 +136,13 @@ export default function OnboardingForm() {
 
           {/* Дії */}
           <div className={styles.buttonBox}>
-            <AppButton type="submit" disabled={!dirty || !isValid}>
-              Зберегти
+            <AppButton
+              type="submit"
+              disabled={isSubmitting || (!values.bio && !values.avatarFile)}
+            >
+              {isSubmitting ? 'Завантаження...' : 'Зберегти'}
             </AppButton>
-            <AppButton variant="grey" type="button">
+            <AppButton href="/" variant="grey" type="button">
               Пропустити
             </AppButton>
           </div>
