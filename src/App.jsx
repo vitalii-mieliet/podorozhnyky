@@ -24,7 +24,8 @@ import SavedStories from './pages/ProfilePage/SavedStories';
 import CreatedStories from './pages/ProfilePage/CreatedStories';
 
 import { selectAuthState } from './redux/auth/selectors';
-import Loader from './components/common/Loader/Loader';
+import SplashScreen from './components/common/SplashScreen/SplashScreen';
+// import Loader from './components/common/Loader/Loader';
 
 function App() {
   const dispatch = useDispatch();
@@ -36,7 +37,8 @@ function App() {
     }
   }, [dispatch, isInitialized, isRefreshing]);
 
-  if (!isInitialized && isRefreshing) return <Loader />;
+  // if (!isInitialized && isRefreshing) return <Loader />;
+  if (!isInitialized && isRefreshing) return <SplashScreen />; // заміна на сплешскрін замість лоадера
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
