@@ -1,6 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom';
 import AppNavLink from '../../components/ui/AppNavLink/AppNavLink.jsx';
 import RegistrationForm from '../../components/RegistrationForm/RegistrationForm.jsx';
+import OAuthComponents from '../../components/OAuthComponents/OAuthComponents.jsx';
 import LoginForm from '../../components/LoginForm/LoginForm.jsx';
 import Section from '../../components/common/Section/Section.jsx';
 import Container from '../../components/common/Container/Container.jsx';
@@ -36,6 +37,7 @@ const AuthPage = () => {
             </li>
           </ul>
           {authType === 'register' ? <RegistrationForm /> : <LoginForm />}
+          <OAuthComponents />
         </div>
         <div className={css.copy}>
           <p>© 2025 Подорожники. Усі права захищені.</p>

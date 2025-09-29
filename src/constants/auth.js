@@ -6,4 +6,6 @@ export const AUTH_ENDPOINTS = {
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
   REFRESH: '/auth/refresh',
+  GET_GOOGLE_AUTH_URL: '/auth/google/get-oauth-url',
+  LOGIN_WITH_GOOGLE: '/auth/google/confirm-oauth',
 };
