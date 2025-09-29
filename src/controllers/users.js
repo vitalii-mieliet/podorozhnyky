@@ -14,7 +14,10 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 export const onboardingController = async (req, res) => {
   const photo = req.file;
   const userId = req.user._id;
-  const data = { ...req.body, onboardingCompleted: true };
+
+  const data = { onboardingCompleted: true };
+  if (req.body.bio) data.bio = req.body.bio;
+
   const updatedUser = await updateUserById(userId, data, photo);
 
   res.json({
