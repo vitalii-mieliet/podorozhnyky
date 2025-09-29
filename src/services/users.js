@@ -11,19 +11,28 @@ export const getUserInfoService = async (query) => {
 };
 
 export const updateUserById = async (userId, data, photo) => {
-  let photoUrl = null;
+  let photoUrl;
 
-  if (photo)
+  if (photo) {
     try {
       photoUrl = await saveFileToCloudinary(photo);
     } catch {
       throw createHttpError(500, 'Failed to upload photo to cloud storage');
     }
+  }
+
+  const updateData = { ...data };
+
+  if (photoUrl) {
+    updateData.avatar = photoUrl;
+  }
 
   const updatedUser = await UserCollection.findByIdAndUpdate(
     userId,
-    { ...data, avatar: photoUrl },
-    { new: true },
+    updateData,
+    {
+      new: true,
+    },
   );
 
   return updatedUser;
