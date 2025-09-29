@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { fetchStories } from '../../redux/stories/operations';
 
 import Container from '../../components/common/Container/Container';
@@ -10,15 +11,30 @@ import AppButton from '../../components/ui/AppButton/AppButton';
 import styles from './StoriesPage.module.css';
 import TravellersStories from '../../components/common/TravellersStories/TravellersStories';
 import useBreakpoint from '../../hooks/useBreakpoint';
-import { resetStories } from '../../redux/stories/slice';
+import { resetStories, setSearchParams } from '../../redux/stories/slice';
 import clsx from 'clsx';
 
 const StoriesPage = () => {
   const buttonRef = useRef(null);
   const dispatch = useDispatch();
+  const [searchParamsUrl, setSearchParamsUrl] = useSearchParams();
+  const [initialized, setInitialized] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [currentCategory, setCurrentCategory] = useState('');
 
+  const { items, hasNextPage, itemsStatus, error, isLoading, searchParams } =
+    useSelector((state) => state.stories);
+
+  const categoryMap = {
+    'Всі історії': 'All Stories',
+    Європа: 'Europe',
+    Азія: 'Asia',
+    Пустелі: 'Deserts',
+    Африка: 'Africa',
+    Україна: 'Ukraine',
+    Америка: 'America',
+  };
   const categories = [
     'Всі історії',
     'Європа',
@@ -29,9 +45,13 @@ const StoriesPage = () => {
     'Америка',
   ];
 
-  const { items, hasNextPage, itemsStatus, error, isLoading } = useSelector(
-    (state) => state.stories
-  );
+  const getTransliteratedCategory = (category) =>
+    categoryMap[category] || category;
+
+  const getOriginalCategory = (transliteratedCategory) =>
+    Object.keys(categoryMap).find(
+      (key) => categoryMap[key] === transliteratedCategory
+    ) || transliteratedCategory;
 
   const { isMobile, isTablet } = useBreakpoint();
   const perPage = isTablet ? 8 : 9;
@@ -40,61 +60,70 @@ const StoriesPage = () => {
     return items.slice(0, perPage * currentPage);
   }, [items, perPage, currentPage]);
 
+  // work with search params
+  useEffect(() => {
+    const page = searchParamsUrl.get('page') || 1;
+    const category = searchParamsUrl.get('category');
+    const originalCategory = category
+      ? getOriginalCategory(category)
+      : categories[0];
+    setCurrentCategory(originalCategory);
+    const searchCategory =
+      originalCategory === categories[0] ? null : originalCategory;
+
+    dispatch(setSearchParams({ page, category: searchCategory }));
+    setInitialized(true);
+    // eslint-disable-next-line
+  }, [dispatch, searchParamsUrl]);
+
   // load stories
   useEffect(() => {
-    const loadStories = async () => {
-      try {
-        if (items.length === 0) {
-          await dispatch(fetchStories({ page: 1, perPage })).unwrap();
-        }
-        if (items.length < perPage * currentPage && hasNextPage) {
-          await dispatch(fetchStories({ page: currentPage, perPage })).unwrap();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loadStories();
-    // eslint-disable-next-line
-  }, [dispatch, currentPage, perPage, hasNextPage]);
+    const buttonPosition = buttonRef.current?.offsetTop || window.scrollY;
+    if (initialized)
+      dispatch(
+        fetchStories({
+          page: searchParams.page,
+          perPage,
+          category: searchParams.category,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          window.scrollTo({ top: buttonPosition, behavior: 'smooth' });
+        });
+  }, [
+    dispatch,
+    searchParams.page,
+    searchParams.category,
+    perPage,
+    initialized,
+  ]);
 
   // handlers
   const handleShowMore = async () => {
     if (!hasNextPage) return;
 
-    const buttonPosition = buttonRef.current?.offsetTop || window.scrollY;
     const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
 
-    try {
-      if (currentCategory === categories[0] || currentCategory === '') {
-        await dispatch(fetchStories({ page: nextPage, perPage })).unwrap();
-      } else {
-        await dispatch(
-          fetchStories({ page: nextPage, perPage, category: currentCategory })
-        ).unwrap();
-      }
-      setCurrentPage(nextPage);
-      window.scrollTo({ top: buttonPosition, behavior: 'auto' });
-    } catch (error) {
-      console.log(error);
-    }
+    const newSearchParams = new URLSearchParams(searchParamsUrl);
+    newSearchParams.set('page', nextPage);
+    setSearchParamsUrl(newSearchParams);
   };
 
+  //filters
   const handleCategoryChange = async (category) => {
-    try {
-      dispatch(resetStories());
-      setCurrentCategory(category);
+    if (category === currentCategory) return;
 
-      if (category !== categories[0]) {
-        return await dispatch(
-          fetchStories({ page: 1, perPage, category })
-        ).unwrap();
-      } else {
-        await dispatch(fetchStories({ page: 1, perPage })).unwrap();
-      }
-    } catch (error) {
-      console.log(error);
+    dispatch(resetStories());
+    setCurrentPage(1);
+    setCurrentCategory(category);
+
+    const newSearchParams = new URLSearchParams();
+    if (category !== categories[0]) {
+      newSearchParams.set('category', getTransliteratedCategory(category));
     }
+    setSearchParamsUrl(newSearchParams);
   };
 
   // JSX

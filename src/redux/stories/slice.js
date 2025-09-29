@@ -17,6 +17,7 @@ const initialState = {
   totalPages: null,
   isLoading: false,
   totalItems: null,
+  searchParams: {},
 
   author: {
     name: null,
@@ -35,9 +36,11 @@ const storiesSlice = createSlice({
       state.currentStory = null;
       state.currentStoryStatus = 'idle';
     },
-
     resetStories: (state) => {
       state.items = [];
+    },
+    setSearchParams: (state, action) => {
+      state.searchParams = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -104,6 +107,10 @@ const storiesSlice = createSlice({
   },
 });
 
-export const { applyFilters, resetCurrentStory, resetStories } =
-  storiesSlice.actions;
+export const {
+  applyFilters,
+  resetCurrentStory,
+  resetStories,
+  setSearchParams,
+} = storiesSlice.actions;
 export default storiesSlice.reducer;
