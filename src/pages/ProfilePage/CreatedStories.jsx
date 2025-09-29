@@ -27,11 +27,27 @@ const CreatedStories = () => {
     }
   }, [dispatch, user?._id, stories.length, meta.page]);
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
 
   if (error) return <AppMessage title={'Виникла помилка'} message={error} />;
+  // перший екран скелетів
+  if (isLoading) {
+    return (
+      <TravellersStories
+        stories={[]}
+        isLoading={true}
+        perPage={meta.perPage || 6}
+      />
+    );
+  }
   if (meta.totalItems > 0) {
-    return <TravellersStories stories={stories} />;
+    return (
+      <TravellersStories
+        stories={stories}
+        isLoading={isLoading}
+        perPage={stories.length || 6}
+      />
+    );
   }
 
   return (
