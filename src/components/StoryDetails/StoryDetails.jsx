@@ -5,8 +5,8 @@ import AppButton from '../../components/ui/AppButton/AppButton';
 import styles from './StoryDetails.module.css';
 import clsx from 'clsx';
 import Section from '../common/Section/Section';
-import Container from '../common/Container/Container';
 import { selectIsLoggedIn } from '../../redux/auth/selectors';
+import placeholder from '../../assets/images/placeholder/Placeholder.webp';
 
 const StoryDetails = ({ storyData }) => {
   const dispatch = useDispatch();
@@ -60,7 +60,11 @@ const StoryDetails = ({ storyData }) => {
             </div>
           </div>
         </header>
-        <img src={img} alt={title} className={styles.mainImage} />
+        <img
+          src={img || placeholder}
+          alt={title}
+          className={styles.mainImage}
+        />
         <div className={styles.mainContent}>
           <div
             className={styles.articleBody}
