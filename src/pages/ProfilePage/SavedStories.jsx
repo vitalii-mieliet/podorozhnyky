@@ -19,7 +19,8 @@ const SavedStories = () => {
   const error = useSelector(selectStoriesError);
   const user = useSelector(selectUserProfile);
 
-  const noStoriesText = 'У вас ще немає збережених історій';
+  const noStoriesText =
+    'У вас ще немає збережених історій , мершій збережіть свою першу історію!';
 
   useEffect(() => {
     if (user?._id && !stories.length && meta.page === 1) {
@@ -53,7 +54,7 @@ const SavedStories = () => {
   return (
     <MessageNoStories
       text={noStoriesText}
-      buttonText="Назад до історій"
+      buttonText="До історій"
       route="/stories"
     />
   );

@@ -19,7 +19,8 @@ const CreatedStories = () => {
   const error = useSelector(selectStoriesError);
   const user = useSelector(selectUserProfile);
 
-  const noStoriesText = 'Ви ще не створювали жодної історії';
+  const noStoriesText =
+    'Ви ще нічого не публікували , поділіться своєю першою історією ';
 
   useEffect(() => {
     if (user?._id && !stories.length && meta.page === 1) {
@@ -53,8 +54,8 @@ const CreatedStories = () => {
   return (
     <MessageNoStories
       text={noStoriesText}
-      buttonText="Назад до історій"
-      route="/stories"
+      buttonText="Створити історію"
+      route="/new-story"
     />
   );
 };
