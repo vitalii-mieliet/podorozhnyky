@@ -49,9 +49,10 @@ export const addStoryController = async (req, res) => {
 };
 
 export const deleteStoryByIdController = async (req, res) => {
-  const { id } = req.params;
+  const { id: _id } = req.params;
+  const ownerId = req.user._id;
 
-  const data = await deleteStoryById(id);
+  const data = await deleteStoryById({ _id, ownerId });
   if (!data) {
     throw createHttpError(404, 'Story not found');
   }
