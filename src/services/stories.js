@@ -58,7 +58,7 @@ export const addStory = async (payload, photo) => {
 };
 
 export const deleteStoryById = (query) =>
-  StoriesCollection.findByIdAndDelete(query);
+  StoriesCollection.findOneAndDelete(query);
 
 export const getStory = async (id) => {
   const story = await StoriesCollection.findById(id)

@@ -7,13 +7,13 @@ const storage = multer.diskStorage({
     cb(null, TEMP_UPLOAD_DIR);
   },
   filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, `${uniqueSuffix}_${file.originalname}`);
+    const uniquePreffix = Date.now();
+    cb(null, `${uniquePreffix}_${file.originalname}`);
   },
 });
 
 const limits = {
-  fileSize: 1024 * 1024 * 20,
+  fileSize: 1024 * 1024 * 15,
 };
 
 const fileFilter = (req, file, cb) => {
@@ -47,5 +47,5 @@ const avatarFileFilter = (_req, file, cb) => {
 export const avatarUpload = multer({
   storage,
   fileFilter: avatarFileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 15 * 1024 * 1024 },
 });
