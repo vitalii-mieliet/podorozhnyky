@@ -8,6 +8,7 @@
 
 .editButton {
   height: 48px;
+  margin-bottom: 40px;
 }
 
 @media (min-width: 768px) {
@@ -18,5 +19,9 @@
   }
   .travellerInfo {
     margin-bottom: 48px; /* планшет/десктоп */
+  }
+
+  .editButton {
+    margin-top: 32px;
   }
 }
