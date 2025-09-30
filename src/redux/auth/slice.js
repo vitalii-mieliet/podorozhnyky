@@ -5,6 +5,8 @@ import {
   refreshUser,
   getGoogleAuthUrl,
   loginWithGoogleCode,
+  sendResetEmail,
+  resetPassword,
 } from './operations';
 import { fetchCurrentUser } from '../user/operations';
 
@@ -15,6 +17,9 @@ const initialState = {
   isLoggedIn: false,
   error: null,
   url: null,
+  emailSent: false,
+  cooldown: 0,
+  resetSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -24,6 +29,12 @@ const authSlice = createSlice({
     logout: () => initialState,
     clearError: (state) => {
       state.error = null;
+    },
+    resetCooldown: (state) => {
+      state.cooldown = 30;
+    },
+    tickCooldown: (state) => {
+      if (state.cooldown > 0) state.cooldown -= 1;
     },
   },
   extraReducers: (builder) => {
@@ -116,9 +127,39 @@ const authSlice = createSlice({
       .addCase(loginWithGoogleCode.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+
+      // --- Send Reset Password Email ---
+      .addCase(sendResetEmail.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(sendResetEmail.fulfilled, (state) => {
+        state.status = 'success';
+        state.emailSent = true;
+        state.cooldown = 30;
+      })
+      .addCase(sendResetEmail.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+
+      // --- Reset Password ---
+      .addCase(resetPassword.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.status = 'success';
+        state.resetSuccess = true;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, resetCooldown, tickCooldown } =
+  authSlice.actions;
 export default authSlice.reducer;

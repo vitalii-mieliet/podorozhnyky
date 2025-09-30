@@ -93,3 +93,31 @@ export const loginWithGoogleCode = createAsyncThunk(
     }
   }
 );
+
+// SEND RESET PASSWORD EMAIL
+export const sendResetEmail = createAsyncThunk(
+  'auth/sendResetEmail',
+  async (email, { rejectWithValue }) => {
+    try {
+      await api.post(AUTH_ENDPOINTS.SEND_RESET_EMAIL, email);
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Send Reset Email Failed'
+      );
+    }
+  }
+);
+
+// RESET PASSWORD
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      await api.post(AUTH_ENDPOINTS.RESET_PASSWORD, credentials);
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || 'Reset Pawword Failed'
+      );
+    }
+  }
+);

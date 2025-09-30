@@ -30,6 +30,7 @@ const RegistrationForm = () => {
 
       <AuthForm
         {...RegisterFormConfig}
+        isLogin={false}
         validationSchema={registerFormSchema}
         onSubmitAction={handleRegister}
       />

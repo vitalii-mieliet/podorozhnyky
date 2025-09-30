@@ -29,6 +29,7 @@ const LoginForm = () => {
 
       <AuthForm
         {...LoginFormConfig}
+        isLogin={true}
         validationSchema={loginFormSchema}
         onSubmitAction={handleRegister}
       />

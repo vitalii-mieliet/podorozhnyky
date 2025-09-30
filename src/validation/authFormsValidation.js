@@ -27,3 +27,10 @@ export const registerFormSchema = Yup.object({
     .oneOf([Yup.ref('password'), null], 'Паролі повинні збігатися')
     .required('Підтвердження пароля обов’язкове'),
 });
+
+export const requestResetEmailSchema = Yup.object({
+  email: Yup.string()
+    .max(64, 'Email має містити максимум 64 символи')
+    .email('Введіть коректну електронну адресу')
+    .required("Email обов'язковий"),
+});
