@@ -80,7 +80,10 @@ const AuthForm = ({
               )
             )}
             {isLogin && (
-              <AppNavLink to="/auth/sent-reset-email" label="Забув пароль" />
+              <AppNavLink
+                to="/auth/reset/sent-reset-email"
+                label="Забув пароль"
+              />
             )}
 
             <AppButton

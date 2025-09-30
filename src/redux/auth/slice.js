@@ -18,7 +18,6 @@ const initialState = {
   error: null,
   url: null,
   emailSent: false,
-  cooldown: 0,
   resetSuccess: false,
 };
 
@@ -29,12 +28,6 @@ const authSlice = createSlice({
     logout: () => initialState,
     clearError: (state) => {
       state.error = null;
-    },
-    resetCooldown: (state) => {
-      state.cooldown = 30;
-    },
-    tickCooldown: (state) => {
-      if (state.cooldown > 0) state.cooldown -= 1;
     },
   },
   extraReducers: (builder) => {
@@ -64,6 +57,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = false;
         state.error = action.payload;
       })
 
@@ -131,35 +125,39 @@ const authSlice = createSlice({
 
       // --- Send Reset Password Email ---
       .addCase(sendResetEmail.pending, (state) => {
-        state.status = 'loading';
+        state.isLoading = true;
         state.error = null;
+        state.emailSent = false;
       })
       .addCase(sendResetEmail.fulfilled, (state) => {
-        state.status = 'success';
+        state.isLoading = false;
+        state.error = null;
         state.emailSent = true;
-        state.cooldown = 30;
       })
       .addCase(sendResetEmail.rejected, (state, action) => {
-        state.status = 'failed';
+        state.isLoading = false;
         state.error = action.payload;
+        state.emailSent = false;
       })
 
       // --- Reset Password ---
       .addCase(resetPassword.pending, (state) => {
-        state.status = 'loading';
+        state.isLoading = true;
         state.error = null;
+        state.resetSuccess = false;
       })
       .addCase(resetPassword.fulfilled, (state) => {
-        state.status = 'success';
+        state.isLoading = false;
+        state.error = null;
         state.resetSuccess = true;
       })
       .addCase(resetPassword.rejected, (state, action) => {
-        state.status = 'failed';
+        state.isLoading = false;
         state.error = action.payload;
+        state.resetSuccess = false;
       });
   },
 });
 
-export const { logout, clearError, resetCooldown, tickCooldown } =
-  authSlice.actions;
+export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;

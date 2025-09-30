@@ -53,7 +53,7 @@ function App() {
           <Route path="travellers" element={<TravellersPage />} />
           <Route path="travellers/:travellerId" element={<TravellerPage />} />
           <Route path="google-oauth" element={<GoogleOAuthPage />} />
-          <Route path="auth/sent-reset-email" element={<ResetPasswordPage />} />
+          <Route path="auth/reset/:resetType" element={<ResetPasswordPage />} />
         </Route>
 
         {/* Restricted route for auth */}
