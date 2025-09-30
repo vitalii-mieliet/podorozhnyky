@@ -1,5 +1,6 @@
 const allowedOrigins = [
   'http://localhost:5173',
+  'https://plantains-app.vercel.app/',
   'https://plantains-app-dev.vercel.app', // dev
   'https://plantains-app-client.vercel.app', //product
 ];
