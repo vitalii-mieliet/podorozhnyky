@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, registerUser, refreshUser } from './operations';
+import {
+  loginUser,
+  registerUser,
+  refreshUser,
+  getGoogleAuthUrl,
+  loginWithGoogleCode,
+} from './operations';
 import { fetchCurrentUser } from '../user/operations';
 
 const initialState = {
@@ -8,6 +14,7 @@ const initialState = {
   isRefreshing: false,
   isLoggedIn: false,
   error: null,
+  url: null,
 };
 
 const authSlice = createSlice({
@@ -77,6 +84,36 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // --- Get Google OAuth URL ---
+      .addCase(getGoogleAuthUrl.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getGoogleAuthUrl.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.url = action.payload.url;
+      })
+      .addCase(getGoogleAuthUrl.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // --- Login with Google ---
+      .addCase(loginWithGoogleCode.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginWithGoogleCode.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isLoggedIn = true;
+        state.error = null;
+      })
+      .addCase(loginWithGoogleCode.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

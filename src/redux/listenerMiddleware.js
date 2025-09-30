@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { loginUser, refreshUser } from './auth/operations';
+import { loginUser, loginWithGoogleCode, refreshUser } from './auth/operations';
 import { fetchCurrentUser } from './user/operations';
 
 const listenerMiddleware = createListenerMiddleware();
@@ -16,6 +16,13 @@ startAppListening({
 
 startAppListening({
   actionCreator: refreshUser.fulfilled,
+  effect: async (_, listenerApi) => {
+    await listenerApi.dispatch(fetchCurrentUser());
+  },
+});
+
+startAppListening({
+  actionCreator: loginWithGoogleCode.fulfilled,
   effect: async (_, listenerApi) => {
     await listenerApi.dispatch(fetchCurrentUser());
   },

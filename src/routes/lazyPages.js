@@ -25,6 +25,9 @@ export const TravellerPage = withSuspense(
 export const TravellersPage = withSuspense(
   lazy(() => import('../pages/TravellersPage/TravellersPage'))
 );
+export const GoogleOAuthPage = withSuspense(
+  lazy(() => import('../pages/GoogleOAuthPage/GoogleOAuthPage'))
+);
 export const NotFoundPage = withSuspense(
   lazy(() => import('../pages/NotFoundPage/NotFoundPage'))
 );

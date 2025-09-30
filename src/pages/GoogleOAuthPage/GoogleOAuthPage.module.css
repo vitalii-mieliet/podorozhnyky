@@ -1,0 +1,17 @@
+section {
+  margin-top: 73px;
+  padding-top: 32px;
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-scheme-1-text);
+}
+
+@media screen and (min-width: 1440px) {
+  .title {
+    font-size: 20px;
+  }
+}

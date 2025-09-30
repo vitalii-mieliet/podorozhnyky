@@ -13,6 +13,7 @@ import {
   StoryPage,
   TravellerPage,
   TravellersPage,
+  GoogleOAuthPage,
   NotFoundPage,
   OnboardingPage,
 } from './routes/lazyPages';
@@ -50,6 +51,7 @@ function App() {
           <Route path="stories/:storyId" element={<StoryPage />} />
           <Route path="travellers" element={<TravellersPage />} />
           <Route path="travellers/:travellerId" element={<TravellerPage />} />
+          <Route path="google-oauth" element={<GoogleOAuthPage />} />
         </Route>
 
         {/* Restricted route for auth */}
