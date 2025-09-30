@@ -44,10 +44,13 @@ const AddStoryForm = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
+  const maxLength = 150;
+
   const initialValues = {
     title: '',
     category: '',
     article: '',
+    fullText: '',
     img: null,
   };
 
@@ -100,10 +103,8 @@ const AddStoryForm = () => {
             initialValues={initialValues}
             validationSchema={validationAddStorySchema}
             onSubmit={handleSubmit}
-            validateOnChange={false}
-            validateOnBlur={false}
           >
-            {({ setFieldValue, isValid, dirty, resetForm }) => (
+            {({ values, setFieldValue, isValid, dirty, resetForm }) => (
               <Form className={style.formBox}>
                 <div className={style.formBoxDesktop}>
                   {/* Завантаження фото */}
@@ -148,14 +149,16 @@ const AddStoryForm = () => {
                     <label className={style.label} htmlFor="title">
                       Заголовок
                     </label>
-                    <FormikTextInput
-                      name="title"
+                    <Field
+                      as={AppTextInput}
                       id="title"
+                      name="title"
                       placeholder="Введіть заголовок історії"
                       aria-label="Заголовок статті"
                     />
                   </div>
 
+                  {/* Категорія */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="category">
                       Категорія
@@ -189,12 +192,13 @@ const AddStoryForm = () => {
 
                   {/* Повний текст історії */}
                   <div className={style.inputBox}>
-                    <label className={style.label} htmlFor="article">
+                    <label className={style.label} htmlFor="fullText">
                       Текст історії
                     </label>
-                    <FormikTextArea
-                      name="article"
-                      id="article"
+                    <Field
+                      as={AppTextArea}
+                      id="fullText"
+                      name="fullText"
                       placeholder="Ваша історія тут"
                       aria-label="Повний текст статті"
                     />
@@ -205,8 +209,8 @@ const AddStoryForm = () => {
                 <div className={style.appButtonBox}>
                   <AppButton
                     type="submit"
+                    disabled={!dirty || !isValid}
                     aria-label="Зберегти історію"
-                    disabled={!dirty}
                   >
                     Зберегти
                   </AppButton>
