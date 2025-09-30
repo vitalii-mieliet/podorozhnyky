@@ -168,6 +168,10 @@
   .linksWrap .white {
     color: var(--color-scheme-1-background);
   }
+
+  .linksWrap .white:hover span {
+    border: solid 1px var(--color-scheme-1-background);
+  }
 }
 
 /* #endregion Desktop */
