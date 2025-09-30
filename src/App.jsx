@@ -15,7 +15,7 @@ import {
   TravellersPage,
   GoogleOAuthPage,
   NotFoundPage,
-  RequestResetEmailPage,
+  ResetPasswordPage,
   OnboardingPage,
 } from './routes/lazyPages';
 import RestrictedRoute from './routes/RestrictedRoute';
@@ -53,10 +53,7 @@ function App() {
           <Route path="travellers" element={<TravellersPage />} />
           <Route path="travellers/:travellerId" element={<TravellerPage />} />
           <Route path="google-oauth" element={<GoogleOAuthPage />} />
-          <Route
-            path="auth/sent-reset-email"
-            element={<RequestResetEmailPage />}
-          />
+          <Route path="auth/sent-reset-email" element={<ResetPasswordPage />} />
         </Route>
 
         {/* Restricted route for auth */}

@@ -9,7 +9,7 @@ import { tickCooldown } from '../../redux/auth/slice';
 import { selectAuthState } from '../../redux/auth/selectors';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 
-const RequestResetEmailPage = () => {
+const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const { emailSent, cooldown, error } = useSelector(selectAuthState);
 
@@ -73,4 +73,4 @@ const RequestResetEmailPage = () => {
   );
 };
 
-export default RequestResetEmailPage;
+export default ResetPasswordPage;

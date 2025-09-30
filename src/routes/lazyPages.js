@@ -31,8 +31,8 @@ export const GoogleOAuthPage = withSuspense(
 export const NotFoundPage = withSuspense(
   lazy(() => import('../pages/NotFoundPage/NotFoundPage'))
 );
-export const RequestResetEmailPage = withSuspense(
-  lazy(() => import('../pages/RequestResetEmailPage/RequestResetEmailPage'))
+export const ResetPasswordPage = withSuspense(
+  lazy(() => import('../pages/ResetPasswordPage/ResetPasswordPage'))
 );
 export const OnboardingPage = withSuspense(
   lazy(() => import('../pages/OnboardingPage/OnboardingPage'))
