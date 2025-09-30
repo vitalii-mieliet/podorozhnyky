@@ -117,28 +117,21 @@ export const getSavedArticles = async (
   return { data: modifiedStories, ...paginationData };
 };
 
-export const updateUserAvatarService = async (userId, file) => {
+export const updateUserAvatarService = async (userId, photo) => {
+  let photoUrl = null;
+
   if (!userId) {
     throw createHttpError(401, 'Unauthorized');
   }
-  if (!file) {
-    throw createHttpError(400, 'Avatar file is required');
-  }
 
-  const localPath = file.path;
+  if (photo)
+    try {
+      photoUrl = await saveFileToCloudinary(photo);
+    } catch {
+      throw createHttpError(500, 'Failed to upload photo to cloud storage');
+    }
 
-  // Завантажуємо на Cloudinary
-  const { secure_url } = await saveFileToCloudinary(localPath, {
-    folder: 'avatars',
-    // за бажанням:
-    // transformation: [{ width: 320, height: 320, crop: 'fill', gravity: 'face' }],
-  });
-
-  // Прибираємо тимчасовий файл
-  await fs.unlink(localPath).catch(() => {});
-
-  // Оновлюємо юзера по полю "avatar" у схемі
-  const updatedUser = await updateUserById(userId, { avatar: secure_url });
+  const updatedUser = await updateUserById(userId, { avatar: photoUrl });
 
   return updatedUser;
 };

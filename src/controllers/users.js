@@ -112,19 +112,14 @@ export const getUserCreatedStoriesController = async (req, res) => {
   });
 };
 
-export const updateAvatarController = async (req, res, next) => {
-  try {
-    // так як в різних місцях зустрічаються req.user та req.user_id
-    const userId = req.user?._id ?? req.user_id;
+export const updateAvatarController = async (req, res) => {
+  const userId = req.user._id;
 
-    const updatedUser = await updateUserAvatarService(userId, req.file);
+  const updatedUser = await updateUserAvatarService(userId, req.file);
 
-    res.json({
-      status: 200,
-      message: 'Avatar updated!',
-      user: updatedUser,
-    });
-  } catch (err) {
-    next(err);
-  }
+  res.json({
+    status: 200,
+    message: 'Avatar updated!',
+    user: updatedUser,
+  });
 };
