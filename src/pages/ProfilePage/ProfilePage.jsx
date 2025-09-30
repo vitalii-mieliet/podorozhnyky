@@ -8,6 +8,7 @@ import Container from '../../components/common/Container/Container';
 import { fetchCurrentUser } from '../../redux/user/operations';
 import { selectUserProfile, selectUserError } from '../../redux/user/selectors';
 import css from './ProfilePage.module.css';
+import AppButton from '../../components/ui/AppButton/AppButton';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -43,13 +44,18 @@ const ProfilePage = () => {
       <Container>
         <TravellerInfo user={user} className={css.travellerInfo} />
 
-        <AppTabs
-          type="link"
-          options={tabsOptions}
-          value={activeTab}
-          variant="contained"
-          className={css.tabs}
-        />
+        <div className={css.boxTab}>
+          <AppTabs
+            type="link"
+            options={tabsOptions}
+            value={activeTab}
+            variant="contained"
+            className={css.tabs}
+          />
+          <AppButton href="/onboarding" className={css.editButton}>
+            Редагувати профіль
+          </AppButton>
+        </div>
         <Outlet />
       </Container>
     </Section>

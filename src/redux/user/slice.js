@@ -5,6 +5,7 @@ import {
   fetchCurrentUser,
   saveStory,
   unsaveStory,
+  onboardingUser,
 } from './operations';
 
 const initialProfile = {
@@ -96,6 +97,18 @@ const userSlice = createSlice({
         state.userData.savedStories = state.userData.savedStories.filter(
           (id) => id !== action.payload
         );
+      })
+      .addCase(onboardingUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(onboardingUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(onboardingUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

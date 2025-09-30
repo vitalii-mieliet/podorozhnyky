@@ -6,7 +6,16 @@
   margin-bottom: 32px; /* мобилка по умолчанию */
 }
 
+.editButton {
+  height: 48px;
+}
+
 @media (min-width: 768px) {
+  .boxTab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .travellerInfo {
     margin-bottom: 48px; /* планшет/десктоп */
   }

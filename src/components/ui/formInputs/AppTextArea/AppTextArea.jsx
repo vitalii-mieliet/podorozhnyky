@@ -1,51 +1,53 @@
+import { useField } from 'formik';
 import clsx from 'clsx';
 import styles from './AppTextArea.module.css';
 
 /**
- * Універсальний компонент текстової області (`<textarea>`),
- * з підтримкою кастомних стилів для обгортки, поля вводу та повідомлення про помилку.
+ * Компонент текстової області (`<textarea>`) з інтеграцією з Formik.
+ *
+ * Автоматично працює з валідацією Formik:
+ * - Показує помилку, якщо поле було відвідане (`touched`) та є помилка (`error`).
+ * - Додає стилі для помилок.
  *
  * @component
  *
  * @param {Object} props - Властивості компонента.
- * @param {string} [props.placeholder] - Плейсхолдер для текстового поля.
- * @param {string} [props.value] - Поточне значення текстового поля.
- * @param {boolean} [props.error=false] - Чи є помилка (впливає на стилі).
- * @param {string} [props.errorMessage] - Текст повідомлення про помилку, якщо `error=true`.
+ * @param {string} props.name - Ім'я поля для Formik (обов'язкове).
+ * @param {string} [props.label] - Текст для `<label>` (необов'язковий).
+ * @param {string} [props.placeholder] - Плейсхолдер для `<textarea>`.
  * @param {string} [props.className] - Додаткові класи для обгортки (`div`).
  * @param {string} [props.inputClassName] - Додаткові класи для `<textarea>`.
  * @param {string} [props.errorClassName] - Додаткові класи для повідомлення про помилку (`<span>`).
- * @param {function} [props.onChange] - Обробник події зміни значення.
  * @param {Object} [props.props] - Інші валідні атрибути для `<textarea>`.
  *
  * @example
- * <AppTextArea
- *   placeholder="Введіть текст"
- *   value={text}
- *   error={!!error}
- *   errorMessage="Це поле є обов'язковим"
- *   className="myWrapper"
- *   inputClassName="myTextarea"
- *   errorClassName="myError"
- *   onChange={(e) => setText(e.target.value)}
- * />
+ * <Formik
+ *   initialValues={{ description: '' }}
+ *   onSubmit={(values) => console.log(values)}
+ * >
+ *   <Form>
+ *     <AppTextArea
+ *       name="description"
+ *       label="Опис"
+ *       placeholder="Введіть опис історії"
+ *     />
+ *   </Form>
+ * </Formik>
  */
 const AppTextArea = ({
-  placeholder,
-  value,
-  error,
-  errorMessage,
-  className, // для wrapper
+  label,
+  className,
   inputClassName,
   errorClassName,
-  onChange,
   ...props
 }) => {
+  const [field, meta] = useField(props);
+
   const wrapperClasses = clsx(styles.textareaWrapper, className);
 
   const textareaClasses = clsx(
     styles.textarea,
-    { [styles.textareaError]: error },
+    { [styles.textareaError]: meta.touched && meta.error },
     inputClassName
   );
 
@@ -53,15 +55,20 @@ const AppTextArea = ({
 
   return (
     <div className={wrapperClasses}>
+      {label && (
+        <label htmlFor={props.id || props.name} className={styles.label}>
+          {label}
+        </label>
+      )}
+
       <textarea
         className={textareaClasses}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        {...props}
+        {...field} // підключає value, onChange, onBlur
+        {...props} // інші пропси, як placeholder, id, aria-label
       />
-      {error && errorMessage && (
-        <span className={errorMessageClasses}>{errorMessage}</span>
+
+      {meta.touched && meta.error && (
+        <span className={errorMessageClasses}>{meta.error}</span>
       )}
     </div>
   );

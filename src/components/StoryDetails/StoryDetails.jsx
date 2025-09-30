@@ -22,7 +22,8 @@ const StoryDetails = ({ storyData }) => {
     return null;
   }
 
-  const { _id, img, category, title, article, owner, date } = storyData;
+  const { _id, img, category, title, article, fullText, owner, date } =
+    storyData;
 
   const isSaved =
     Array.isArray(savedStoriesIds) && savedStoriesIds.includes(_id);
@@ -143,6 +144,10 @@ const StoryDetails = ({ storyData }) => {
             onClose={() => setIsmodalOpen(false)}
           />
         )}
+        <div
+          className={styles.fullText}
+          dangerouslySetInnerHTML={{ __html: fullText }}
+        />
       </article>
     </Section>
   );

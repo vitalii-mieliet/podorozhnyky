@@ -83,6 +83,14 @@
 
 .mainContent {
   margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.fullText {
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-neutral-darkest);
 }
 
 .articleBody {

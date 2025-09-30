@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Formik, Form, useField } from 'formik';
-import * as Yup from 'yup';
-import { useNavigate, generatePath } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+
+import { useNavigate } from 'react-router-dom';
 
 import Container from '../common/Container/Container';
 import Section from '../common/Section/Section';
@@ -14,66 +14,17 @@ import AppSelect from '../ui/formInputs/AppSelect/AppSelect';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, createStory } from '../../redux/stories/operations';
-import { selectCategories } from '../../redux/stories/selectors';
+import {
+  selectCategories,
+  selectIsLoading,
+} from '../../redux/stories/selectors';
 import style from './AddStoryForm.module.css';
-
-const validationSchema = Yup.object({
-  title: Yup.string()
-    .required('Заголовок обовʼязковий')
-    .max(100, 'Максимум 100 символів'),
-  category: Yup.string().required('Виберіть категорію'),
-  article: Yup.string()
-    .required('Текст історії обовʼязковий')
-    .min(10, 'Мінімум 10 символів'),
-});
-
-// місток для AppTextInput
-const FormikTextInput = ({ name, ...props }) => {
-  const [field, meta] = useField(name);
-  return (
-    <AppTextInput
-      {...field}
-      {...props}
-      error={meta.touched && !!meta.error}
-      errorMessage={meta.touched ? meta.error : ''}
-    />
-  );
-};
-
-// місток для AppSelect
-const FormikSelect = ({ name, options, placeholder, ariaLabel, ...props }) => {
-  const [field, meta, helpers] = useField(name);
-
-  const handleChange = (option) => {
-    helpers.setValue(option.value);
-  };
-
-  return (
-    <AppSelect
-      options={options}
-      value={options.find((opt) => opt.value === field.value) || null}
-      placeholder={placeholder}
-      ariaLabel={ariaLabel}
-      onChange={handleChange}
-      error={meta.touched && !!meta.error}
-      errorMessage={meta.touched ? meta.error : ''}
-      {...props}
-    />
-  );
-};
-
-// місток для AppTextArea
-const FormikTextArea = ({ name, ...props }) => {
-  const [field, meta] = useField(name);
-  return (
-    <AppTextArea
-      {...field}
-      {...props}
-      error={meta.touched && !!meta.error}
-      errorMessage={meta.touched ? meta.error : ''}
-    />
-  );
-};
+import {
+  showErrorToast,
+  showSuccessToast,
+} from '../common/AppToastContainer/toastHelpers';
+import { validationAddStorySchema } from '../../validation/createStoryValidation';
+import Loader from '../common/Loader/Loader';
 
 const AddStoryForm = () => {
   const dispatch = useDispatch();
@@ -82,6 +33,7 @@ const AddStoryForm = () => {
   const [preview, setPreview] = useState(null);
 
   const categories = useSelector(selectCategories);
+  const isLoading = useSelector(selectIsLoading);
 
   const formattedCategories = categories.map((cat) => ({
     value: cat,
@@ -92,10 +44,13 @@ const AddStoryForm = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
+  const maxLength = 150;
+
   const initialValues = {
     title: '',
     category: '',
     article: '',
+    fullText: '',
     img: null,
   };
 
@@ -107,21 +62,18 @@ const AddStoryForm = () => {
       setPreview(URL.createObjectURL(file));
     }
   };
-
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     try {
-      const newStory = await dispatch(createStory(values)).unwrap();
+      await dispatch(createStory(values)).unwrap();
 
       resetForm();
       setPreview(null);
+      showSuccessToast('Форма відправлена успішно!');
 
-      //  редірект на сторіз айді
-      const storyId = newStory.data ? newStory.data._id : newStory._id;
-
-      navigate(generatePath('/stories/:storyId', { storyId }));
+      navigate(-1);
     } catch (error) {
-      console.error('Помилка при відправці форми:', error);
-      alert('Помилка при створенні історії. Спробуйте ще раз.');
+      console.log(error);
+      showErrorToast('Помилка при створенні історії. Спробуйте ще раз!');
     } finally {
       setSubmitting(false);
     }
@@ -143,17 +95,16 @@ const AddStoryForm = () => {
   return (
     <Section>
       <Container>
+        {isLoading && <Loader />}
         <div className={style.box}>
           <h1 className={style.tittle}>Створити нову історію</h1>
 
           <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
+            validationSchema={validationAddStorySchema}
             onSubmit={handleSubmit}
-            validateOnChange={false}
-            validateOnBlur={false}
           >
-            {({ setFieldValue, isValid, dirty, resetForm }) => (
+            {({ values, setFieldValue, isValid, dirty, resetForm }) => (
               <Form className={style.formBox}>
                 <div className={style.formBoxDesktop}>
                   {/* Завантаження фото */}
@@ -198,19 +149,21 @@ const AddStoryForm = () => {
                     <label className={style.label} htmlFor="title">
                       Заголовок
                     </label>
-                    <FormikTextInput
-                      name="title"
+                    <Field
+                      as={AppTextInput}
                       id="title"
+                      name="title"
                       placeholder="Введіть заголовок історії"
                       aria-label="Заголовок статті"
                     />
                   </div>
 
+                  {/* Категорія */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="category">
                       Категорія
                     </label>
-                    <FormikSelect
+                    <AppSelect
                       name="category"
                       options={formattedCategories}
                       placeholder="Категорія"
@@ -218,14 +171,34 @@ const AddStoryForm = () => {
                     />
                   </div>
 
-                  {/* Повний текст історії */}
+                  {/* Короткий опис */}
                   <div className={style.inputBox}>
                     <label className={style.label} htmlFor="article">
+                      Короткий опис
+                    </label>
+                    <Field
+                      as={AppTextArea}
+                      id="article"
+                      name="article"
+                      maxLength={maxLength}
+                      placeholder="Введіть короткий опис історії"
+                      aria-label="Короткий опис статті"
+                      className={style.textArea}
+                    />
+                    <p className={style.symbol}>
+                      Лишилось символів: {maxLength - values.article.length}
+                    </p>
+                  </div>
+
+                  {/* Повний текст історії */}
+                  <div className={style.inputBox}>
+                    <label className={style.label} htmlFor="fullText">
                       Текст історії
                     </label>
-                    <FormikTextArea
-                      name="article"
-                      id="article"
+                    <Field
+                      as={AppTextArea}
+                      id="fullText"
+                      name="fullText"
                       placeholder="Ваша історія тут"
                       aria-label="Повний текст статті"
                     />
@@ -236,8 +209,8 @@ const AddStoryForm = () => {
                 <div className={style.appButtonBox}>
                   <AppButton
                     type="submit"
+                    disabled={!dirty || !isValid}
                     aria-label="Зберегти історію"
-                    disabled={!dirty}
                   >
                     Зберегти
                   </AppButton>
