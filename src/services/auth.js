@@ -136,7 +136,7 @@ export const sendResetToken = async (email) => {
 
   const html = template({
     name: user.name,
-    resetLink: `${appDomain}/reset-password?token=${resetToken}`,
+    resetLink: `${appDomain}/reset/reset-password?token=${resetToken}`,
     // NEW: передаємо додаткові змінні у шаблон
     logoCid, // NEW
     supportEmail, // NEW
