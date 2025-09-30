@@ -29,4 +29,27 @@
   .black {
     color: var(--color-scheme-2-text);
   }
+
+  .logoutBtnHome,
+  .logoutBtnOut {
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .logoutBtnHome:hover,
+  .logoutBtnHome:focus {
+    outline: none;
+    border-radius: 8px;
+    padding: 5px;
+    border: 1px solid #fff;
+  }
+
+  .logoutBtnOut:hover,
+  .logoutBtnOut:focus {
+    outline: none;
+    border-radius: 8px;
+    padding: 5px;
+    border: 1px solid var(--color-scheme-1-text);
+  }
 }
