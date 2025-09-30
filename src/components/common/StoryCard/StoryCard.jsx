@@ -6,6 +6,8 @@ import EditIcon from '../../../assets/icons/edit.svg?react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveStory, unsaveStory } from '../../../redux/user/operations';
 import { selectSavedStoriesIds } from '../../../redux/user/selectors';
+import imageUrl from '../../../assets/images/placeholder/Placeholder.webp';
+import authorAvatarUrl from '../../../assets/icons/AvatarImage.svg';
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -36,13 +38,10 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
     }
   };
 
-  const imageUrl = img || '/src/assets/images/placeholder/Placeholder.webp';
-  const authorAvatarUrl = owner?.avatar || '/src/assets/icons/AvatarImage.svg';
-
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <img src={imageUrl} alt={title} className={styles.image} />
+        <img src={img || imageUrl} alt={title} className={styles.image} />
       </div>
       <div className={styles.contentWrapper}>
         <div className={styles.content}>
@@ -53,7 +52,7 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
         <div className={styles.authorBlock}>
           <div className={styles.imageWrapper}>
             <img
-              src={authorAvatarUrl}
+              src={owner?.avatar || authorAvatarUrl}
               alt={owner?.name || 'Автор'}
               className={styles.authorAvatar}
             />
@@ -63,11 +62,11 @@ const StoryCard = ({ storyInfo, variant = 'normal' }) => {
               {owner?.name || 'Невідомий автор'}
             </p>
             <div className={styles.meta}>
-              <span>{formatDate(date)}</span>
-              <span className={styles.separator}>•</span>
+              <span className={styles.date}>{formatDate(date)}</span>
+              <sub className={styles.bullet}>&bull;</sub>
               <div className={styles.saves}>
-                <span>{rate || 0}</span>
-                <BookmarkIcon />
+                <span className={styles.rate}>{rate || 0}</span>
+                <BookmarkIcon className={styles.bookmarkIcon} />
               </div>
             </div>
           </div>
