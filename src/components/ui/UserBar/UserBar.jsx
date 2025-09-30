@@ -13,6 +13,7 @@ function UserBar({ isLoggedIn, user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const isHome = location.pathname === '/';
   const [isOpen, setIsOpen] = useState(false); // Confirm modal state
 
   const handleLogout = async () => {
@@ -40,7 +41,7 @@ function UserBar({ isLoggedIn, user }) {
           </div>
           <span>{user?.name}</span>
           <button
-            className={s.logoutBtn}
+            className={isHome ? s.logoutBtnHome : s.logoutBtnOut}
             aria-label="Вихід"
             onClick={() => setIsOpen(true)}
           >
