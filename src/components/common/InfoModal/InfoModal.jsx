@@ -64,6 +64,7 @@ const InfoModal = ({
   cancelButtonText = 'Відмінити',
   onConfirm,
   onCancel,
+  onClose,
   className,
   ...props
 }) => {
@@ -73,17 +74,17 @@ const InfoModal = ({
     if (!isOpen) return;
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
-        onCancel?.();
+        (onClose ?? onCancel)?.();
       }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [onCancel, isOpen]);
+  }, [onCancel, isOpen, onClose]);
 
   // закрити по бекдропу
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
-      onCancel?.();
+      (onClose ?? onCancel)?.();
     }
   };
 
@@ -106,7 +107,7 @@ const InfoModal = ({
         >
           <button
             className={css.close}
-            onClick={onCancel}
+            onClick={onClose || onCancel}
             aria-label="Close modal"
             autoFocus
           >

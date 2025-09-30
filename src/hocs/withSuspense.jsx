@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
-import Loader from '../components/common/Loader/Loader';
 
 const withSuspense = (Component) => {
   const WrappedWithSuspense = (props) => {
     return (
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={null}>
         <Component {...props} />
       </Suspense>
     );
