@@ -11,7 +11,7 @@ function TravellerCard({ userData = {} }) {
 
   return (
     <article className={css.travelerInfoCard}>
-      <dev className={css.photoWrap}>
+      <div className={css.photoWrap}>
         <img
           src={avatar || avatarPlaceholder}
           width={112}
@@ -19,7 +19,7 @@ function TravellerCard({ userData = {} }) {
           alt={name || 'Avatar'}
           className={css.imgPlaceholder}
         />
-      </dev>
+      </div>
       <div className={css.infoBlock}>
         <h2 className={css.name}>{displayName || 'Full name'}</h2>
         <p className={css.bio}>
