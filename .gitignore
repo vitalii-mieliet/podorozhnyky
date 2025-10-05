@@ -1,1 +1,8 @@
 node_modules/
+
+# Turborepo cache
+.turbo
+turbo-dev.log
+
+# Logs
+*.log
