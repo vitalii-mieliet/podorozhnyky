@@ -1,0 +1,32 @@
+tags:
+  - Auth
+summary: Register a new user
+operationId: registerUser
+description: 'Create a new user account with email and password'
+security: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - password
+        properties:
+          name:
+            type: string
+            example: 'Tim Cook'
+          email:
+            type: string
+            example: 'timcook.official@icloud.com'
+          password:
+            type: string
+            example: 'appleCompany1'
+responses:
+  '201':
+    $ref: '../../components/responses/auth/register/201.yaml'
+  '400':
+    $ref: '../../components/responses/auth/register/400.yaml'
+  '409':
+    $ref: '../../components/responses/auth/register/409.yaml'

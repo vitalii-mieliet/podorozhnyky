@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Застосунок "Подорожники"
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is a documentation of app "Подорожники"
+tags:
+  - name: Подорожники
+    description: Operations about users.
+  - name: Auth
+    description: Auth operations.
+servers:
+  - url: https://plantains-app.onrender.com/api
+  - url: https://project-m-7jdz.onrender.com/api
+  - url: http://localhost:3000/api
+paths:
+  /auth/register:
+    post:
+      $ref: '../swagger/paths/auth/register.yaml'
+  /auth/login:
+    post:
+      $ref: '../swagger/paths/auth/login.yaml'
+  /auth/refresh:
+    post:
+      $ref: '../swagger/paths/auth/refresh.yaml'
+  /auth/logout:
+    post:
+      $ref: '../swagger/paths/auth/logout.yaml'
+  /auth/request-reset-password:
+    post:
+      $ref: '../swagger/paths/auth/request-reset-password.yaml'
+  /auth/reset-password:
+    post:
+      $ref: '../swagger/paths/auth/reset-password.yaml'
+  /auth/google/get-oauth-url:
+    get:
+      $ref: '../swagger/paths/auth/google/get-oauth-url.yaml'
+  /auth/google/confirm-oauth:
+    post:
+      $ref: '../swagger/paths/auth/google/confirm-oauth.yaml'
+  /stories:
+    get:
+      $ref: '../swagger/paths/stories/get.yaml'
+    post:
+      $ref: '../swagger/paths/stories/post.yaml'
+  /stories/byauthor/{id}:
+    get:
+      $ref: '../swagger/paths/stories/byauthor/{id}/get.yaml'
+  /stories/story/{id}:
+    get:
+      $ref: '../swagger/paths/stories/story/{id}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/stories/story/{id}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/stories/story/{id}/delete.yaml'
+  /stories/authors:
+    get:
+      $ref: '../swagger/paths/stories/authors/get.yaml'
+  /stories/authors/{id}:
+    get:
+      $ref: '../swagger/paths/stories/authors/{id}/get.yaml'
+  /users/info:
+    get:
+      $ref: '../swagger/paths/users/info/get.yaml'
+  /users/saved-stories:
+    get:
+      $ref: '../swagger/paths/users/saved-stories/get.yaml'
+  /users/created-stories:
+    get:
+      $ref: '../swagger/paths/users/created-stories/get.yaml'
+  /users/save-story/{id}:
+    post:
+      $ref: '../swagger/paths/users/save-story/{id}/post.yaml'
+    delete:
+      $ref: '../swagger/paths/users/save-story/{id}/delete.yaml'
+  /users/avatar:
+    patch:
+      $ref: '../swagger/paths/users/avatar/patch.yaml'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

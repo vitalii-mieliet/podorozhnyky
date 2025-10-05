@@ -1,0 +1,57 @@
+tags:
+  - Stories
+summary: Get list of stories by author
+operationId: getStoriesByAuthor
+description: 'Retrieve a list of stories by a specific author with pagination and sorting options.'
+security: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      description: 'The ID of the author whose stories you want to fetch.'
+      example: '68cf2fef64ba8aed80b91ae0'
+  - in: query
+    name: page
+    required: false
+    schema:
+      type: integer
+      default: 1
+      description: 'Page number for pagination.'
+      example: 1
+  - in: query
+    name: perPage
+    required: false
+    schema:
+      type: integer
+      default: 10
+      description: 'Number of items per page.'
+      example: 1
+  - in: query
+    name: sortBy
+    required: false
+    schema:
+      type: string
+      enum:
+        - 'rate'
+        - 'date'
+      default: 'date'
+      description: 'Field to sort by.'
+      example: 'rate'
+  - in: query
+    name: sortOrder
+    required: false
+    schema:
+      type: string
+      enum:
+        - 'asc'
+        - 'desc'
+      default: 'asc'
+      description: 'Order of sorting.'
+      example: 'asc'
+responses:
+  '200':
+    $ref: ../../../../components/responses/stories/byauthor/{id}/200.yaml
+  '404':
+    $ref: '../../../../components/responses/stories/byauthor/{id}/404.yaml'

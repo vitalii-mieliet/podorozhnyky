@@ -1,0 +1,49 @@
+tags:
+  - Stories
+summary: Create a new story
+operationId: createStory
+description: 'Add a new story to the platform with image, title, article, category, and author information.'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - title
+          - article
+          - category
+        properties:
+          img:
+            type: string
+            format: binary
+            description: 'Image for the story'
+          title:
+            type: string
+            description: 'Title of the story'
+            minLength: 3
+            maxLength: 128
+            example: 'Канада: краса національного парку Банф'
+          article:
+            type: string
+            description: 'Content of the story'
+            example: 'Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф, де прогулянки вели до смарагдових вод озера Луїз і льодовика Колумбія. Кожен маршрут відкривав нові краєвиди. Увечері ми сиділи біля багаття, а вночі бачили північне сяйво. Банф — це місце, де відчуваєш велич природи і тишу гір.'
+          category:
+            type: string
+            description: 'Category of the story'
+            enum:
+              - 'Європа'
+              - 'Азія'
+              - 'Америка'
+              - 'Африка'
+              - 'Пустелі'
+              - 'Україна'
+            example: 'Америка'
+responses:
+  '201':
+    $ref: '../../components/responses/stories/201.yaml'
+  '400':
+    $ref: '../../components/responses/stories/400.yaml'
+  '401':
+    $ref: '../../components/responses/stories/401.yaml'

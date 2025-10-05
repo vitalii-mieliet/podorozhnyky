@@ -1,0 +1,34 @@
+description: Avatar updated successfully.
+content:
+  application/json:
+    schema:
+      type: object
+      required: [status, message, user]
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: Avatar updated!
+        user:
+          $ref: '../../../schemas/user.yaml'
+    examples:
+      success:
+        value:
+          status: 200
+          message: Avatar updated!
+          user:
+            _id: '66f4b0c0b1c9a0f2c7d2a111'
+            name: 'Alice'
+            email: 'alice@example.com'
+            password: '12345678'
+            avatar: 'https://res.cloudinary.com/.../avatars/img.jpg'
+            bio: ''
+            onboardingCompleted: false
+            savedStories: []
+            settings: { darkMode: false }
+            socialLinks:
+              twitter: ''
+              facebook: ''
+              instagram: ''

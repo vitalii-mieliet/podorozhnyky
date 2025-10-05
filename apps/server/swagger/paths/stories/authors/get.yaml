@@ -1,0 +1,43 @@
+tags:
+  - Authors
+summary: Get list of authors
+operationId: getAuthors
+description: 'Fetch a list of authors with pagination and sorting options.'
+security: []
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      example: 1
+    description: 'The page number for pagination.'
+  - in: query
+    name: perPage
+    schema:
+      type: integer
+      example: 10
+    description: 'The number of authors to return per page.'
+  - in: query
+    name: sortBy
+    schema:
+      type: string
+      enum:
+        - name
+    description: 'Field to sort authors by.'
+    example: 'name'
+  - in: query
+    name: sortOrder
+    schema:
+      type: string
+      enum:
+        - asc
+        - desc
+    description: 'The sorting order: ascending (asc) or descending (desc).'
+    example: 'asc'
+responses:
+  '200':
+    $ref: '../../../components/responses/stories/authors/200.yaml'
+  '400':
+    description: 'Invalid parameters in the request.'
+  '404':
+    description: 'No authors found.'

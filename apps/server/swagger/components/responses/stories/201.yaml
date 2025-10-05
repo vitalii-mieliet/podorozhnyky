@@ -1,0 +1,68 @@
+description: 'Story successfully created!'
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: 'Story successfully created!'
+        data:
+          type: object
+          required:
+            - _id
+            - title
+            - category
+            - ownerId
+          properties:
+            _id:
+              type: string
+              description: 'Story ID'
+              example: '68cf3738147f34b70f224b30'
+            img:
+              type: string
+              format: uri
+              description: 'Story image URL'
+              example: 'https://ftp.goit.study/img/travel-blog/68498236a100312bea07900e_31_11zon.webp'
+            title:
+              type: string
+              description: 'Story title'
+              example: 'Канада: краса національного парку Банф'
+            article:
+              type: string
+              description: 'Story content'
+              example: 'Канада вразила своїми горами і озерами. Ми провели кілька днів у парку Банф...'
+            category:
+              type: string
+              description: 'Story category'
+              example: 'Америка'
+            rate:
+              type: integer
+              description: 'Rating of the story'
+              example: 0
+            date:
+              type: string
+              format: date
+              description: 'Publication date of the story'
+              example: '2025-09-20'
+            createdAt:
+              type: string
+              format: date-time
+              description: 'Timestamp of story creation'
+              example: '2025-09-20T23:22:32.075Z'
+            updatedAt:
+              type: string
+              format: date-time
+              description: 'Timestamp of the last update'
+              example: '2025-09-20T23:22:32.075Z'
+            ownerId:
+              type: string
+              description: 'Author ID'
+              example: '68cf2fef64ba8aed80b91ae0'

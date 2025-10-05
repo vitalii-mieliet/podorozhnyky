@@ -1,0 +1,22 @@
+type: object
+required:
+  - _id
+  - name
+  - bio
+properties:
+  _id:
+    type: string
+    description: 'Author ID'
+    example: '68cb1a7465ec501c0ff95094'
+  name:
+    type: string
+    description: 'Name of the author'
+    example: 'Tim Cook'
+  bio:
+    description: "Author's info"
+    type: string
+    example: 'Traveler, photographer, and storyteller.'
+  avatar:
+    type: string
+    description: 'URL to the avatar image'
+    example: 'https://res.cloudinary.com/dbmy1ukhf/image/upload/q_auto,f_auto/v1758134510/Placeholder_Image.png'

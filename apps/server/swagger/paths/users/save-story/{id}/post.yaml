@@ -1,0 +1,24 @@
+tags:
+  - Users
+summary: Save a story to the saved list
+operationId: saveStory
+description: 'Add the specified story to the saved list of the authenticated user.'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    description: 'ID of the story to save.'
+    schema:
+      type: string
+      example: '68cd6707f1827a0dda37ef5e'
+responses:
+  '201':
+    $ref: '../../../../components/responses/users/save-story/{id}/201.yaml'
+  '400':
+    $ref: ../../../../components/responses/stories/400.yaml
+  '401':
+    $ref: '../../../../components/responses/stories/401.yaml'
+  '404':
+    $ref: '../../../../components/responses/stories/story/{id}/404.yaml'

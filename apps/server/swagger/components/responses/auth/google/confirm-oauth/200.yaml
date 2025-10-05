@@ -1,0 +1,18 @@
+description: 'Successfully logged in with Google'
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: 'Successfully logged in an user with Google!'
+        data:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              example: 'wI5q26m48ZIQMvc2EKqYIuQa9XxxszXDixi8nBJt'

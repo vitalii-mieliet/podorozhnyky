@@ -1,0 +1,12 @@
+description: User is not allowed to edit this story
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 403
+        message:
+          type: string
+          example: 'You are not allowed to edit this story'

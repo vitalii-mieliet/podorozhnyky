@@ -1,0 +1,27 @@
+description: 'Stories not found.'
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          description: 'HTTP status code of the response.'
+          type: integer
+          example: 404
+        message:
+          description: 'Response message indicating the error.'
+          type: string
+          example: 'NotFoundError'
+        data:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              description: 'Error message detailing the reason for the failure.'
+              type: string
+              example: 'Stories not found'
