@@ -1,10 +1,9 @@
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://plantains-app.vercel.app/',
-  'https://plantains-app-dev.vercel.app', // dev
-  'https://plantains-app-client.vercel.app', //product
-  'https://plantains-app.onrender.com/', //backend swagger
-];
+import { getEnvVar } from '../utils/getEnvVar.js';
+
+const allowedOrigins = getEnvVar('ALLOWED_ORIGINS', '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 export const corsOptions = {
   origin: (origin, callback) => {
