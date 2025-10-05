@@ -1,0 +1,143 @@
+@import './fonts.css';
+@import './reset.css';
+@import './variables.css';
+
+@import './fonts.css';
+@import './reset.css';
+@import './variables.css';
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100%;
+
+  background: var(--color-scheme-2-background);
+  color: var(--color-scheme-2-text);
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+@media (min-width: 1440px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+/* H1 */
+h1 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 32px; /* mobile */
+  line-height: 110%;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 48px;
+  } /* tablet */
+}
+
+@media (min-width: 1440px) {
+  h1 {
+    font-size: 56px;
+  } /* desktop */
+}
+
+/* H2 */
+h2 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 28px; /* mobile */
+  line-height: 120%;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h2 {
+    font-size: 44px;
+  } /* tablet */
+}
+
+@media (min-width: 1440px) {
+  h2 {
+    font-size: 52px;
+  } /* desktop */
+}
+
+/* H3 */
+h3 {
+  font-family: var(--second-family);
+  font-weight: 700;
+  font-size: 20px; /* mobile */
+  line-height: 130%;
+  letter-spacing: -0.01em;
+  color: var(--color-scheme-2-text);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h3 {
+    font-size: 20px;
+  } /* tablet */
+}
+
+@media (min-width: 1440px) {
+  h3 {
+    font-size: 32px;
+  } /* desktop */
+}
+
+/* H4 */
+h4 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 18px; /* mobile */
+  line-height: 150%;
+  color: var(--color-scheme-1-text);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h4 {
+    font-size: 18px;
+  } /* tablet */
+}
+
+@media (min-width: 1440px) {
+  h4 {
+    font-size: 26px;
+  } /* desktop */
+}
+
+/* H5 */
+h5 {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 18px; /* mobile */
+  line-height: 150%;
+  color: var(--color-scheme-2-text);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h5 {
+    font-size: 18px;
+  } /* tablet */
+}
+
+@media (min-width: 1440px) {
+  h5 {
+    font-size: 26px;
+  } /* desktop */
+}
